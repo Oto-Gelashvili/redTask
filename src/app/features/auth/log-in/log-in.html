@@ -1,0 +1,69 @@
+<div class="modalCont authModal">
+  <img
+    tabindex="0"
+    src="close.svg"
+    (click)="modalService.closeAll()"
+    alt="close button"
+    class="closeBtn"
+  />
+
+  <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
+    <div class="heading">
+      <h2>Welcome Back</h2>
+      <p>Log in to continue your learning</p>
+    </div>
+    <div class="inputCont margin-bot">
+      <label for="mail">Email</label>
+      <input
+        name="mail"
+        id="mail"
+        type="email"
+        placeholder="Type your email"
+        formControlName="email"
+      />
+      @if (logInForm.get('email')?.invalid && logInForm.get('email')?.touched) {
+        <p class="error" animate.enter="showError" animate.leave="hideError">
+          Please enter a valid email address
+        </p>
+      }
+    </div>
+    <div class="inputCont">
+      <label for="password">Password*</label>
+      <div class="inputWithIconCont">
+        <input
+          name="password"
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          formControlName="password"
+        />
+      </div>
+      @if (logInForm.get('password')?.invalid && logInForm.get('password')?.touched) {
+        <p class="error" animate.enter="showError" animate.leave="hideError">
+          Min 3 characters required
+        </p>
+      }
+    </div>
+
+    @if (generalError()) {
+      <h5 class="error generalError" animate.enter="showError" animate.leave="hideError">
+        {{ generalError() }}
+      </h5>
+    }
+
+    <button type="submit" [disabled]="getIsBtnDisabled()" class="buttonS">
+      @if (isLoading()) {
+        ...
+      } @else {
+        Log In
+      }
+    </button>
+    <footer>
+      <div class="divider">or</div>
+      <div class="logInCont">
+        <p>Don't have an account?</p>
+        <span tabindex="0" (click)="modalService.openSignUp()">Sign Up</span>
+      </div>
+    </footer>
+  </form>
+</div>

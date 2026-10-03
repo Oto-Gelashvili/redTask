@@ -1,3 +1,4 @@
+@import './styles/modal.css';
 :root {
   /* colors */
   --bg: #070c1c;
@@ -238,4 +239,81 @@ input[type='search']::-ms-clear {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
   background-size: contain;
   cursor: pointer;
+}
+.fade-in {
+  animation: fade-in 0.4s;
+}
+.fade-out {
+  animation: fade-out 0.4s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.customSelect:has(.open-animation) .icon {
+  animation: arrow-rotate-up-animation 0.6s;
+}
+.customSelect:has(.close-animation) .icon {
+  animation: arrow-rotate-down-animation 1s;
+}
+.customSelect.open .icon {
+  transform: rotate(180deg);
+}
+.open-animation {
+  animation: open-animation 0.6s;
+}
+.close-animation {
+  animation: close-animation 1s;
+}
+@keyframes arrow-rotate-up-animation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+@keyframes arrow-rotate-down-animation {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+@keyframes open-animation {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    transform: scale(1);
+    max-height: fit-content;
+  }
+}
+
+@keyframes close-animation {
+  from {
+    max-height: fit-content;
+    pointer-events: none;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    pointer-events: none;
+  }
 }

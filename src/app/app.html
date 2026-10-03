@@ -2,3 +2,28 @@
 <main>
   <router-outlet />
 </main>
+@if (modalService.isSignUpOpen()) {
+  <div
+    class="backdrop"
+    animate.enter="fade-in"
+    animate.leave="fade-out"
+    (click)="modalService.closeAll()"
+  >
+    <div (click)="$event.stopPropagation()">
+      <!-- <app-sign-up /> -->
+    </div>
+  </div>
+}
+
+@if (modalService.isLogInOpen()) {
+  <div
+    class="backdrop"
+    animate.enter="fade-in"
+    animate.leave="fade-out"
+    (click)="modalService.closeAll()"
+  >
+    <div (click)="$event.stopPropagation()">
+      <app-log-in />
+    </div>
+  </div>
+}
