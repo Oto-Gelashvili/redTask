@@ -1,0 +1,40 @@
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.4s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.panel-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
+}
+
+.panel-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 79.4rem;
+  min-height: 100vh;
+  height: 100%;
+  background-color: var(--grey-100);
+  padding: 6rem 7.4rem;
+  transform: translateX(100%);
+  transition: 0.4s ease;
+  display: flex;
+  opacity: 0;
+}
+
+.panel-container.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 100;
+}
