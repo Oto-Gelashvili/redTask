@@ -1,38 +1,59 @@
 .modalCont {
-  padding: 5rem;
-  border-radius: 12px;
-  width: 46rem;
-  background-color: var(--grey-50);
+  padding: 3.2rem;
+  border-radius: 28px;
+  background-color: var(--bg);
+  border: 1px solid var(--bg-raised);
+  box-shadow: 0px 20px 50px -10px rgba(0, 0, 0, 0.2);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-height: calc(100vh - 4.8rem);
   overflow-y: auto;
-  /* top: 303px;
-  left: 730px; */
+}
+.loginContWidth {
+  width: 40.3rem;
+}
+.modalCont .formHeader {
+  display: flex;
+  grid-area: 1.6rem;
+  margin-bottom: 2.4rem;
+  justify-content: space-between;
+}
+.modalCont .formHeader .titleCont {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.modalCont .formHeader .titleCont p {
+  color: var(--text-secondary);
+}
+.modalCont .closeBtn {
+  cursor: pointer;
+  transition: 0.4s;
+  align-self: baseline;
+  outline: 1px solid transparent;
+  border-radius: 50%;
+}
+.modalCont .closeBtn:hover {
+  color: var(--error);
+}
+.modalCont .closeBtn:focus-visible {
+  outline-color: var(--error);
+  color: var(--error);
 }
 .modalCont form {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 3.2rem;
   align-items: center;
 }
-.modalCont h2 {
-  color: var(--grey-900);
-}
-.modalCont .closeBtn {
-  position: absolute;
-  top: 20.5px;
-  right: 15px;
-  cursor: pointer;
-  transition: 0.4s;
-}
-.modalCont .closeBtn:hover {
-  transform: scale(1.1);
-}
-.modalCont .closeBtn:focus-visible {
-  outline: 1px solid var(--brand-500);
+.modalCont form .innerFormCont {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  align-items: center;
+  width: 100%;
 }
 
 .modalCont .inputCont {
@@ -41,43 +62,44 @@
   width: 100%;
 }
 .modalCont .inputCont label {
-  font-size: var(--xs-fs);
-  color: var(--grey-700);
   width: fit-content;
   margin-bottom: 0.8rem;
 }
 .modalCont .inputCont input {
-  border-radius: 8px;
-  border: 2px solid var(--grey-200);
-  padding: 1.2rem 1.5rem 1.2rem 1.3rem;
-  color: var(--grey-400);
-  font-size: var(--xs-fs);
+  border-radius: 12px;
+  height: 4rem;
+  border: 1px solid transparent;
+  padding-inline: 1.6rem;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
   outline: none;
-  caret-color: var(--grey-400);
+  caret-color: var(--text-secondary);
   transition: 0.4s;
-  height: 4.8rem;
 }
 .modalCont .inputCont input:hover {
-  border-color: var(--grey-300);
-  caret-color: var(--grey-200);
-  color: var(--grey-200);
+  border-color: var(--tint-white);
+  caret-color: var(--text-primary);
+}
+.modalCont .inputCont input:hover::placeholder,
+.modalCont .inputCont input:focus::placeholder {
+  color: var(--text-primary);
 }
 .modalCont .inputCont input:focus {
-  border-color: var(--grey-400);
-  caret-color: var(--grey-400);
-  color: var(--grey-700);
+  border-color: var(--text-disabled);
+  caret-color: var(--text-primary);
 }
 .modalCont .inputWithIconCont:has(input:focus) .inputsIcon {
-  color: var(--grey-900);
+  color: var(--text-primary);
 }
 .modalCont .inputCont input::placeholder {
-  font-size: var(--xs-fs);
-  color: var(--grey-200);
+  color: var(--text-secondary);
+  transition: 0.4s;
 }
 
 .modalCont .inputCont .error,
 .modalCont .errorCont .error {
-  font-size: var(--helper-rs-fs);
+  font-size: 1.4rem;
+  font-weight: 600;
   color: var(--error) !important;
   margin-top: 0.5rem;
   overflow: hidden;
@@ -135,24 +157,46 @@
   padding-right: 4rem;
 }
 .modalCont .inputsIcon {
-  color: var(--grey-300);
+  color: var(--text-primary);
   transition: 0.4s;
 }
 
 .modalCont .inputsIcon:hover {
-  color: var(--brand-500);
+  color: var(--error);
 }
 .modalCont .inputsIcon {
   position: absolute;
-  right: 1.5rem;
+  right: 1.6rem;
   top: 1.2rem;
   /* top: 50%;
   transform: translateY(-50%); */
   background: none;
   border: none;
   padding: 0;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.modalCont .customBtn {
+  width: 100%;
+}
+.modalCont .logInCont {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+.modalCont .logInCont span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--error);
+  transition: 0.4s;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.modalCont .logInCont span:hover,
+.modalCont .logInCont span:focus {
+  color: var(--warning);
 }

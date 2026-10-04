@@ -2,9 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { ModalService } from '../../../core/services/modal.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { Icon } from '../../../shared/icon/icon';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Icon],
   selector: 'app-log-in',
   styleUrl: './log-in.css',
   templateUrl: './log-in.html',
@@ -17,8 +18,8 @@ export class LogIn {
   protected generalError = signal<string | null>(null);
 
   protected logInForm = new FormGroup({
-    email: new FormControl<string>('example@gmail.com', [Validators.required, Validators.email]),
-    password: new FormControl<string>('Redberry', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
   });
 
   protected getIsBtnDisabled(): boolean {

@@ -1,48 +1,65 @@
-<div class="modalCont authModal">
-  <img
-    tabindex="0"
-    src="close.svg"
-    (click)="modalService.closeAll()"
-    alt="close button"
-    class="closeBtn"
-  />
+<div class="modalCont loginContWidth">
+  <div class="formHeader">
+    <div class="titleCont">
+      <h3>Log in</h3>
+      <p class="BodyS">Welcome back to Kino XII</p>
+    </div>
+
+    <button type="button" class="closeBtn" aria-label="Close" (click)="modalService.closeAll()">
+      <app-icon name="close" [size]="24" />
+    </button>
+  </div>
 
   <form [formGroup]="logInForm" (ngSubmit)="onSubmit()">
-    <div class="heading">
-      <h2>Welcome Back</h2>
-      <p>Log in to continue your learning</p>
-    </div>
-    <div class="inputCont margin-bot">
-      <label for="mail">Email</label>
-      <input
-        name="mail"
-        id="mail"
-        type="email"
-        placeholder="Type your email"
-        formControlName="email"
-      />
-      @if (logInForm.get('email')?.invalid && logInForm.get('email')?.touched) {
-        <p class="error" animate.enter="showError" animate.leave="hideError">
-          Please enter a valid email address
-        </p>
-      }
-    </div>
-    <div class="inputCont">
-      <label for="password">Password*</label>
-      <div class="inputWithIconCont">
-        <input
-          name="password"
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          formControlName="password"
-        />
+    <div class="innerFormCont">
+      <div class="inputCont margin-bot">
+        <label class="labelS" for="mail">Email</label>
+        <div class="inputWithIconCont">
+          <input
+            name="mail"
+            id="mail"
+            type="email"
+            placeholder="example@gmail.com"
+            formControlName="email"
+            class="labelS"
+          />
+          @if (logInForm.get('email')?.invalid && logInForm.get('email')?.touched) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (logInForm.get('email')?.valid && logInForm.get('email')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (logInForm.get('email')?.invalid && logInForm.get('email')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            Please enter a valid email address
+          </p>
+        }
       </div>
-      @if (logInForm.get('password')?.invalid && logInForm.get('password')?.touched) {
-        <p class="error" animate.enter="showError" animate.leave="hideError">
-          Min 3 characters required
-        </p>
-      }
+      <div class="inputCont">
+        <label class="labelS" for="password">Password</label>
+        <div class="inputWithIconCont">
+          <input
+            name="password"
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            formControlName="password"
+            class="labelS"
+          />
+          @if (logInForm.get('password')?.invalid && logInForm.get('password')?.touched) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (logInForm.get('password')?.valid && logInForm.get('password')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (logInForm.get('password')?.invalid && logInForm.get('password')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            Min 3 characters required
+          </p>
+        }
+      </div>
     </div>
 
     @if (generalError()) {
@@ -51,19 +68,20 @@
       </h5>
     }
 
-    <button type="submit" [disabled]="getIsBtnDisabled()" class="buttonS">
-      @if (isLoading()) {
-        ...
-      } @else {
-        Log In
-      }
-    </button>
-    <footer>
-      <div class="divider">or</div>
-      <div class="logInCont">
-        <p>Don't have an account?</p>
-        <span tabindex="0" (click)="modalService.openSignUp()">Sign Up</span>
-      </div>
-    </footer>
+    <div class="innerFormCont">
+      <button type="submit" [disabled]="getIsBtnDisabled()" class="btn-primary customBtn">
+        @if (isLoading()) {
+          ...
+        } @else {
+          Log in
+        }
+      </button>
+      <footer>
+        <div class="logInCont">
+          <p class="BodyM">Don't have an account?</p>
+          <span tabindex="0" (click)="modalService.openSignUp()">Sign Up</span>
+        </div>
+      </footer>
+    </div>
   </form>
 </div>

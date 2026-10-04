@@ -62,7 +62,9 @@ export class AuthService {
     if (!res.ok) {
       throw { status: res.status, error: json };
     }
+    const { user, token } = json.data;
+    this.setSession(user, token);
 
-    return json as { data: { user: User; token: string } };
+    return json.data;
   }
 }
