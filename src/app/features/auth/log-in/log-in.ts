@@ -38,11 +38,7 @@ export class LogIn {
     this.generalError.set(null);
 
     try {
-      const res = await this.authService.logIn({
-        email: v.email!,
-        password: v.password!,
-      });
-      this.authService.setSession(res.data.user, res.data.token);
+      await this.authService.logIn({ email: v.email!, password: v.password! });
       this.modalService.closeAll();
     } catch (err: ApiError | any) {
       if (err.status === 401) {

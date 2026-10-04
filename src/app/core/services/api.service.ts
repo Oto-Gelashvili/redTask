@@ -8,8 +8,13 @@ import { BASE_URL } from '../config';
 export class ApiService {
   private readonly auth = inject(AuthService);
   private readonly modal = inject(ModalService);
+  private pendingLogin: Promise<boolean> | null = null;
 
   async request<T>(path: string, options: RequestInit = {}): Promise<T> {
+    return this.execute<T>(path, options, false);
+  }
+
+  private async execute<T>(path: string, options: RequestInit, isRetry: boolean): Promise<T> {
     const token = this.auth.token();
 
     const res = await fetch(`${BASE_URL}${path}`, {
@@ -23,8 +28,9 @@ export class ApiService {
 
     const json = await res.json().catch(() => ({}));
 
-    if (res.status === 401) {
-      this.handleSessionExpired();
+    if (res.status === 401 && token && !isRetry) {
+      const loggedIn = await this.requestLogin(token);
+      if (loggedIn) return this.execute<T>(path, options, true);
     }
 
     if (!res.ok) {
@@ -39,11 +45,17 @@ export class ApiService {
     return json;
   }
 
-  private handleSessionExpired() {
-    if (!this.auth.isAuthenticated()) return;
+  private requestLogin(staleToken: string): Promise<boolean> {
+    // a newer login already happened while this request was in flight
+    const current = this.auth.token();
+    if (current && current !== staleToken) return Promise.resolve(true);
 
-    this.auth.clearSession();
-    this.modal.openLogIn();
-    //here also to be added noty service to notify user about session expiration, will be implemented in the next sprint
+    if (!this.pendingLogin) {
+      this.auth.clearSession();
+      this.modal.openLogIn();
+      // notify user about session expiration here later
+      this.pendingLogin = this.auth.waitForLogin().finally(() => (this.pendingLogin = null));
+    }
+    return this.pendingLogin;
   }
 }

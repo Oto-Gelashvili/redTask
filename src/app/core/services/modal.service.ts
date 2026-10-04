@@ -1,6 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { AuthService } from './auth.service';
 @Injectable({ providedIn: 'root' })
 export class ModalService {
+  private readonly auth = inject(AuthService);
+
   isSignUpOpen = signal(false);
   isLogInOpen = signal(false);
 
@@ -17,5 +20,6 @@ export class ModalService {
   closeAll() {
     this.isSignUpOpen.set(false);
     this.isLogInOpen.set(false);
+    this.auth.cancelLoginWait();
   }
 }

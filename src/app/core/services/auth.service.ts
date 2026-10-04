@@ -12,7 +12,11 @@ export class AuthService {
   token = this._token.asReadonly();
 
   isAuthenticated = computed(() => !!this._token());
-
+  private loginWaiters: ((success: boolean) => void)[] = [];
+  private settleLoginWaiters(success: boolean) {
+    this.loginWaiters.forEach((resolve) => resolve(success));
+    this.loginWaiters = [];
+  }
   constructor() {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
@@ -42,6 +46,7 @@ export class AuthService {
     this._user.set(user);
     this._token.set(token);
     localStorage.setItem('token', token);
+    this.settleLoginWaiters(true);
   }
   clearSession() {
     this._user.set(null);
@@ -71,5 +76,12 @@ export class AuthService {
     this.setSession(json.data.user, json.data.token);
 
     return json.data;
+  }
+  waitForLogin(): Promise<boolean> {
+    return new Promise((resolve) => this.loginWaiters.push(resolve));
+  }
+
+  cancelLoginWait() {
+    this.settleLoginWaiters(false);
   }
 }
