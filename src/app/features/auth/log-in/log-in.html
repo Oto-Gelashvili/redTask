@@ -32,7 +32,7 @@
         </div>
         @if (logInForm.get('email')?.invalid && logInForm.get('email')?.touched) {
           <p class="error" animate.enter="showError" animate.leave="hideError">
-            Please enter a valid email address
+            {{ logInForm.get('email')?.errors?.['server'] ?? 'Please enter a valid email address' }}
           </p>
         }
       </div>
@@ -56,7 +56,7 @@
         </div>
         @if (logInForm.get('password')?.invalid && logInForm.get('password')?.touched) {
           <p class="error" animate.enter="showError" animate.leave="hideError">
-            Min 3 characters required
+            {{ logInForm.get('password')?.errors?.['server'] ?? 'Min 3 characters required' }}
           </p>
         }
       </div>

@@ -3,6 +3,7 @@ import { ModalService } from '../../../core/services/modal.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Icon } from '../../../shared/icon/icon';
+import { ApiError } from '../../../models/api-error';
 
 @Component({
   imports: [ReactiveFormsModule, Icon],
@@ -43,14 +44,26 @@ export class LogIn {
       });
       this.authService.setSession(res.data.user, res.data.token);
       this.modalService.closeAll();
-    } catch (err: any) {
+    } catch (err: ApiError | any) {
       if (err.status === 401) {
-        this.generalError.set(err.error.message);
+        this.generalError.set(err.message);
+      } else if (err.status === 422) {
+        this.mapServerErrors(err.errors);
       } else {
         this.generalError.set('Something went wrong. Please try again.');
       }
     } finally {
       this.isLoading.set(false);
+    }
+  }
+  private mapServerErrors(errors: Record<string, string[]> = {}) {
+    for (const [field, messages] of Object.entries(errors)) {
+      const control = this.logInForm.get(field);
+
+      if (control) {
+        control.setErrors({ server: messages[0] });
+        control.markAsTouched();
+      }
     }
   }
 }

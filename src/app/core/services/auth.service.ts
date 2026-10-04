@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { User } from '../../models/user';
-
-const BASE_URL = 'https://api.kinoxii.redberryinternship.ge/api';
+import { BASE_URL } from '../config';
+import { ApiError } from '../../models/api-error';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -28,10 +28,7 @@ export class AuthService {
       });
 
       if (res.status === 401) {
-        this._user.set(null);
-        this._token.set(null);
-        localStorage.removeItem('token');
-        //here user should be notified about the session expiration and redirected to the login page, i will implement this in the next sprint, for now i will just return from here
+        this.clearSession(); //here user should be notified about the session expiration and redirected to the login page, i will implement this in the next sprint, for now i will just return from here
         return;
       }
 
@@ -46,6 +43,11 @@ export class AuthService {
     this._token.set(token);
     localStorage.setItem('token', token);
   }
+  clearSession() {
+    this._user.set(null);
+    this._token.set(null);
+    localStorage.removeItem('token');
+  }
   updateUser(user: User) {
     this._user.set(user);
   }
@@ -58,12 +60,15 @@ export class AuthService {
     });
 
     const json = await res.json();
-
     if (!res.ok) {
-      throw { status: res.status, error: json };
+      const error: ApiError = {
+        status: res.status,
+        message: json.message ?? 'Something went wrong.',
+        errors: json.errors,
+      };
+      throw error;
     }
-    const { user, token } = json.data;
-    this.setSession(user, token);
+    this.setSession(json.data.user, json.data.token);
 
     return json.data;
   }
