@@ -12,6 +12,16 @@
 
   <form [formGroup]="signUpform" (ngSubmit)="onSubmit()">
     <div class="innerFormCont">
+      <div class="inputCont imgUploader">
+        <app-upload-input
+          [initialFile]="selectedFile()"
+          (fileSelected)="onFileSelected($event)"
+          (fileError)="onFileError($event)"
+        ></app-upload-input>
+        @if (avatarError(); as msg) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">{{ msg }}</p>
+        }
+      </div>
       <div class="inputCont">
         <label class="labelS" for="username">Username</label>
         <div class="inputWithIconCont">

@@ -12,9 +12,10 @@ import { ApiError } from '../../../models/api-error';
 import { Icon } from '../../../shared/icon/icon';
 import { Loader } from '../../../shared/components/loader/loader';
 import { applyServerErrors } from '../../../shared/utils';
+import { ImgUploader } from '../../../shared/components/img-uploader/img-uploader';
 
 @Component({
-  imports: [Icon, ReactiveFormsModule, Loader],
+  imports: [Icon, ReactiveFormsModule, Loader, ImgUploader],
   selector: 'app-sign-up',
   styleUrl: './sign-up.css',
   templateUrl: './sign-up.html',
@@ -25,7 +26,9 @@ export class SignUp {
 
   protected isLoading = signal(false);
   protected generalError = signal<string | null>(null);
-  // protected selectedFile = signal<File | null>(null);
+  protected selectedFile = signal<File | null>(null);
+  protected avatarError = signal<string | null>(null);
+
   protected matchesPassword: ValidatorFn = (control) => {
     if (!control.parent) return null;
     return control.value === control.parent.get('password')?.value ? null : { mismatch: true };
@@ -62,6 +65,20 @@ export class SignUp {
     return this.isLoading() || this.signUpform.invalid;
   }
 
+  //avatar
+  protected onFileSelected(file: File) {
+    this.selectedFile.set(file);
+    this.avatarError.set(null);
+  }
+
+  protected onFileError(error: 'incorrectFormat' | 'tooLarge') {
+    this.avatarError.set(
+      error === 'tooLarge'
+        ? 'Maximum file size is 2MB'
+        : 'Unsupported file format. Please use JPG, PNG or WebP',
+    );
+  }
+
   protected async onSubmit() {
     const v = this.signUpform.value;
     const formData = new FormData();
@@ -69,9 +86,9 @@ export class SignUp {
     formData.append('email', v.email!);
     formData.append('password', v.password!);
     formData.append('password_confirmation', v.password_confirmation!);
-    // if (this.selectedFile()) {
-    //   formData.append('avatar', this.selectedFile()!);
-    // }
+    if (this.selectedFile()) {
+      formData.append('avatar', this.selectedFile()!);
+    }
 
     this.isLoading.set(true);
     this.generalError.set(null);
@@ -80,8 +97,11 @@ export class SignUp {
       await this.authService.signUp(formData);
       this.modalService.closeAll();
     } catch (err: ApiError | any) {
+      const apiError = err as ApiError;
       if (err.status === 422) {
         applyServerErrors(this.signUpform, err.errors);
+        const avatarMsg = apiError.errors?.['avatar']?.[0];
+        if (avatarMsg) this.avatarError.set(avatarMsg);
       } else {
         this.generalError.set('Something went wrong. Please try again.');
       }

@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+.avatarInput {
+  display: none;
+}
+
+#avatarLabel {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+#avatarLabel span {
+  color: var(--text-secondary);
+}
+.previewImg {
+  border-radius: 8px;
+  width: 4rem;
+  height: 4rem;
+}
