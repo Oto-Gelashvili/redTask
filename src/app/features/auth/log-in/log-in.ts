@@ -4,9 +4,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../../core/services/auth.service';
 import { Icon } from '../../../shared/icon/icon';
 import { ApiError } from '../../../models/api-error';
+import { Loader } from '../../../shared/components/loader/loader';
 
 @Component({
-  imports: [ReactiveFormsModule, Icon],
+  imports: [ReactiveFormsModule, Icon, Loader],
   selector: 'app-log-in',
   styleUrl: './log-in.css',
   templateUrl: './log-in.html',

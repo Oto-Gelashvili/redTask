@@ -149,6 +149,10 @@ body::-webkit-scrollbar-thumb {
 }
 .generalError {
   color: var(--error);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  overflow: hidden;
 }
 h1 {
   font-size: 4rem;

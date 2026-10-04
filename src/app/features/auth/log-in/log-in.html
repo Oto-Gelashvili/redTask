@@ -63,15 +63,15 @@
     </div>
 
     @if (generalError()) {
-      <h5 class="error generalError" animate.enter="showError" animate.leave="hideError">
+      <p class="error generalError" animate.enter="showError" animate.leave="hideError">
         {{ generalError() }}
-      </h5>
+      </p>
     }
 
     <div class="innerFormCont">
       <button type="submit" [disabled]="getIsBtnDisabled()" class="btn-primary customBtn">
         @if (isLoading()) {
-          ...
+          <app-loader></app-loader>
         } @else {
           Log in
         }
