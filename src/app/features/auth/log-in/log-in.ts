@@ -5,6 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Icon } from '../../../shared/icon/icon';
 import { ApiError } from '../../../models/api-error';
 import { Loader } from '../../../shared/components/loader/loader';
+import { applyServerErrors } from '../../../shared/utils';
 
 @Component({
   imports: [ReactiveFormsModule, Icon, Loader],
@@ -45,22 +46,12 @@ export class LogIn {
       if (err.status === 401) {
         this.generalError.set(err.message);
       } else if (err.status === 422) {
-        this.mapServerErrors(err.errors);
+        applyServerErrors(this.logInForm, err.errors);
       } else {
         this.generalError.set('Something went wrong. Please try again.');
       }
     } finally {
       this.isLoading.set(false);
-    }
-  }
-  private mapServerErrors(errors: Record<string, string[]> = {}) {
-    for (const [field, messages] of Object.entries(errors)) {
-      const control = this.logInForm.get(field);
-
-      if (control) {
-        control.setErrors({ server: messages[0] });
-        control.markAsTouched();
-      }
     }
   }
 }

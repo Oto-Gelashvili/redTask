@@ -89,4 +89,25 @@ export class AuthService {
   cancelLoginWait() {
     this.settleLoginWaiters(false);
   }
+
+  async signUp(formData: FormData) {
+    const res = await fetch(`${BASE_URL}/register`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const json = await res.json();
+    if (!res.ok) {
+      const error: ApiError = {
+        status: res.status,
+        message: json.message ?? 'Something went wrong.',
+        errors: json.errors,
+      };
+
+      throw error;
+    }
+    this.setSession(json.data.user, json.data.token);
+
+    return json.data;
+  }
 }

@@ -1,0 +1,140 @@
+<div class="modalCont signUpModal">
+  <div class="formHeader">
+    <div class="titleCont">
+      <h3>Sign up</h3>
+      <p class="BodyS">Welcome to Kino XII</p>
+    </div>
+
+    <button type="button" class="closeBtn" aria-label="Close" (click)="modalService.closeAll()">
+      <app-icon name="close" [size]="24" />
+    </button>
+  </div>
+
+  <form [formGroup]="signUpform" (ngSubmit)="onSubmit()">
+    <div class="innerFormCont">
+      <div class="inputCont">
+        <label class="labelS" for="username">Username</label>
+        <div class="inputWithIconCont">
+          <input
+            name="username"
+            id="username"
+            type="text"
+            placeholder="User"
+            formControlName="username"
+            class="labelS"
+          />
+          @if (signUpform.get('username')?.invalid && signUpform.get('username')?.touched) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (signUpform.get('username')?.valid && signUpform.get('username')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (signUpform.get('username')?.invalid && signUpform.get('username')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{ signUpform.get('username')?.errors?.['server'] ?? 'Min 3 characters' }}
+          </p>
+        }
+      </div>
+      <div class="inputCont">
+        <label class="labelS" for="mail">Email</label>
+        <div class="inputWithIconCont">
+          <input
+            name="mail"
+            id="mail"
+            type="email"
+            placeholder="example@gmail.com"
+            formControlName="email"
+            class="labelS"
+          />
+          @if (signUpform.get('email')?.invalid && signUpform.get('email')?.touched) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (signUpform.get('email')?.valid && signUpform.get('email')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (signUpform.get('email')?.invalid && signUpform.get('email')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{
+              signUpform.get('email')?.errors?.['server'] ?? 'Please enter a valid email address'
+            }}
+          </p>
+        }
+      </div>
+      <div class="passwordContWrapper">
+        <div class="inputCont">
+          <label class="labelS" for="password">Password</label>
+          <div class="inputWithIconCont">
+            <input
+              name="password"
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              formControlName="password"
+              class="labelS"
+            />
+            @if (signUpform.get('password')?.invalid && signUpform.get('password')?.touched) {
+              <img class="inputsIcon errorFlag" src="errorIcon.svg" alt="error Icon" />
+            }
+            @if (signUpform.get('password')?.valid && signUpform.get('password')?.touched) {
+              <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+            }
+          </div>
+        </div>
+        <div class="inputCont">
+          <label class="labelS" for="confirmPassword">Confirm password</label>
+          <div class="inputWithIconCont">
+            <input
+              name="confirmPassword"
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              formControlName="password_confirmation"
+              class="labelS"
+            />
+            @if (
+              signUpform.get('password_confirmation')?.invalid &&
+              signUpform.get('password_confirmation')?.touched
+            ) {
+              <img class="inputsIcon errorFlag" src="errorIcon.svg" alt="error Icon" />
+            }
+            @if (
+              signUpform.get('password_confirmation')?.valid &&
+              signUpform.get('password_confirmation')?.touched
+            ) {
+              <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+            }
+          </div>
+        </div>
+        @if (passwordError(); as msg) {
+          <p class="error gridArea" animate.enter="showErrorArea" animate.leave="hideError">
+            {{ msg }}
+          </p>
+        }
+      </div>
+    </div>
+
+    @if (generalError()) {
+      <p class="error generalError" animate.enter="showError" animate.leave="hideError">
+        {{ generalError() }}
+      </p>
+    }
+
+    <div class="innerFormCont">
+      <button type="submit" [disabled]="getIsBtnDisabled()" class="btn-primary customBtn">
+        @if (isLoading()) {
+          <app-loader></app-loader>
+        } @else {
+          Sign up
+        }
+      </button>
+      <footer>
+        <div class="logInCont">
+          <p class="BodyM">Already have an account?</p>
+          <span tabindex="0" (click)="modalService.openLogIn()">Log in</span>
+        </div>
+      </footer>
+    </div>
+  </form>
+</div>

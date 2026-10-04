@@ -63,7 +63,7 @@
 }
 .modalCont .inputCont label {
   width: fit-content;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
 .modalCont .inputCont input {
   border-radius: 12px;
@@ -96,8 +96,9 @@
   transition: 0.4s;
 }
 
-.modalCont .inputCont .error,
-.modalCont .errorCont .error {
+/* .modalCont .inputCont .error,
+.modalCont .errorCont .error, */
+.modalCont .error {
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--error) !important;
@@ -112,7 +113,11 @@
 .modalCont .inputCont:has(.error) input,
 .modalCont .inputCont:has(.error) input::placeholder,
 .modalCont .inputCont:has(.error) label,
-.modalCont .inputCont:has(.error) .inputsIcon {
+.modalCont .inputCont:has(.error) .inputsIcon,
+.modalCont .inputCont:has(.errorFlag) input,
+.modalCont .inputCont:has(.errorFlag) input::placeholder,
+.modalCont .inputCont:has(.errorFlag) label,
+.modalCont .inputCont:has(.errorFlag) .inputsIcon {
   color: var(--error) !important;
   border-color: var(--error) !important;
   caret-color: var(--error) !important;
