@@ -1,10 +1,12 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { User } from '../../models/user';
 import { BASE_URL } from '../config';
 import { ApiError } from '../../models/api-error';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly notyService = inject(NotificationService);
   private _user = signal<User | null>(null);
   private _token = signal<string | null>(null);
 
@@ -32,7 +34,9 @@ export class AuthService {
       });
 
       if (res.status === 401) {
-        this.clearSession(); //here user should be notified about the session expiration and redirected to the login page, i will implement this in the next sprint, for now i will just return from here
+        this.clearSession();
+        this.notyService.showError('Your session has expired. Please log in again.');
+
         return;
       }
 
@@ -71,6 +75,7 @@ export class AuthService {
         message: json.message ?? 'Something went wrong.',
         errors: json.errors,
       };
+
       throw error;
     }
     this.setSession(json.data.user, json.data.token);

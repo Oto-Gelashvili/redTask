@@ -1,0 +1,45 @@
+<div class="notification-modal-cont">
+  @for (note of notifications(); track note.id) {
+    <div
+      class="custom-alert"
+      [class]="note.type"
+      [class.leaving]="note.leaving"
+      animate.enter="enter-animation-alert"
+    >
+      @if (note.type === 'success') {
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      }
+      @if (note.type === 'error') {
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      }
+      <span>{{ note.message }}</span>
+    </div>
+  }
+</div>
+
+@if (confirmation(); as request) {
+  <div class="confirm-box" animate.enter="fade-in" animate.leave="fade-out">
+    <h5>Confirmation</h5>
+    <p>{{ request.message }}</p>
+
+    <div class="confirm-actions">
+      <button class="btn-cancel" (click)="resolveConfirm(false)">Cancel</button>
+
+      <button class="btn-confirm" (click)="resolveConfirm(true)">Confirm</button>
+    </div>
+  </div>
+}

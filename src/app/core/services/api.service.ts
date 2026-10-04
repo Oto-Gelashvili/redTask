@@ -3,11 +3,14 @@ import { AuthService } from './auth.service';
 import { ModalService } from './modal.service';
 import { ApiError } from '../../models/api-error';
 import { BASE_URL } from '../config';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly auth = inject(AuthService);
   private readonly modal = inject(ModalService);
+  private readonly notyService = inject(NotificationService);
+
   private pendingLogin: Promise<boolean> | null = null;
 
   async request<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -53,7 +56,9 @@ export class ApiService {
     if (!this.pendingLogin) {
       this.auth.clearSession();
       this.modal.openLogIn();
-      // notify user about session expiration here later
+      this.notyService.showError(
+        'Your session has expired. Requset will be retried after logging in.',
+      );
       this.pendingLogin = this.auth.waitForLogin().finally(() => (this.pendingLogin = null));
     }
     return this.pendingLogin;
