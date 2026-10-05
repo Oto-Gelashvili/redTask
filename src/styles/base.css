@@ -11,6 +11,7 @@ body {
   min-height: 100vh;
   font-size: 1.6rem;
   color: var(--text-primary);
+  display: flex;
 }
 body::-webkit-scrollbar {
   width: 0.4rem;
@@ -50,8 +51,9 @@ h4 {
 main {
   /* padding: calc(var(--fixed-hader-height) + 6.4rem) 17.7rem; */
   padding: 6.5px 51px;
-  min-height: calc(100vh - var(--fixed-header-height));
+  /* min-height: calc(100vh - var(--fixed-header-height)); */
   display: flex;
+  flex: 1;
 }
 
 input[type='search']::-webkit-search-cancel-button {

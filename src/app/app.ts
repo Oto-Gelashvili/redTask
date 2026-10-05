@@ -5,10 +5,11 @@ import { ModalService } from './core/services/modal.service';
 import { LogIn } from './features/auth/log-in/log-in';
 import { NotificationModal } from './shared/components/notification-modal/notification-modal';
 import { SignUp } from './features/auth/sign-up/sign-up';
+import { Footer } from './features/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, LogIn, NotificationModal, SignUp],
+  imports: [RouterOutlet, Header, LogIn, NotificationModal, SignUp, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
