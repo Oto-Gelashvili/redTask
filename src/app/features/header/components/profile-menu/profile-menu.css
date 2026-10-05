@@ -1,0 +1,119 @@
+.profileWrapper .profileCont {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  transition: 0.4s;
+}
+.profileWrapper .profileCont:hover .dropdownIcon {
+  rotate: 90deg;
+}
+
+.profileWrapper .profileCont .contentWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.profileWrapper .defaultAvatar {
+  background-color: var(--bg-card);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatarCircle {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(7, 12, 28, 1);
+}
+.profileDropdown {
+  background-color: var(--bg);
+  padding-block: 1rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: absolute;
+  top: 76px;
+  right: 60px;
+}
+.profileDropdown .uninteractive {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-inline: 2rem;
+  padding-top: 1rem;
+}
+.profileDropdown .infoCont {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.specIconSize {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+.profileDropdown .infoTextCont {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 19rem;
+  min-width: 0;
+}
+.profileDropdown .infoTextCont p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skeletonName {
+  width: 90px;
+  height: 20px;
+  border-radius: 4px;
+}
+.profileDropdown .profileStatusCont {
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  width: 262px;
+  gap: 2px;
+  display: flex;
+  flex-direction: column;
+}
+.profileDropdown .profileStatusCont.greenTint {
+  gap: 6px;
+  flex-direction: row;
+  align-items: center;
+}
+.profileDropdown .interactive {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.profileDropdown .interactive .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+.profileDropdown .interactive button {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: 10px;
+  padding: 1rem 0 1rem 2rem;
+  height: 40px;
+  transition: 0.4s;
+}
+.profileDropdown .interactive button:hover,
+.profileDropdown .interactive button:focus-visible {
+  background-color: var(--tint-white);
+}
+.profileDropdown .interactive .divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--tint-white);
+}

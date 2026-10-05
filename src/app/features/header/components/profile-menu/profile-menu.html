@@ -1,0 +1,92 @@
+<div class="profileWrapper">
+  @if (user(); as u) {
+    <button
+      type="button"
+      class="profileCont"
+      [attr.aria-expanded]="isOpen()"
+      aria-haspopup="menu"
+      (click)="toggle()"
+    >
+      <div class="contentWrapper">
+        @if (u?.avatar) {
+          <div class="relative">
+            <img [src]="u?.avatar" alt="user avatar" class="avatarIcon specIconSize" />
+            <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
+          </div>
+        } @else {
+          <div class="defaultAvatar avatarIcon">
+            <p class="labelS">{{ u?.username?.charAt(0).toUpperCase() }}</p>
+            <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
+          </div>
+        }
+        <p class="labelM">{{ u?.username?.slice(0, 12) }}</p>
+      </div>
+      <img src="dropdown.svg" alt="" class="dropdownIcon" [class.open]="isOpen()" />
+    </button>
+
+    @if (isOpen()) {
+      <div class="profileDropdown" role="menu">
+        <div class="uninteractive">
+          <div class="infoCont">
+            @if (u?.avatar) {
+              <div class="relative">
+                <img [src]="user()?.avatar" alt="user avatar" class="avatarIcon specIconSize" />
+                <div
+                  class="avatarCircle"
+                  [class]="user()?.profileComplete ? 'green' : 'yellow'"
+                ></div>
+              </div>
+            } @else {
+              <div class="defaultAvatar avatarIcon specIconSize">
+                <p class="labelS">{{ user()?.username?.charAt(0).toUpperCase() }}</p>
+                <div
+                  class="avatarCircle"
+                  [class]="user()?.profileComplete ? 'green' : 'yellow'"
+                ></div>
+              </div>
+            }
+            <div class="infoTextCont">
+              <p class="labelM">{{ u?.username }}</p>
+              <p class="BodyS secondaryColor">{{ u?.email }}</p>
+            </div>
+          </div>
+          @if (u?.profileComplete) {
+            <div class="profileStatusCont greenTint">
+              <p class="labelM successText">Profile Complete</p>
+              <img src="checkmarkIcon.svg" alt="checkmarkIcon" />
+            </div>
+          } @else {
+            <div class="profileStatusCont warningTint">
+              <p class="labelM warningText">Profile incomplete</p>
+              <p class="BodyS secondaryColor">Please complete your profile to enable booking</p>
+            </div>
+          }
+        </div>
+        <div class="interactive">
+          <div class="menu">
+            <button>
+              <img src="user.svg" alt="user icon" />
+              <p class="labelM">My Profile</p>
+            </button>
+            <button>
+              <img src="ticket.svg" alt="ticket icon" />
+              <p class="labelM">My Tickets</p>
+            </button>
+          </div>
+          <div class="divider"></div>
+          <button (click)="logOut()">
+            <img src="logout.svg" alt="logout icon" />
+            <p class="labelM errorText">Log out</p>
+          </button>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="profileCont" aria-hidden="true">
+      <div class="contentWrapper">
+        <div class="shimmer avatarIcon"></div>
+        <div class="shimmer skeletonName"></div>
+      </div>
+    </div>
+  }
+</div>

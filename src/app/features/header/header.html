@@ -21,24 +21,7 @@
         <button class="btn-secondary customBtn" (click)="modalService.openLogIn()">Log in</button>
       </div>
     } @else {
-      <button type="button" class="profileCont" (click)="modalService.openLogIn()">
-        <div class="contentWrapper">
-          @if (authService.user()?.avatar) {
-            <img [src]="authService.user()?.avatar" alt="user avatar" class="avatarIcon" />
-          } @else {
-            <div class="defaultAvatar avatarIcon">
-              <p class="labelS">{{ authService.user()?.username.charAt(0) }}</p>
-              <div
-                class="avatarCircle"
-                [class]="authService.user()?.profileComplete ? 'green' : 'yellow'"
-              ></div>
-            </div>
-          }
-
-          <p class="labelM">{{ authService.user()?.username.slice(0, 12) }}</p>
-        </div>
-        <img src="dropdown.svg" alt="dropdown" />
-      </button>
+      <app-profile-menu />
     }
   </div>
 </header>
