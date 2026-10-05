@@ -25,7 +25,12 @@
     </button>
 
     @if (isOpen()) {
-      <div class="profileDropdown" role="menu">
+      <div
+        class="profileDropdown"
+        role="menu"
+        animate.enter="slideIn-animation"
+        animate.leave="slideOut-animation"
+      >
         <div class="uninteractive">
           <div class="infoCont">
             @if (u?.avatar) {
