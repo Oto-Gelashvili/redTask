@@ -1,0 +1,123 @@
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.inputCont label {
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+.inputCont input {
+  border-radius: 12px;
+  height: 4rem;
+  border: 1px solid transparent;
+  padding-inline: 1.6rem;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  outline: none;
+  caret-color: var(--text-secondary);
+  transition: 0.4s;
+}
+.inputCont input:hover {
+  border-color: var(--tint-white);
+  caret-color: var(--text-primary);
+}
+.inputCont input:hover::placeholder,
+.inputCont input:focus::placeholder {
+  color: var(--text-primary);
+}
+.inputCont input:focus {
+  border-color: var(--text-disabled);
+  caret-color: var(--text-primary);
+}
+.inputWithIconCont:has(input:focus) .inputsIcon {
+  color: var(--text-primary);
+}
+.inputCont input::placeholder {
+  color: var(--text-secondary);
+  transition: 0.4s;
+}
+.inputWithIconCont {
+  position: relative;
+  width: 100%;
+}
+
+.inputWithIconCont input {
+  width: 100%;
+  padding-right: 4rem;
+}
+.inputsIcon {
+  color: var(--text-primary);
+  transition: 0.4s;
+}
+
+.inputsIcon:hover {
+  color: var(--error);
+}
+.inputsIcon {
+  position: absolute;
+  right: 1.6rem;
+  top: 1.2rem;
+  /* top: 50%;
+  transform: translateY(-50%); */
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form .error {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--error) !important;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+.applyErrorCont {
+  color: var(--error) !important;
+  border-color: var(--error) !important;
+  caret-color: var(--error) !important;
+}
+.inputCont:has(.error) input,
+.inputCont:has(.error) input::placeholder,
+.inputCont:has(.error) label,
+.inputCont:has(.error) .inputsIcon,
+.inputCont:has(.errorFlag) input,
+.inputCont:has(.errorFlag) input::placeholder,
+.inputCont:has(.errorFlag) label,
+.inputCont:has(.errorFlag) .inputsIcon {
+  color: var(--error) !important;
+  border-color: var(--error) !important;
+  caret-color: var(--error) !important;
+}
+.showError {
+  animation: 0.4s showError ease forwards;
+}
+.hideError {
+  animation: 0.4s hideError ease forwards;
+}
+@keyframes showError {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1.7rem;
+    margin-top: 0.5rem;
+  }
+}
+@keyframes hideError {
+  from {
+    opacity: 1;
+    max-height: 1.7rem;
+    margin-top: 0.5rem;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+  }
+}

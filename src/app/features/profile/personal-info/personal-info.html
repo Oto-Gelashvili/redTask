@@ -1,1 +1,131 @@
-<p>personal-info works!</p>
+<form class="profileForm" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <div class="sectionsCont">
+    <div class="top">
+      <div class="inputCont">
+        <label class="labelS" for="fullName">Full name</label>
+        <div class="inputWithIconCont">
+          <input
+            name="fullName"
+            id="fullName"
+            type="text"
+            placeholder="Enter full name"
+            formControlName="fullName"
+            class="labelS"
+          />
+          @if (profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (profileForm.get('fullName')?.valid && profileForm.get('fullName')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{ profileForm.get('fullName')?.errors?.['server'] ?? 'Min 3 characters, Max 50' }}
+          </p>
+        }
+      </div>
+      <div class="inputCont fakeEmail">
+        <label class="labelS" for="Email">Email</label>
+        <div class="inputWithIconCont">
+          <input
+            name="Email"
+            id="Email"
+            type="email"
+            placeholder="example@gmail.com"
+            class="labelS secondaryColor"
+            formControlName="email"
+            readonly
+          />
+        </div>
+        <p class="labelS secondaryColor">Set at registration and cannot be changed</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="inputCont">
+        <label class="labelS" for="mobileNumber">Mobile number</label>
+        <div class="inputWithIconCont">
+          <input
+            name="mobileNumber"
+            id="mobileNumber"
+            type="number"
+            placeholder="Enter mobile number"
+            formControlName="mobileNumber"
+            class="labelS"
+          />
+          @if (
+            profileForm.get('mobileNumber')?.invalid && profileForm.get('mobileNumber')?.touched
+          ) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (profileForm.get('mobileNumber')?.valid && profileForm.get('mobileNumber')?.touched) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (profileForm.get('mobileNumber')?.invalid && profileForm.get('mobileNumber')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{ profileForm.get('mobileNumber')?.errors?.['server'] ?? 'Number is required' }}
+          </p>
+        }
+      </div>
+      <div class="inputCont">
+        <label class="labelS" for="dateOfBirth">Date of birth</label>
+        <div class="inputWithIconCont">
+          <input
+            name="dateOfBirth"
+            id="dateOfBirth"
+            type="date"
+            placeholder="Pick date"
+            formControlName="dateOfBirth"
+            class="labelS adjustedPaddingRight"
+          />
+        </div>
+        @if (profileForm.get('dateOfBirth')?.invalid && profileForm.get('dateOfBirth')?.touched) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{ profileForm.get('dateOfBirth')?.errors?.['server'] ?? 'Date is required' }}
+          </p>
+        }
+      </div>
+      <div class="inputCont">
+        <label class="labelS" for="preferredVenueId">Preferred Venue (Optional)</label>
+        <div class="inputWithIconCont">
+          <input
+            name="preferredVenueId"
+            id="preferredVenueId"
+            type="text"
+            placeholder="Pick preferred venue"
+            formControlName="preferredVenueId"
+            class="labelS"
+          />
+          @if (
+            profileForm.get('preferredVenueId')?.invalid &&
+            profileForm.get('preferredVenueId')?.touched
+          ) {
+            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+          }
+          @if (
+            profileForm.get('preferredVenueId')?.valid &&
+            profileForm.get('preferredVenueId')?.touched
+          ) {
+            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+          }
+        </div>
+        @if (
+          profileForm.get('preferredVenueId')?.invalid &&
+          profileForm.get('preferredVenueId')?.touched
+        ) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">
+            {{ profileForm.get('preferredVenueId')?.errors?.['server'] }}
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+  <button type="submit" [disabled]="getIsBtnDisabled()" class="btn-primary customBtn">
+    @if (isLoading()) {
+      <app-loader></app-loader>
+    } @else {
+      Save changes
+    }
+  </button>
+</form>

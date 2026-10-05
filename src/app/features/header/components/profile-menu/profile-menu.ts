@@ -24,8 +24,8 @@ export class ProfileMenu {
   }
 
   protected logOut() {
-    this.authService.logout();
     this.isOpen.set(false);
+    this.authService.logout();
   }
 
   protected onDocumentClick(event: MouseEvent) {

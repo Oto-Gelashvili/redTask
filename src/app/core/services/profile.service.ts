@@ -10,15 +10,10 @@ export class ProfileService {
   private readonly notyService = inject(NotificationService);
   private readonly api = inject(ApiService);
 
-  async updateProfile(data: {
-    fullName: string;
-    mobile: string;
-    birthDate: string;
-    prefferedVenue: string;
-  }) {
+  async updateProfile(formData: FormData) {
     const res = await this.api.request<{ data: User }>('/profile', {
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: formData,
     });
     this.authService.updateUser(res.data);
     this.notyService.showSuccess('Profile updated');

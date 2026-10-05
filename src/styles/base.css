@@ -71,6 +71,28 @@ input[type='search']::-ms-clear {
   background-size: contain;
   cursor: pointer;
 }
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+  /* Custom SVG icon as background */
+  background-image: url('/datePicker.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  /* Set explicit width/height for size */
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
 button {
   border: none;
   background: none;

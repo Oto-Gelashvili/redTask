@@ -19,11 +19,12 @@ export class ApiService {
 
   private async execute<T>(path: string, options: RequestInit, isRetry: boolean): Promise<T> {
     const token = this.auth.token();
+    const isFormData = options.body instanceof FormData;
 
     const res = await fetch(`${BASE_URL}${path}`, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
       },

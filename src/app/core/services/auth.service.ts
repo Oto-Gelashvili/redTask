@@ -3,10 +3,12 @@ import { User } from '../../models/user';
 import { BASE_URL } from '../config';
 import { ApiError } from '../../models/api-error';
 import { NotificationService } from './notification.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly notyService = inject(NotificationService);
+  private readonly router = inject(Router);
   private _user = signal<User | null>(null);
   private _token = signal<string | null>(null);
 
@@ -28,18 +30,20 @@ export class AuthService {
   }
 
   async fetchMe() {
+    const token = this._token();
+
     try {
       const res = await fetch(`${BASE_URL}/me`, {
         headers: { Authorization: `Bearer ${this._token()}` },
       });
 
       if (res.status === 401) {
+        if (this._token() !== token) return;
         this.clearSession();
         this.notyService.showError('Your session has expired. Please log in again.');
-
+        this.router.navigateByUrl('/');
         return;
       }
-
       const json = await res.json();
       this._user.set(json.data);
     } catch {
@@ -120,6 +124,7 @@ export class AuthService {
       // if network fails
     } finally {
       this.clearSession();
+      this.router.navigateByUrl('/');
     }
   }
 }

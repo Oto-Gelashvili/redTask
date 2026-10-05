@@ -1,0 +1,31 @@
+.profileForm {
+  margin-top: 4.2rem;
+  width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+}
+.profileForm .sectionsCont {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.profileForm .top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.profileForm .bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.profileForm button {
+  width: fit-content;
+}
+.profileForm .fakeEmail p {
+  margin-top: 0.8rem;
+}
+.adjustedPaddingRight {
+  padding-right: 1.2rem;
+}
