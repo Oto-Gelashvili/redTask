@@ -1,21 +1,21 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ModalService } from '../../core/services/modal.service';
-import { AuthService } from '../../core/services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiError } from '../../models/api-error';
 import { applyServerErrors } from '../../shared/utils';
 import { ProfileService } from '../../core/services/profile.service';
+import { TicketsService } from '../../core/services/tickets.service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   selector: 'app-profile',
+  providers: [TicketsService],
   styleUrl: './profile.css',
   templateUrl: './profile.html',
 })
 export class Profile {
-  protected readonly modalService = inject(ModalService);
   private readonly profileService = inject(ProfileService);
+  protected readonly ticketsService = inject(TicketsService);
 
   protected isLoading = signal(false);
   protected generalError = signal<string | null>(null);
@@ -30,7 +30,9 @@ export class Profile {
     birthDate: new FormControl<string>('', [Validators.required]),
     prefferedVenue: new FormControl<string>('', []),
   });
-
+  constructor() {
+    this.ticketsService.loadUpcoming();
+  }
   protected getIsBtnDisabled(): boolean {
     if (this.isLoading()) return true;
 
@@ -52,7 +54,6 @@ export class Profile {
         birthDate: v.birthDate!,
         prefferedVenue: v.prefferedVenue!,
       });
-      this.modalService.closeAll();
     } catch (err: ApiError | any) {
       if (err.status === 401) {
         this.generalError.set(err.message);

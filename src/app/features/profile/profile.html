@@ -22,7 +22,7 @@
       (mouseenter)="moveTo(tickets)"
     >
       <p class="labelM">My Tickets</p>
-      <div class="amountBox labelS">0</div>
+      <div class="amountBox labelS">{{ ticketsService.upcomingCount() }}</div>
     </a>
 
     <span

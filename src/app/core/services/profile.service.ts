@@ -1,39 +1,27 @@
 import { inject, Injectable } from '@angular/core';
-import { BASE_URL } from '../config';
-import { ApiError } from '../../models/api-error';
 import { AuthService } from './auth.service';
 import { NotificationService } from './notification.service';
+import { User } from '../../models/user';
+import { ApiService } from './api.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private readonly authService = inject(AuthService);
   private readonly notyService = inject(NotificationService);
+  private readonly api = inject(ApiService);
 
-  async updateProfile(profileData: {
+  async updateProfile(data: {
     fullName: string;
     mobile: string;
     birthDate: string;
     prefferedVenue: string;
   }) {
-    const res = await fetch(`${BASE_URL}/profile`, {
+    const res = await this.api.request<{ data: User }>('/profile', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(profileData),
+      body: JSON.stringify(data),
     });
-
-    const json = await res.json();
-    if (!res.ok) {
-      const error: ApiError = {
-        status: res.status,
-        message: json.message ?? 'Something went wrong.',
-        errors: json.errors,
-      };
-
-      throw error;
-    }
-    this.authService.setSession(json.data.user, json.data.token);
+    this.authService.updateUser(res.data);
     this.notyService.showSuccess('Profile updated');
-
-    return json.data;
+    return res.data;
   }
 }
