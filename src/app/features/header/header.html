@@ -15,10 +15,30 @@
       <img src="search.svg" alt="search" width="14" height="14" />
       <input name="searchInput" type="search" placeholder="Search films and live events" />
     </label>
+    @if (!authService.isAuthenticated()) {
+      <div class="authBtns">
+        <button class="btn-primary customBtn" (click)="modalService.openSignUp()">Sign up</button>
+        <button class="btn-secondary customBtn" (click)="modalService.openLogIn()">Log in</button>
+      </div>
+    } @else {
+      <button type="button" class="profileCont" (click)="modalService.openLogIn()">
+        <div class="contentWrapper">
+          @if (authService.user()?.avatar) {
+            <img [src]="authService.user()?.avatar" alt="user avatar" class="avatarIcon" />
+          } @else {
+            <div class="defaultAvatar avatarIcon">
+              <p class="labelS">{{ authService.user()?.username.charAt(0) }}</p>
+              <div
+                class="avatarCircle"
+                [class]="authService.user()?.profileComplete ? 'green' : 'yellow'"
+              ></div>
+            </div>
+          }
 
-    <div class="authBtns">
-      <button class="btn-primary customBtn" (click)="modalService.openSignUp()">Sign up</button>
-      <button class="btn-secondary customBtn" (click)="modalService.openLogIn()">Log in</button>
-    </div>
+          <p class="labelM">{{ authService.user()?.username.slice(0, 12) }}</p>
+        </div>
+        <img src="dropdown.svg" alt="dropdown" />
+      </button>
+    }
   </div>
 </header>

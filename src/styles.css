@@ -333,3 +333,14 @@ input[type='search']::-ms-clear {
     pointer-events: none;
   }
 }
+.avatarIcon {
+  border-radius: 8px;
+  width: 4rem;
+  height: 4rem;
+}
+.green {
+  background-color: var(--success);
+}
+.yellow {
+  background-color: var(--warning);
+}

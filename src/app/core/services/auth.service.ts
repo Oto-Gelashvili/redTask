@@ -110,4 +110,16 @@ export class AuthService {
 
     return json.data;
   }
+  async logout() {
+    try {
+      await fetch(`${BASE_URL}/logout`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${this._token()}` },
+      });
+    } catch {
+      // if network fails
+    } finally {
+      this.clearSession();
+    }
+  }
 }

@@ -1,1 +1,5 @@
-<p>dashboard works!</p>
+@if (AuthService.isAuthenticated()) {
+  <button (click)="AuthService.logout()" class="customBtn btn-primary">Log out</button>
+} @else {
+  <h1>dashboard</h1>
+}

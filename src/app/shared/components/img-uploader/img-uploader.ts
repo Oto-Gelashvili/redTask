@@ -1,9 +1,8 @@
 import { Component, input, OnInit, output, signal } from '@angular/core';
-import { Icon } from '../../icon/icon';
 
 @Component({
   selector: 'app-upload-input',
-  imports: [Icon],
+  imports: [],
   templateUrl: './img-uploader.html',
   styleUrl: './img-uploader.css',
 })

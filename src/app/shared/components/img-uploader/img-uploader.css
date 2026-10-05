@@ -19,8 +19,3 @@
 #avatarLabel span {
   color: var(--text-secondary);
 }
-.previewImg {
-  border-radius: 8px;
-  width: 4rem;
-  height: 4rem;
-}

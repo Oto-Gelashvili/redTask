@@ -70,3 +70,37 @@ header .authBtns {
   align-items: center;
   gap: 1.2rem;
 }
+
+header .profileCont {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  transition: 0.4s;
+}
+header .profileCont:hover,
+header .profileCont:focus-visible {
+  color: var(--warning);
+}
+
+header .profileCont .contentWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+header .profileCont .defaultAvatar {
+  background-color: var(--bg-card);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .profileCont .defaultAvatar .avatarCircle {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(7, 12, 28, 1);
+}
