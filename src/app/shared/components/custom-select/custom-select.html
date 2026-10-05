@@ -1,0 +1,39 @@
+<div class="customSelect">
+  <button
+    type="button"
+    class="selectTrigger labelS"
+    [class.placeholder]="selectedLabel() === null"
+    [disabled]="isDisabled()"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="isOpen()"
+    (click)="toggle()"
+  >
+    <span class="triggerText">{{ selectedLabel() ?? placeholder() }}</span>
+    <img src="dropdown.svg" alt="" class="dropdownIcon" [class.open]="isOpen()" />
+  </button>
+
+  @if (isOpen()) {
+    <ul
+      class="customSelectBody"
+      role="listbox"
+      animate.enter="open-animation"
+      animate.leave="leaving"
+    >
+      @for (option of options(); track option.value) {
+        <li
+          role="option"
+          [attr.aria-selected]="value() === option.value"
+          [class.selected]="value() === option.value"
+          (click)="select(option.value)"
+        >
+          <span class="optionLabel labelM">{{ option.label }}</span>
+          @if (option.hint) {
+            <span class="optionHint BodyS secondaryColor">{{ option.hint }}</span>
+          }
+        </li>
+      } @empty {
+        <li class="emptyOption BodyS secondaryColor">No options available</li>
+      }
+    </ul>
+  }
+</div>

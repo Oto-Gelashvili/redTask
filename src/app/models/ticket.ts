@@ -1,23 +1,7 @@
+import { AgeRating, Format, Genre, Language } from './common';
+import { VenueWithFormats } from './filter-options';
+
 export type TicketFilter = 'upcoming' | 'past';
-
-export interface Format {
-  id: number;
-  slug: string;
-  name: string;
-  priceUplift: number;
-}
-
-export interface AgeRating {
-  code: string;
-  minAge: number;
-  description: string;
-}
-
-export interface Genre {
-  id: number;
-  slug: string;
-  name: string;
-}
 
 export interface TicketMovie {
   id: number;
@@ -46,15 +30,9 @@ export interface TicketSession {
   seatsLeft: number;
   isSoldOut: boolean;
   hall: { id: number; name: string };
-  venue: {
-    id: number;
-    slug: string;
-    name: string;
-    city: string;
-    formats: Format[];
-  };
+  venue: VenueWithFormats;
   format: Format;
-  language: { id: number; slug: string; name: string; code: string };
+  language: Language;
   movie: TicketMovie;
 }
 

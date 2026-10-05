@@ -1,13 +1,15 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ProfileService } from '../../../core/services/profile.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiError } from '../../../models/api-error';
 import { applyServerErrors } from '../../../shared/utils';
 import { Loader } from '../../../shared/components/loader/loader';
 import { AuthService } from '../../../core/services/auth.service';
+import { FilterOptionsService } from '../../../core/services/filter-options.service';
+import { CustomSelect } from '../../../shared/components/custom-select/custom-select';
 
 @Component({
-  imports: [ReactiveFormsModule, Loader],
+  imports: [ReactiveFormsModule, Loader, CustomSelect],
   selector: 'app-personal-info',
   styleUrl: './personal-info.css',
   templateUrl: './personal-info.html',
@@ -15,7 +17,10 @@ import { AuthService } from '../../../core/services/auth.service';
 export class PersonalInfo {
   private readonly profileService = inject(ProfileService);
   private readonly authService = inject(AuthService);
-
+  private readonly filterOptions = inject(FilterOptionsService);
+  protected readonly venueOptions = computed(() =>
+    this.filterOptions.venues().map((v) => ({ value: v.id, label: v.name })),
+  );
   protected isLoading = signal(false);
   protected generalError = signal<string | null>(null);
 

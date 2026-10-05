@@ -87,36 +87,14 @@
         }
       </div>
       <div class="inputCont">
-        <label class="labelS" for="preferredVenueId">Preferred Venue (Optional)</label>
-        <div class="inputWithIconCont">
-          <input
-            name="preferredVenueId"
-            id="preferredVenueId"
-            type="text"
-            placeholder="Pick preferred venue"
-            formControlName="preferredVenueId"
-            class="labelS"
-          />
-          @if (
-            profileForm.get('preferredVenueId')?.invalid &&
-            profileForm.get('preferredVenueId')?.touched
-          ) {
-            <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
-          }
-          @if (
-            profileForm.get('preferredVenueId')?.valid &&
-            profileForm.get('preferredVenueId')?.touched
-          ) {
-            <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
-          }
-        </div>
-        @if (
-          profileForm.get('preferredVenueId')?.invalid &&
-          profileForm.get('preferredVenueId')?.touched
-        ) {
-          <p class="error" animate.enter="showError" animate.leave="hideError">
-            {{ profileForm.get('preferredVenueId')?.errors?.['server'] }}
-          </p>
+        <label class="labelS">Preferred Venue (Optional)</label>
+        <app-custom-select
+          formControlName="preferredVenueId"
+          [options]="venueOptions()"
+          placeholder="Pick preferred venue"
+        />
+        @if (profileForm.get('preferredVenueId')?.errors?.['server']; as msg) {
+          <p class="error" animate.enter="showError" animate.leave="hideError">{{ msg }}</p>
         }
       </div>
     </div>
