@@ -1,0 +1,62 @@
+:host {
+  flex: 1;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+  border-bottom: 1px solid var(--bg-card);
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding-bottom: 1.6rem;
+}
+nav a {
+  transition: 0.4s;
+}
+nav a.active {
+  color: var(--text-primary);
+}
+
+nav a:hover,
+nav a:focus-visible {
+  color: var(--error);
+}
+nav a:active {
+  color: var(--warning);
+}
+.indicator {
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  height: 2px;
+  background: var(--error);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  pointer-events: none;
+}
+
+.indicator.ready {
+  transition:
+    transform 0.4s ease,
+    width 0.4s ease;
+}
+.ticketsLabelCont {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 2px;
+}
+.amountBox {
+  background-color: var(--error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  padding: 2px 6px;
+  border-radius: 50rem;
+}

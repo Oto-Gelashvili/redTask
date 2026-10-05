@@ -1,10 +1,37 @@
-<h2>My Profile</h2>
+<header>
+  <h2>My Profile</h2>
 
-<nav class="tabs">
-  <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-    Personal info
-  </a>
-  <a routerLink="/profile/tickets" routerLinkActive="active">My tickets</a>
-</nav>
+  <nav class="tabs" (mouseleave)="moveToActive()">
+    <a
+      #info
+      routerLink="/profile"
+      routerLinkActive="active"
+      class="labelM"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (isActiveChange)="$event && select(info)"
+      (mouseenter)="moveTo(info)"
+    >
+      Personal Information
+    </a>
+    <a
+      #tickets
+      routerLink="/profile/tickets"
+      routerLinkActive="active"
+      class="ticketsLabelCont"
+      (isActiveChange)="$event && select(tickets)"
+      (mouseenter)="moveTo(tickets)"
+    >
+      <p class="labelM">My Tickets</p>
+      <div class="amountBox labelS">0</div>
+    </a>
+
+    <span
+      class="indicator"
+      [class.ready]="ready()"
+      [style.width.px]="indicator().width"
+      [style.transform]="'translateX(' + indicator().left + 'px)'"
+    ></span>
+  </nav>
+</header>
 
 <router-outlet />

@@ -49,7 +49,7 @@ h4 {
 }
 main {
   /* padding: calc(var(--fixed-hader-height) + 6.4rem) 17.7rem; */
-  padding: 6.4rem 17.7rem;
+  padding: 6.5px 51px;
   min-height: calc(100vh - var(--fixed-header-height));
   display: flex;
 }
