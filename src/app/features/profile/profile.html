@@ -1,0 +1,10 @@
+<h2>My Profile</h2>
+
+<nav class="tabs">
+  <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    Personal info
+  </a>
+  <a routerLink="/profile/tickets" routerLinkActive="active">My tickets</a>
+</nav>
+
+<router-outlet />

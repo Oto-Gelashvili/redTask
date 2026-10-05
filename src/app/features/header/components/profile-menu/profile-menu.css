@@ -99,7 +99,8 @@
   gap: 2px;
   padding-top: 4px;
 }
-.profileDropdown .interactive button {
+.profileDropdown .interactive button,
+.profileDropdown .interactive a {
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -109,7 +110,9 @@
   transition: 0.4s;
 }
 .profileDropdown .interactive button:hover,
-.profileDropdown .interactive button:focus-visible {
+.profileDropdown .interactive button:focus-visible,
+.profileDropdown .interactive a:hover,
+.profileDropdown .interactive a:focus-visible {
   background-color: var(--tint-white);
 }
 .profileDropdown .interactive .divider {

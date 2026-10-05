@@ -64,14 +64,14 @@
         </div>
         <div class="interactive">
           <div class="menu">
-            <button>
+            <a routerLink="/profile" (click)="isOpen.set(false)">
               <img src="user.svg" alt="user icon" />
               <p class="labelM">My Profile</p>
-            </button>
-            <button>
+            </a>
+            <a routerLink="/profile/tickets" (click)="isOpen.set(false)">
               <img src="ticket.svg" alt="ticket icon" />
               <p class="labelM">My Tickets</p>
-            </button>
+            </a>
           </div>
           <div class="divider"></div>
           <button (click)="logOut()">

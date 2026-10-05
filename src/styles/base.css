@@ -2,7 +2,7 @@ html {
   font-size: 62.5%;
   font-family: 'Archivo', sans-serif;
   font-weight: 400;
-  background-color: var(--text-primary);
+  background-color: var(--bg);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--text-secondary) transparent;

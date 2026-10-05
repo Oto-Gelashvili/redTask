@@ -1,8 +1,9 @@
 import { Component, ElementRef, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-profile-menu',
   styleUrl: './profile-menu.css',
   templateUrl: './profile-menu.html',
