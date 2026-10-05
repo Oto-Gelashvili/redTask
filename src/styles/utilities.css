@@ -1,0 +1,86 @@
+.overlineText {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 6%;
+}
+.labelM {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.labelS {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.BodyL {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 130%;
+}
+.BodyM {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 130%;
+}
+.BodyS {
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 130%;
+}
+.customBtn {
+  font-size: 1.4rem;
+  font-weight: 800;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50rem;
+  padding: 1.3rem 2.2rem;
+  color: var(--text-primary);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.btn-primary {
+  background-color: var(--error);
+}
+.btn-primary:disabled {
+  background-color: var(--text-disabled);
+  color: var(--text-secondary);
+}
+.btn-secondary {
+  background-color: var(--text-primary);
+  color: var(--bg);
+}
+.avatarIcon {
+  border-radius: 8px;
+  width: 4rem;
+  height: 4rem;
+}
+.green {
+  background-color: var(--success);
+}
+.yellow {
+  background-color: var(--warning);
+}
+.greenTint {
+  background-color: var(--tint-green);
+}
+.warningTint {
+  background-color: var(--tint-warning);
+}
+.warningText {
+  color: var(--warning);
+}
+.errorText {
+  color: var(--error);
+}
+.successText {
+  color: var(--success);
+}
+.relative {
+  position: relative;
+}
+.secondaryColor {
+  color: var(--text-secondary);
+}

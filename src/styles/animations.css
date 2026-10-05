@@ -1,0 +1,97 @@
+.fade-in {
+  animation: fade-in 0.4s;
+}
+.fade-out {
+  animation: fade-out 0.4s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* .customSelect:has(.open-animation) .icon {
+  animation: arrow-rotate-up-animation 0.6s;
+}
+.customSelect:has(.close-animation) .icon {
+  animation: arrow-rotate-down-animation 1s;
+} */
+
+.open.dropdownIcon {
+  transform: rotate(180deg);
+}
+.open-animation {
+  animation: open-animation 0.6s;
+}
+.close-animation {
+  animation: close-animation 1s;
+}
+@keyframes arrow-rotate-up-animation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+@keyframes arrow-rotate-down-animation {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+@keyframes open-animation {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    transform: scale(1);
+    max-height: fit-content;
+  }
+}
+
+@keyframes close-animation {
+  from {
+    max-height: fit-content;
+    pointer-events: none;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -100rem 0;
+  }
+  100% {
+    background-position: 100rem 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--text-disabled) 25%,
+    var(--text-secondary) 50%,
+    var(--text-primary) 75%
+  );
+  background-size: 200rem 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 0.8rem;
+}

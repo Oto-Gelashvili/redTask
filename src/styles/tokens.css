@@ -1,0 +1,21 @@
+:root {
+  /* colors */
+  --bg: #070c1c;
+  --bg-card: #1e2031;
+  --bg-raised: #2a2c3d;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a9a9a9;
+  --text-disabled: #505261;
+
+  --tint-white: #ffffff1a;
+  --tint-red: #ec30131a;
+  --tint-green: #4ade801a;
+  --tint-warning: #e27e041a;
+
+  --error: #ec3013;
+  --warning: #e27e04;
+  --success: #4ade80;
+
+  --fixed-header-height: 11.1rem;
+}
