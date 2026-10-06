@@ -12,3 +12,43 @@
   justify-content: space-between;
   gap: 2.4rem;
 }
+.movieGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.movieHeader {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+.poster {
+  width: 5.6rem;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 0.8rem;
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+.movieInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.movieInfoHeading {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.ageLimitCont {
+  padding: 4px 8px;
+  border-radius: 50rem;
+  background-color: var(--tint-red);
+  color: var(--error);
+}
+
+.sessionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25.2rem, 1fr));
+  gap: 1.2rem;
+}

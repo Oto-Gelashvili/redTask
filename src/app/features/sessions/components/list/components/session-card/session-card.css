@@ -1,0 +1,38 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.6rem;
+  background: var(--bg-card);
+  border-radius: 1.2rem;
+}
+
+.top,
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time {
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formatTag {
+  padding: 0.3rem 0.8rem;
+  background: var(--tint-white);
+  border-radius: 0.4rem;
+}
+
+/* visibly disabled but still legible, as the docs ask */
+.soldOut {
+  opacity: 0.5;
+  pointer-events: none;
+}

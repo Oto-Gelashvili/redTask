@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { Session } from '../../../../../../models/session';
 
 @Component({
   imports: [],
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './session-card.css',
   templateUrl: './session-card.html',
 })
-export class SessionCard {}
+export class SessionCard {
+  readonly session = input.required<Session>();
+}

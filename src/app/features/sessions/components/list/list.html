@@ -1,6 +1,35 @@
-<div class="listCont">
+<section class="listCont">
   <div class="listContHeading">
-    <p class="labelM">Showing 12 sessions</p>
+    <p class="labelM">Showing {{ response().meta.totalSessions }} sessions</p>
     <app-sorter></app-sorter>
   </div>
-</div>
+  @for (group of response().data; track group.movie.id) {
+    <div class="movieGroup">
+      <div class="movieHeader">
+        <img
+          class="poster"
+          [src]="group.movie.posterUrl"
+          [alt]="group.movie.title + ' poster'"
+          width="120"
+          height="180"
+          loading="lazy"
+        />
+        <div class="movieInfo">
+          <div class="movieInfoHeading">
+            <h4>{{ group.movie.title }}</h4>
+            <div class="ageLimitCont">
+              <p class="labelS">{{ group.movie.ageRating.code }}</p>
+            </div>
+          </div>
+          <p class="BodyM secondaryColor">{{ group.movie.runtimeMinutes }} min</p>
+        </div>
+      </div>
+
+      <div class="sessionsGrid">
+        @for (session of group.sessions; track session.id) {
+          <app-session-card [session]="session" />
+        }
+      </div>
+    </div>
+  }
+</section>

@@ -1,10 +1,12 @@
-<div class="sessionPage">
+<section class="sessionPage">
   <div class="sessionPageHeading">
     <h2>Sessions</h2>
     <p class="BodyM secondaryColor">Browse showtimes across all venues</p>
   </div>
   <div class="sessionsPageContent">
     <app-filter></app-filter>
-    <app-list></app-list>
+    @if (data(); as res) {
+      <app-list [response]="res" />
+    }
   </div>
-</div>
+</section>

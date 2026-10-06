@@ -1,1 +1,20 @@
-<p>session-card works!</p>
+<article class="card" [class.soldOut]="session().isSoldOut">
+  <div class="top">
+    <p class="time">{{ session().time }}</p>
+    <p class="labelM price">{{ session().price }} ₾</p>
+  </div>
+
+  <div class="details">
+    <p class="BodyM">{{ session().venue.name }} · Hall {{ session().hall.name }}</p>
+    <p class="BodyS secondaryColor">{{ session().language.name }}</p>
+  </div>
+
+  <div class="bottom">
+    <span class="formatTag labelS">{{ session().format.name }}</span>
+    @if (session().isSoldOut) {
+      <p class="labelS errorText">Sold out</p>
+    } @else {
+      <p class="labelS secondaryColor">{{ session().seatsLeft }} seats left</p>
+    }
+  </div>
+</article>
