@@ -1,0 +1,14 @@
+:host {
+  flex: 1;
+}
+.listCont {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.listContHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+}

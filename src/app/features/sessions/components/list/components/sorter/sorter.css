@@ -1,0 +1,11 @@
+.sorterCont {
+  padding-inline: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.sorter {
+  width: 200px;
+  height: 15px;
+  background-color: var(--bg-card);
+}
