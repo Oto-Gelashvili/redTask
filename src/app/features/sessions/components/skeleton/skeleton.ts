@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './skeleton.html',
 })
 export class Skeleton {
-  protected readonly groups = [1, 2, 3, 4];
-  protected readonly cards = [1, 2, 3, 4];
+  protected readonly groups = [1, 2, 3, 4, 5];
+  protected readonly cards = [1, 2, 3, 4, 5];
 }

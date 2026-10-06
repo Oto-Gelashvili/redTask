@@ -1,5 +1,6 @@
 :host {
   flex: 1;
+  width: 1px;
 }
 .listCont {
   display: flex;
@@ -46,11 +47,28 @@
   background-color: var(--tint-red);
   color: var(--error);
 }
-
+.sessionsGrid.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
 .sessionsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(25.2rem, 1fr));
+  display: flex;
   gap: 1.2rem;
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: 0.4s;
+  border-bottom: 1px solid var(--bg-raised);
+  padding-bottom: 32px;
+}
+.movieGroup:last-child .sessionsGrid {
+  border-bottom: none;
+  padding-bottom: none;
+}
+.sessionsGrid:hover {
+  scrollbar-color: var(--text-secondary) transparent;
 }
 .emptyState {
   display: flex;

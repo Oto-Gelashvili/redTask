@@ -2,37 +2,60 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  padding: 1.6rem;
+  padding: 1.5rem;
   background: var(--bg-card);
-  border-radius: 1.2rem;
+  border-radius: 1.6rem;
+  width: 25.2rem;
+  cursor: pointer;
+  transition: 0.4s;
+  outline: none;
 }
-
+.card:hover,
+.card:focus-visible {
+  background-color: var(--bg-raised);
+}
+.card:hover .top .formatTag,
+.card:focus-visible .top .formatTag {
+  background-color: var(--bg-card);
+}
+.card:active {
+  scale: 1.04;
+}
 .top,
 .bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.8rem;
 }
-
-.time {
-  font-size: 2.4rem;
-  font-weight: 800;
-}
-
-.details {
+.bottomCont {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 1rem;
 }
 
 .formatTag {
-  padding: 0.3rem 0.8rem;
-  background: var(--tint-white);
-  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-raised);
+  border-radius: 50rem;
+  transition: 0.4s;
 }
-
-/* visibly disabled but still legible, as the docs ask */
+.bottomPrice {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.bottomAmountCont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: end;
+  width: 5.6rem;
+  height: 1.3rem;
+}
+.bottomCont:has(.bottomAmountCont) {
+  align-items: end;
+}
 .soldOut {
-  opacity: 0.5;
+  opacity: 0.4;
   pointer-events: none;
 }

@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="sessionsGrid">
+      <div class="sessionsGrid" appDragScroll>
         @for (session of group.sessions; track session.id) {
           <app-session-card [session]="session" />
         }

@@ -1,20 +1,34 @@
-<article class="card" [class.soldOut]="session().isSoldOut">
+<article
+  class="card"
+  [class.soldOut]="session().isSoldOut"
+  /* animate.enter="open-animation" */
+  animate.enter="fade-in"
+  animate.leave="fade-out"
+  tabindex="0"
+>
   <div class="top">
-    <p class="time">{{ session().time }}</p>
-    <p class="labelM price">{{ session().price }} ₾</p>
-  </div>
-
-  <div class="details">
-    <p class="BodyM">{{ session().venue.name }} · Hall {{ session().hall.name }}</p>
-    <p class="BodyS secondaryColor">{{ session().language.name }}</p>
+    <h4 class="time">{{ session().time }}</h4>
+    <span class="formatTag labelS">{{ session().format.name }}</span>
   </div>
 
   <div class="bottom">
-    <span class="formatTag labelS">{{ session().format.name }}</span>
-    @if (session().isSoldOut) {
-      <p class="labelS errorText">Sold out</p>
-    } @else {
-      <p class="labelS secondaryColor">{{ session().seatsLeft }} seats left</p>
-    }
+    <div class="bottomCont">
+      <p class="BodyS secondaryColor">{{ session().language.name }}</p>
+      <p class="labelS">{{ session().venue.name }} · Hall {{ session().hall.name }}</p>
+    </div>
+    <div class="bottomCont">
+      <div class="bottomAmountCont">
+        @if (session().isSoldOut) {
+          <p class="BodyS secondaryColor">Sold out</p>
+        } @else if (session().seatsLeft <= 10) {
+          <img src="redTicket.svg" alt="few seats remaining icon" />
+          <p class="BodyS errorText">{{ session().seatsLeft }} left</p>
+        } @else {
+          <img src="greenTicket.svg" alt="many seats remaining icon" />
+          <p class="BodyS successText">{{ session().seatsLeft }} left</p>
+        }
+      </div>
+      <p class="bottomPrice">₾{{ session().price }}</p>
+    </div>
   </div>
 </article>
