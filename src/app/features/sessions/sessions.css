@@ -1,0 +1,14 @@
+.sessionPage {
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+}
+.sessionPageHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.sessionsPageContent {
+  display: flex;
+  gap: 5.1rem;
+}

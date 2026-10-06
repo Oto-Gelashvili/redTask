@@ -1,0 +1,6 @@
+.filterCont {
+  width: 32rem;
+  height: 100.1rem;
+  background-color: var(--bg-card);
+  border-radius: 16px;
+}
