@@ -5,11 +5,8 @@
   </div>
   <div class="sessionsPageContent">
     <app-filter></app-filter>
-    <!-- @if (data(); as res) {
-      <app-list [response]="res" />
-    } -->
     @if (data(); as res) {
-      <app-list [response]="res" />
+      <app-list [response]="res" (pageChange)="goToPage($event)" />
     } @else if (isLoading()) {
       <app-skeleton />
     } @else if (hasError()) {

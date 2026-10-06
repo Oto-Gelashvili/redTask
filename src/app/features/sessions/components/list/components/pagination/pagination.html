@@ -1,0 +1,37 @@
+<nav class="pagination" aria-label="Pagination">
+  <button
+    type="button"
+    class="pageBtn arrowPag"
+    aria-label="Previous page"
+    [disabled]="currentPage() === 1"
+    (click)="go(currentPage() - 1)"
+  >
+    <img src="chevron.svg" alt="" class="arrow prev" />
+  </button>
+
+  @for (item of items(); track $index) {
+    @if (item === null) {
+      <span class="pageBtn labelM">…</span>
+    } @else {
+      <button
+        type="button"
+        class="pageBtn labelM"
+        [class.active]="item === currentPage()"
+        [attr.aria-current]="item === currentPage() ? 'page' : null"
+        (click)="go(item)"
+      >
+        {{ item }}
+      </button>
+    }
+  }
+
+  <button
+    type="button"
+    class="pageBtn arrowPag chevronRight"
+    aria-label="Next page"
+    [disabled]="currentPage() === lastPage()"
+    (click)="go(currentPage() + 1)"
+  >
+    <img src="chevron.svg" alt="" class="arrow next" />
+  </button>
+</nav>

@@ -6,6 +6,7 @@ html {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--text-secondary) transparent;
+  scroll-behavior: smooth;
 }
 body {
   min-height: 100vh;

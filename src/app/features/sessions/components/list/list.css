@@ -63,9 +63,10 @@
   border-bottom: 1px solid var(--bg-raised);
   padding-bottom: 32px;
 }
-.movieGroup:last-child .sessionsGrid {
+
+.movieGroup:not(:has(~ .movieGroup)) .sessionsGrid {
   border-bottom: none;
-  padding-bottom: none;
+  padding-bottom: 0;
 }
 .sessionsGrid:hover {
   scrollbar-color: var(--text-secondary) transparent;

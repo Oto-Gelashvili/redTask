@@ -37,4 +37,11 @@
       <p class="BodyM secondaryColor">No sessions match your filters</p>
     </div>
   }
+  @if (response().meta.lastPage > 1) {
+    <app-pagination
+      [currentPage]="response().meta.currentPage"
+      [lastPage]="response().meta.lastPage"
+      (pageChange)="pageChange.emit($event)"
+    />
+  }
 </section>

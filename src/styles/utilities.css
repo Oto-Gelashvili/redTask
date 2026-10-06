@@ -84,3 +84,6 @@
 .secondaryColor {
   color: var(--text-secondary);
 }
+.chevronRight {
+  rotate: 180deg;
+}

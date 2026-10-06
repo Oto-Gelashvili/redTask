@@ -4,7 +4,7 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { FilterOptionsService } from './core/services/filter-options.service';
 
 import { routes } from './app.routes';
@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,
+      withComponentInputBinding(),
       withInMemoryScrolling({
         scrollPositionRestoration: 'top',
       }),
