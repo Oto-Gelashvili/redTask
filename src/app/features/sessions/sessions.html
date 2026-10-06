@@ -5,8 +5,18 @@
   </div>
   <div class="sessionsPageContent">
     <app-filter></app-filter>
+    <!-- @if (data(); as res) {
+      <app-list [response]="res" />
+    } -->
     @if (data(); as res) {
       <app-list [response]="res" />
+    } @else if (isLoading()) {
+      <app-skeleton />
+    } @else if (hasError()) {
+      <div class="stateBox">
+        <p class="BodyL">We couldn't load the sessions.</p>
+        <button type="button" class="btn-secondary customBtn" (click)="load()">Try again</button>
+      </div>
     }
   </div>
 </section>

@@ -1,0 +1,25 @@
+@import '../list/list.css';
+.skeletonCounter {
+  width: 14rem;
+  height: 1.5rem;
+}
+.skeletonSorter {
+  width: 25.6rem;
+  height: 1.8rem;
+}
+.skeletonTitle {
+  width: 18rem;
+  height: 2rem;
+}
+.skeletonRuntime {
+  width: 5rem;
+  height: 1.8rem;
+}
+.skeletonAge {
+  width: 8rem;
+  height: 1.6rem;
+}
+.skeletonCard {
+  height: 10.4rem;
+  border-radius: 1.6rem;
+}

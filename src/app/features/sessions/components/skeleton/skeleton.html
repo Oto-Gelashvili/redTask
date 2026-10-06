@@ -1,0 +1,29 @@
+<section class="listCont" aria-busy="true" aria-label="Loading sessions">
+  <div class="listContHeading">
+    <div class="shimmer skeletonCounter"></div>
+    <div class="shimmer skeletonSorter"></div>
+  </div>
+
+  @for (g of groups; track g) {
+    <div class="movieGroup">
+      <div class="movieHeader">
+        <div class="shimmer poster"></div>
+        <div class="movieInfo">
+          <div class="movieInfoHeading">
+            <div class="shimmer skeletonTitle"></div>
+            <div class="ageLimitCont">
+              <p class="labelS">Age</p>
+            </div>
+          </div>
+          <div class="shimmer skeletonRuntime"></div>
+        </div>
+      </div>
+
+      <div class="sessionsGrid">
+        @for (c of cards; track c) {
+          <div class="shimmer skeletonCard"></div>
+        }
+      </div>
+    </div>
+  }
+</section>
