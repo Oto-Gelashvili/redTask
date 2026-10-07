@@ -15,7 +15,7 @@
           </div>
         } @else {
           <div class="defaultAvatar avatarIcon">
-            <p class="labelS">{{ u?.username?.charAt(0).toUpperCase() }}</p>
+            <p class="labelS">{{ initials() }}</p>
             <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
           </div>
         }
@@ -43,7 +43,7 @@
               </div>
             } @else {
               <div class="defaultAvatar avatarIcon specIconSize">
-                <p class="labelS">{{ user()?.username?.charAt(0).toUpperCase() }}</p>
+                <p class="labelS">{{ initials() }}</p>
                 <div
                   class="avatarCircle"
                   [class]="user()?.profileComplete ? 'green' : 'yellow'"

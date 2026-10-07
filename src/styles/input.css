@@ -19,7 +19,8 @@
   transition: 0.4s;
 }
 .inputCont input:hover {
-  border-color: var(--tint-white);
+  border-color: var(--text-disabled);
+  background-color: var(--bg-raised);
   caret-color: var(--text-primary);
 }
 .inputCont input:hover::placeholder,

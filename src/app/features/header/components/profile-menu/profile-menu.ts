@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
 
@@ -33,4 +33,18 @@ export class ProfileMenu {
       this.isOpen.set(false);
     }
   }
+  protected readonly initials = computed(() => {
+    const user = this.user();
+    if (!user) return '';
+
+    const fullName = user.fullName?.trim();
+    if (fullName) {
+      const parts = fullName.split(/\s+/);
+      const first = parts[0].charAt(0);
+      const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : parts[0].charAt(1);
+      return (first + last).toUpperCase();
+    }
+
+    return user.username?.charAt(0).toUpperCase() ?? '';
+  });
 }
