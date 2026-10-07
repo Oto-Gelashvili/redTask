@@ -1,4 +1,32 @@
 <div class="sorterCont">
   <p class="BodyM secondaryColor">Sort:</p>
-  <div class="sorter"></div>
+
+  <div class="sorter">
+    <button
+      type="button"
+      class="sorterTrigger"
+      aria-haspopup="listbox"
+      [attr.aria-expanded]="isOpen()"
+      (click)="isOpen.set(!isOpen())"
+    >
+      <span>{{ selectedLabel() }}</span>
+      <img src="dropdown.svg" alt="" class="dropdownIcon" [class.open]="isOpen()" />
+    </button>
+
+    @if (isOpen()) {
+      <ul class="sorterBody" role="listbox" animate.enter="fade-in" animate.leave="fade-out">
+        @for (sort of filterOptions.sorts(); track sort.id) {
+          <li
+            role="option"
+            class="labelM"
+            [attr.aria-selected]="sort.id === sortValue()"
+            [class.selected]="sort.id === sortValue()"
+            (click)="select(sort.id)"
+          >
+            {{ sort.label }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
 </div>

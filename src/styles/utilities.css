@@ -40,6 +40,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  transition: 0.4s;
 }
 .btn-primary {
   background-color: var(--error);
@@ -51,6 +52,14 @@
 .btn-secondary {
   background-color: var(--text-primary);
   color: var(--bg);
+}
+.btn-transparent {
+  background-color: var(--tint-white);
+}
+.btn-transparent:hover,
+.btn-transparent:focus-visible {
+  background-color: var(--text-secondary);
+  backdrop-filter: blur(44px);
 }
 .avatarIcon {
   border-radius: 8px;

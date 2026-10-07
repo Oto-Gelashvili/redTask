@@ -5,15 +5,19 @@
   </div>
   <div class="sessionsPageContent">
     <app-filter></app-filter>
-    @if (data(); as res) {
-      <app-list [response]="res" (pageChange)="goToPage($event)" />
+
+    @if (data() || hasError()) {
+      <app-list
+        [response]="data()"
+        [sortValue]="sortValue()"
+        [hasError]="hasError()"
+        [errorContent]="errorContent()"
+        (pageChange)="goToPage($event)"
+        (sortChange)="changeSort($event)"
+        (retry)="load()"
+      />
     } @else if (isLoading()) {
       <app-skeleton />
-    } @else if (hasError()) {
-      <div class="stateBox">
-        <p class="BodyL">We couldn't load the sessions.</p>
-        <button type="button" class="btn-secondary customBtn" (click)="load()">Try again</button>
-      </div>
     }
   </div>
 </section>

@@ -5,7 +5,47 @@
   gap: 0.8rem;
 }
 .sorter {
-  width: 200px;
-  height: 15px;
-  background-color: var(--bg-card);
+  position: relative;
+}
+
+.sorterTrigger {
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  gap: 0.8rem;
+  transition: 0.4s;
+}
+
+.sorterTrigger:hover,
+.sorterTrigger:focus-visible {
+  color: var(--text-secondary);
+}
+
+.sorterBody {
+  position: absolute;
+  top: calc(100% + 0.8rem);
+  right: 0;
+  z-index: 20;
+  min-width: 100%;
+  white-space: nowrap;
+  padding: 0.4rem;
+  background: var(--bg-card);
+  border-radius: 1.2rem;
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.4);
+}
+
+.sorterBody li {
+  padding: 1rem 1.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.sorterBody li:hover {
+  background: var(--tint-white);
+}
+
+.sorterBody li.selected {
+  color: var(--success);
+  background: var(--bg-raised);
 }

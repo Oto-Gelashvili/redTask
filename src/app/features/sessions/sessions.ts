@@ -7,7 +7,7 @@ import { ApiError } from '../../models/api-error';
 import { NotificationService } from '../../core/services/notification.service';
 import { Skeleton } from './components/skeleton/skeleton';
 import { ActivatedRoute, Router } from '@angular/router';
-
+const DEFAULT_SORT = 'time_asc';
 @Component({
   imports: [Filter, List, Skeleton],
   selector: 'app-sessions',
@@ -23,8 +23,12 @@ export class Sessions {
   protected readonly data = signal<SessionsResponse | null>(null);
   protected readonly isLoading = signal(true);
   protected readonly hasError = signal(false);
+  protected readonly errorContent = signal<string | undefined>(undefined);
+
+  readonly sortParam = input<string | undefined>(undefined, { alias: 'sort' });
 
   readonly pageParam = input<string | undefined>(undefined, { alias: 'page' });
+  protected readonly sortValue = computed(() => this.sortParam() || DEFAULT_SORT);
   protected readonly page = computed(() => {
     const n = Number(this.pageParam());
     return Number.isInteger(n) && n >= 1 ? n : 1; // junk or missing becomes 1
@@ -35,6 +39,7 @@ export class Sessions {
   constructor() {
     effect(() => {
       this.page();
+      this.sortValue();
       untracked(() => this.load());
     });
   }
@@ -45,10 +50,13 @@ export class Sessions {
     this.hasError.set(false);
 
     try {
-      const res = await this.sessionsService.getSessions({ page: this.page() });
+      const res = await this.sessionsService.getSessions({
+        page: this.page(),
+        sort: this.sortValue(),
+      });
       if (id !== this.requestId) return;
       if (res.meta.lastPage >= 1 && this.page() > res.meta.lastPage) {
-        this.setPage(res.meta.lastPage, true);
+        this.updateQuery({ page: res.meta.lastPage }, true);
         return;
       }
       this.data.set(res);
@@ -56,6 +64,9 @@ export class Sessions {
       if (id !== this.requestId) return;
       const apiError = err as ApiError;
       this.hasError.set(true);
+      this.errorContent.set(
+        apiError.status === 422 && apiError.message ? apiError.message : undefined,
+      );
       this.notificationService.showError(
         apiError.status === 422 && apiError.message
           ? apiError.message
@@ -66,13 +77,15 @@ export class Sessions {
     }
   }
   protected goToPage(page: number) {
-    this.setPage(page);
+    this.updateQuery({ page: page === 1 ? null : page });
   }
-
-  private setPage(page: number, replace = false) {
+  protected changeSort(id: string) {
+    this.updateQuery({ sort: id === DEFAULT_SORT ? null : id, page: null });
+  }
+  private updateQuery(params: Record<string, string | number | null>, replace = false) {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page: page === 1 ? null : page },
+      queryParams: params,
       queryParamsHandling: 'merge',
       replaceUrl: replace,
     });

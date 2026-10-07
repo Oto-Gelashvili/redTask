@@ -2,10 +2,6 @@
   display: block;
 }
 
-.customSelectBody.leaving {
-  animation: close-animation 1s forwards;
-}
-
 .customSelect {
   position: relative;
 }
