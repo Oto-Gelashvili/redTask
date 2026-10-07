@@ -62,3 +62,11 @@ export interface SessionsQuery {
   sort?: string;
   page?: number;
 }
+export interface ActiveFilters {
+  venues: string[];
+  formats: string[];
+  languages: string[];
+  bands: string[];
+  date: string;
+}
+export type ListFilterKey = 'venues' | 'formats' | 'languages' | 'bands';

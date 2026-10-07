@@ -4,8 +4,11 @@
     <p class="BodyM secondaryColor">Browse showtimes across all venues</p>
   </div>
   <div class="sessionsPageContent">
-    <app-filter></app-filter>
-
+    <app-filter
+      [filters]="filters()"
+      (filtersChange)="changeFilters($event)"
+      (cleared)="clearFilters()"
+    />
     @if (data() || hasError()) {
       <app-list
         [response]="data()"

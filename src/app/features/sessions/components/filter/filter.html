@@ -1,1 +1,88 @@
-<div class="filterCont"></div>
+<aside class="filterPanel">
+  <section class="group">
+    <h4 class="groupTitle">Venue</h4>
+    @for (v of options.venues(); track v.id) {
+      <label class="check">
+        <input
+          type="checkbox"
+          [checked]="isSelected('venues', v.slug)"
+          (change)="toggle('venues', v.slug)"
+        />
+        <span class="labelM">{{ v.name }}</span>
+        <span class="BodyS secondaryColor">{{ v.city }}</span>
+      </label>
+    }
+  </section>
+
+  <section class="group">
+    <h4 class="groupTitle">Date</h4>
+    <div class="dates">
+      @for (d of days; track d.value) {
+        <button
+          type="button"
+          class="dateBtn"
+          [class.selected]="d.value === filters().date"
+          [attr.aria-pressed]="d.value === filters().date"
+          (click)="selectDate(d.value)"
+        >
+          <span class="BodyS">{{ d.weekday }}</span>
+          <span class="labelM">{{ d.day }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="group">
+    <h4 class="groupTitle">Format</h4>
+    @for (f of availableFormats(); track f.id) {
+      <label class="check">
+        <input
+          type="checkbox"
+          [checked]="isSelected('formats', f.slug)"
+          (change)="toggle('formats', f.slug)"
+        />
+        <span class="labelM">{{ f.name }}</span>
+      </label>
+    }
+  </section>
+
+  <section class="group">
+    <h4 class="groupTitle">Language</h4>
+    @for (l of options.languages(); track l.id) {
+      <label class="check">
+        <input
+          type="checkbox"
+          [checked]="isSelected('languages', l.slug)"
+          (change)="toggle('languages', l.slug)"
+        />
+        <span class="labelM">{{ l.name }}</span>
+      </label>
+    }
+  </section>
+
+  <section class="group">
+    <h4 class="groupTitle">Time of day</h4>
+    @for (b of options.timeBands(); track b.id) {
+      <label class="check">
+        <input
+          type="checkbox"
+          [checked]="isSelected('bands', b.id)"
+          (change)="toggle('bands', b.id)"
+        />
+        <span class="labelM">{{ b.label }}</span>
+      </label>
+    }
+  </section>
+
+  <footer class="footer">
+    <p class="BodyM secondaryColor">{{ activeCount() }} filters active</p>
+    <button
+      type="button"
+      class="btn-secondary customBtn"
+      [disabled]="!activeCount()"
+      (click)="cleared.emit()"
+    >
+      Clear all filters
+    </button>
+  </footer>
+</aside>

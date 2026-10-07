@@ -1,6 +1,66 @@
-.filterCont {
+/* .filterCont {
   width: 32rem;
   height: 100.1rem;
   background-color: var(--bg-card);
   border-radius: 16px;
+} */
+:host {
+  align-self: flex-start; /* required, or the flex row stretches it and sticky has nothing to do */
+  position: sticky;
+  top: 2.4rem; /* below your header if it's fixed or sticky */
+  width: 28rem;
+  flex-shrink: 0;
+  max-height: calc(100vh - 4.8rem);
+  overflow-y: auto;
+}
+
+.filterPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+.check input {
+  accent-color: var(--error);
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.dates {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+}
+.dateBtn {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 5.2rem;
+  padding: 0.8rem;
+  border-radius: 1.2rem;
+  background: var(--bg-card);
+  transition: 0.3s;
+}
+.dateBtn:hover {
+  background: var(--bg-raised);
+}
+.dateBtn.selected {
+  background: var(--error);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
