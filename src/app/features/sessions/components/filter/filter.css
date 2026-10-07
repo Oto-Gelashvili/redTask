@@ -16,6 +16,11 @@
   padding: 2.4rem;
   background-color: var(--bg-card);
 }
+.filterSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
 .group {
   display: flex;
   flex-direction: column;
@@ -117,4 +122,14 @@
 .filterPanel .footer button {
   padding: 9px 12px;
   width: 100%;
+}
+.filterPanel .skeletonHeader {
+  width: 5.5rem;
+  height: 1.4rem;
+  border-radius: 4px;
+}
+.filterPanel .skeletonText {
+  width: 15rem;
+  height: 1.6rem;
+  border-radius: 4px;
 }

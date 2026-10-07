@@ -64,12 +64,7 @@
   }
 }
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--text-disabled) 25%,
-    var(--text-secondary) 50%,
-    var(--text-primary) 75%
-  );
+  background: linear-gradient(90deg, var(--tint-white) 25%, var(--bg-raised) 55%);
   background-size: 200rem 100%;
   animation: shimmer 1.5s infinite linear;
   border-radius: 0.8rem;
