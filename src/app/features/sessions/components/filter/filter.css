@@ -1,66 +1,120 @@
-/* .filterCont {
-  width: 32rem;
-  height: 100.1rem;
-  background-color: var(--bg-card);
-  border-radius: 16px;
-} */
 :host {
-  align-self: flex-start; /* required, or the flex row stretches it and sticky has nothing to do */
   position: sticky;
-  top: 2.4rem; /* below your header if it's fixed or sticky */
-  width: 28rem;
-  flex-shrink: 0;
-  max-height: calc(100vh - 4.8rem);
+  width: 32rem;
   overflow-y: auto;
+  max-height: calc(100vh - 4.8rem);
+  top: 2.4rem;
+  align-self: flex-start;
+  scrollbar-width: none;
 }
 
 .filterPanel {
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+  border-radius: 16px;
+  padding: 2.4rem;
+  background-color: var(--bg-card);
 }
 .group {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 1px solid var(--bg-raised);
 }
-
+.filterPanel .overlineText {
+  font-size: 1.2rem;
+}
 .check {
   display: flex;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
 }
+.venueTextCont {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 .check input {
-  accent-color: var(--error);
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
   width: 1.8rem;
   height: 1.8rem;
+  margin: 0;
+  border: 2px solid var(--text-disabled);
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: 0.4s;
+}
+.check input::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.9rem;
+  border: solid var(--text-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.15s ease;
+  margin-top: -0.2rem;
 }
 
+.check input:checked {
+  background-color: var(--error);
+  border-color: var(--error);
+}
+
+.check input:checked::before {
+  transform: rotate(45deg) scale(1);
+}
+
+.check:hover input:not(:checked) {
+  border-color: var(--text-secondary);
+}
+
+.check input:focus-visible {
+  outline: none;
+  border-color: var(--text-secondary);
+}
 .dates {
   display: flex;
   gap: 0.6rem;
   overflow-x: auto;
+  scrollbar-width: none;
+  cursor: grabbing;
+  user-select: none;
 }
 .dateBtn {
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  min-width: 5.2rem;
-  padding: 0.8rem;
-  border-radius: 1.2rem;
-  background: var(--bg-card);
-  transition: 0.3s;
-}
-.dateBtn:hover {
+  gap: 0.6rem;
+  padding: 1rem 0.6rem;
+  border-radius: 8px;
   background: var(--bg-raised);
+  transition: 0.4s;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  min-width: 3.7rem;
+  height: 5.4rem;
+}
+.dateBtn:hover,
+.dateBtn:focus-visible {
+  background: var(--text-disabled);
 }
 .dateBtn.selected {
   background: var(--error);
 }
 
-.footer {
+.filterPanel .footer {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.2rem;
+}
+.filterPanel .footer button {
+  padding: 9px 12px;
+  width: 100%;
 }

@@ -1,6 +1,7 @@
 <aside class="filterPanel">
+  <h4>Filters</h4>
   <section class="group">
-    <h4 class="groupTitle">Venue</h4>
+    <h5 class="overlineText secondaryColor">Venue</h5>
     @for (v of options.venues(); track v.id) {
       <label class="check">
         <input
@@ -8,15 +9,17 @@
           [checked]="isSelected('venues', v.slug)"
           (change)="toggle('venues', v.slug)"
         />
-        <span class="labelM">{{ v.name }}</span>
-        <span class="BodyS secondaryColor">{{ v.city }}</span>
+        <div class="venueTextCont">
+          <span class="labelM">{{ v.name }}</span>
+          <span class="BodyS secondaryColor">· {{ v.city }}</span>
+        </div>
       </label>
     }
   </section>
 
   <section class="group">
-    <h4 class="groupTitle">Date</h4>
-    <div class="dates">
+    <h5 class="overlineText secondaryColor">Date</h5>
+    <div class="dates" appDragScroll>
       @for (d of days; track d.value) {
         <button
           type="button"
@@ -25,15 +28,16 @@
           [attr.aria-pressed]="d.value === filters().date"
           (click)="selectDate(d.value)"
         >
-          <span class="BodyS">{{ d.weekday }}</span>
-          <span class="labelM">{{ d.day }}</span>
+          <span class="labelS">{{ d.weekday }}</span>
+          <span class="labelS">{{ d.day }}</span>
         </button>
       }
     </div>
   </section>
 
   <section class="group">
-    <h4 class="groupTitle">Format</h4>
+    <h5 class="overlineText secondaryColor">Format</h5>
+
     @for (f of availableFormats(); track f.id) {
       <label class="check">
         <input
@@ -47,7 +51,8 @@
   </section>
 
   <section class="group">
-    <h4 class="groupTitle">Language</h4>
+    <h5 class="overlineText secondaryColor">Language</h5>
+
     @for (l of options.languages(); track l.id) {
       <label class="check">
         <input
@@ -61,7 +66,8 @@
   </section>
 
   <section class="group">
-    <h4 class="groupTitle">Time of day</h4>
+    <h5 class="overlineText secondaryColor">Time of day</h5>
+
     @for (b of options.timeBands(); track b.id) {
       <label class="check">
         <input
@@ -75,14 +81,14 @@
   </section>
 
   <footer class="footer">
-    <p class="BodyM secondaryColor">{{ activeCount() }} filters active</p>
     <button
-      type="button"
-      class="btn-secondary customBtn"
+      type="button labelS"
+      class="btn-notify customBtn"
       [disabled]="!activeCount()"
       (click)="cleared.emit()"
     >
-      Clear all filters
+      Clear filters
     </button>
+    <p class="BodyS secondaryColor">{{ activeCount() }} filters active</p>
   </footer>
 </aside>

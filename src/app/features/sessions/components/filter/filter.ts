@@ -2,8 +2,10 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import { FilterOptionsService } from '../../../../core/services/filter-options.service';
 import { ActiveFilters, ListFilterKey } from '../../../../models/session';
 import { toLocalISODate } from '../../../../shared/utils';
+import { DragScroll } from '../../../../shared/directives/drag-scroll';
 
 @Component({
+  imports: [DragScroll],
   selector: 'app-filter',
   templateUrl: './filter.html',
   styleUrl: './filter.css',
@@ -20,7 +22,7 @@ export class Filter {
     d.setDate(d.getDate() + i);
     return {
       value: toLocalISODate(d),
-      weekday: i === 0 ? 'Today' : d.toLocaleDateString('en', { weekday: 'short' }),
+      weekday: d.toLocaleDateString('en', { weekday: 'short' }),
       day: d.getDate(),
     };
   });

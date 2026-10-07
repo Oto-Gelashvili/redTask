@@ -61,6 +61,15 @@
   background-color: var(--text-secondary);
   backdrop-filter: blur(44px);
 }
+.btn-notify {
+  border: 1px solid var(--text-secondary);
+  background-color: transparent;
+}
+.btn-notify:hover,
+.btn-notify:focus-visible {
+  background-color: var(--tint-white);
+}
+
 .avatarIcon {
   border-radius: 8px;
   width: 4rem;
