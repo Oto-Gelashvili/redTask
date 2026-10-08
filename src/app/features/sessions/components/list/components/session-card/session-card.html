@@ -1,7 +1,9 @@
-<article
+<a
   class="card"
   [class.soldOut]="session().isSoldOut"
   /* animate.enter="open-animation" */
+  [routerLink]="['/movies', movieSlug()]"
+  [queryParams]="{ date: session().date }"
   animate.enter="fade-in"
   animate.leave="fade-out"
   tabindex="0"
@@ -31,4 +33,4 @@
       <p class="bottomPrice">₾{{ session().price }}</p>
     </div>
   </div>
-</article>
+</a>

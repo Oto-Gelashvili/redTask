@@ -1,0 +1,201 @@
+@switch (movieState()) {
+  @case ('loading') {
+    <div class="screenState"><app-loader [size]="32" /></div>
+  }
+
+  @case ('notFound') {
+    <div class="screenState">
+      <h2>Film not found</h2>
+      <p>This film doesn't exist or is no longer available.</p>
+      <a class="btn-primary customBtn" href="/sessions">Browse all sessions</a>
+    </div>
+  }
+
+  @case ('error') {
+    <div class="screenState">
+      <h2>Couldn't load this film</h2>
+      <p>Something went wrong. Please try again.</p>
+      <button type="button" class="btn-primary customBtn" (click)="loadMovie(slug())">Retry</button>
+    </div>
+  }
+
+  @case ('ready') {
+    @if (movie(); as m) {
+      <section class="hero movieDetailsPage">
+        <img class="backdrop" [src]="m.backdropUrl" alt="" />
+        <div class="heroShade"></div>
+
+        <div class="heroInner">
+          <img class="poster" [src]="m.posterUrl" [alt]="m.title + ' poster'" />
+
+          <div class="heroText">
+            <span class="status chip labelS" [class.soon]="m.isComingSoon">
+              {{ m.isComingSoon ? 'Coming soon' : 'Now playing' }}
+            </span>
+            <h1>{{ m.title }}</h1>
+            <p class="BodyM">{{ m.synopsis }}</p>
+
+            <div class="chips">
+              <span class="chip age labelS" [title]="m.ageRating.description">{{
+                m.ageRating.code
+              }}</span>
+              <span class="chip labelS"
+                ><svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 7.4375L9.1875 5.25M5.6875 0.875H8.3125M11.8125 7.4375C11.8125 10.0954 9.65787 12.25 7 12.25C4.34213 12.25 2.1875 10.0954 2.1875 7.4375C2.1875 4.77963 4.34213 2.625 7 2.625C9.65787 2.625 11.8125 4.77963 11.8125 7.4375Z"
+                    stroke="white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <p>{{ m.runtimeMinutes }} Min</p></span
+              >
+              @for (f of m.formats; track f.id) {
+                <span class="chip labelS">{{ f.name }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ body ============ -->
+      <div class="body">
+        <section class="schedule">
+          <div class="days">
+            @for (d of days(); track d.iso) {
+              <button
+                type="button"
+                class="day"
+                [class.selected]="d.iso === selectedDate()"
+                [disabled]="d.disabled"
+                [attr.aria-pressed]="d.iso === selectedDate()"
+                (click)="selectDate(d.iso)"
+              >
+                <span>{{ d.weekday }}</span>
+                <strong>{{ d.day }}</strong>
+              </button>
+            }
+          </div>
+
+          @if (restriction(); as message) {
+            <p class="notice" role="status">{{ message }}</p>
+          }
+
+          @if (sessionsLoading()) {
+            <div class="inlineState"><app-loader [size]="28" /></div>
+          } @else if (sessionsError()) {
+            <div class="inlineState">
+              <p>Couldn't load sessions.</p>
+              <button
+                type="button"
+                class="btn-secondary customBtn"
+                (click)="loadSessions(slug(), selectedDate())"
+              >
+                Retry
+              </button>
+            </div>
+          } @else if (!venues().length) {
+            <p class="inlineState">{{ emptyMessage() }}</p>
+          } @else {
+            @for (v of venues(); track v.venue.id) {
+              <div class="venue">
+                <h3 class="venueName">
+                  {{ v.venue.name }} <span>{{ v.venue.city }}</span>
+                </h3>
+
+                <div class="halls">
+                  @for (hall of v.halls; track hall.hallId) {
+                    <div class="hall">
+                      <p class="hallName">Hall {{ hall.hallName }}</p>
+
+                      <div class="tickets">
+                        @for (s of hall.sessions; track s.id) {
+                          <button
+                            type="button"
+                            class="ticket"
+                            [disabled]="isDisabled(s)"
+                            [title]="restriction() ?? ''"
+                            (click)="openSession(s)"
+                          >
+                            <span class="ticketMain">
+                              <strong class="time">{{ s.time }}</strong>
+                              <span class="tags">
+                                <span [title]="s.language.name">{{ s.language.code }}</span>
+                                <span class="format">{{ s.format.name }}</span>
+                              </span>
+                            </span>
+
+                            <span class="ticketSide">
+                              <strong class="price">₾{{ s.price }}</strong>
+                              <span class="seats">
+                                {{ s.isSoldOut ? 'Sold out' : s.seatsLeft + ' left' }}
+                              </span>
+                            </span>
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </section>
+
+        <aside class="info">
+          <dl>
+            <dt>Director</dt>
+            <dd>{{ m.director }}</dd>
+
+            <dt>Main cast</dt>
+            <dd>{{ m.cast }}</dd>
+
+            <dt>Genres</dt>
+            <dd>
+              @for (g of m.genres; track g.id; let last = $last) {
+                {{ g.name }}
+                @if (!last) {
+                  ,
+                }
+              }
+            </dd>
+
+            <dt>Duration</dt>
+            <dd>{{ m.runtimeMinutes }} min</dd>
+
+            <dt>Release date</dt>
+            <dd>{{ m.releaseDate | date: 'd MMMM y' }}</dd>
+
+            <dt>Formats</dt>
+            <dd>
+              @for (f of m.formats; track f.id; let last = $last) {
+                {{ f.name }}
+                @if (!last) {
+                  ,
+                }
+              }
+            </dd>
+
+            <dt>From</dt>
+            <dd>₾{{ m.fromPrice }}</dd>
+          </dl>
+
+          @if (m.ageRating.minAge >= 16) {
+            <div class="ratingNote">
+              <p class="ratingTitle">Rating note</p>
+              <p>
+                <strong>{{ m.ageRating.code }}</strong> {{ m.ageRating.description }}
+              </p>
+            </div>
+          }
+        </aside>
+      </div>
+    }
+  }
+}

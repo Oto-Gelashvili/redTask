@@ -40,7 +40,7 @@
 
         <div class="sessionsGrid" appDragScroll>
           @for (session of group.sessions; track session.id) {
-            <app-session-card [session]="session" />
+            <app-session-card [session]="session" [movieSlug]="group.movie.slug" />
           }
         </div>
       </div>

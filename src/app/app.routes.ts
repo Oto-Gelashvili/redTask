@@ -14,6 +14,11 @@ export const routes: Routes = [
     title: 'Browse Sessions',
   },
   {
+    path: 'movies/:slug',
+    loadComponent: () =>
+      import('./features/movie-details/movie-details').then((m) => m.MovieDetails),
+  },
+  {
     path: 'profile',
     canActivate: [authGuard],
     loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
