@@ -45,9 +45,15 @@
         </div>
       </div>
     } @empty {
-      <div class="emptyState">
-        <p class="labelM">No sessions found</p>
-        <p class="BodyM secondaryColor">No sessions match your filters</p>
+      <div class="errorBox">
+        <div class="imgCont">
+          <img src="MagnifyingGlass.svg" alt="search icon" width="20" height="20" />
+        </div>
+        <div class="textCont">
+          <p class="labelM">{{ errorContent() ?? 'No results for your search' }}</p>
+          <p class="BodyM secondaryColor">Change the search parameters</p>
+        </div>
+        <a routerLink="/sessions" class="btn-transparent customBtn">Browse all sessions</a>
       </div>
     }
 
