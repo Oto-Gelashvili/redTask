@@ -12,8 +12,7 @@
 
   <div class="right">
     <label>
-      <img src="search.svg" alt="search" width="14" height="14" />
-      <input name="searchInput" type="search" placeholder="Search films and live events" />
+      <app-search-bar></app-search-bar>
     </label>
     @if (!authService.isAuthenticated()) {
       <div class="authBtns">

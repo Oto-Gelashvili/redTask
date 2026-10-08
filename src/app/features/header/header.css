@@ -34,37 +34,6 @@ header .right {
   gap: 3.2rem;
 }
 
-header .right label {
-  display: flex;
-  align-items: center;
-
-  width: 38rem;
-  height: 4.1rem;
-
-  gap: 0.4rem;
-  padding: 0.6rem 1.2rem;
-
-  border-radius: 9999px;
-  background-color: var(--tint-white);
-}
-
-header .right input {
-  flex: 1;
-
-  background: transparent;
-  outline: none;
-
-  border: none;
-
-  font-size: 1.4rem;
-  font-weight: 400;
-  color: var(--text-primary);
-}
-
-header .right input::placeholder {
-  color: var(--text-primary);
-}
-
 header .authBtns {
   display: flex;
   align-items: center;
