@@ -66,7 +66,7 @@
 .shimmer {
   background: linear-gradient(90deg, var(--tint-white) 25%, var(--bg-raised) 55%);
   background-size: 200rem 100%;
-  animation: shimmer 1.5s infinite linear;
+  animation: shimmer 1s infinite linear;
   border-radius: 0.8rem;
 }
 

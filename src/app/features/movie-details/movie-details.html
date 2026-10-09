@@ -1,12 +1,66 @@
 @switch (movieState()) {
   @case ('loading') {
-    <div class="screenState"><app-loader [size]="32" /></div>
-  }
+    <div aria-busy="true" aria-label="Loading film">
+      <section class="hero movieDetailsPage">
+        <div class="backdrop shimmer"></div>
 
+        <div class="heroInner">
+          <div class="poster shimmer"></div>
+
+          <div class="heroText">
+            <div class="sk skChip shimmer"></div>
+            <div class="sk skTitle shimmer"></div>
+            <div class="skLines">
+              <div class="sk skLine shimmer"></div>
+              <div class="sk skLine shimmer"></div>
+              <div class="sk skLine short shimmer"></div>
+            </div>
+            <div class="chips">
+              @for (c of [1, 2, 3]; track c) {
+                <div class="sk skChip shimmer"></div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="body">
+        <section class="schedule">
+          <div class="daysCont">
+            <div class="sk skHeading shimmer"></div>
+            <div class="days">
+              @for (d of [1, 2, 3, 4, 5, 6, 7]; track d) {
+                <div class="daySkeleton shimmer"></div>
+              }
+            </div>
+          </div>
+
+          <div class="venue">
+            <p class="venueNameSkeleton shimmer"></p>
+            <div class="halls">
+              @for (hall of [1, 2]; track hall) {
+                <div class="hallSkeleton shimmer"></div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <div class="info">
+          <div class="sk skHeading shimmer"></div>
+          @for (row of [1, 2, 3, 4, 5]; track row) {
+            <div class="infoCont">
+              <div class="sk skLabel shimmer"></div>
+              <div class="sk skValue shimmer"></div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
   @case ('notFound') {
     <div class="screenState">
       <h2>Film not found</h2>
-      <p>This film doesn't exist or is no longer available.</p>
+      <p class="secondaryColor">This film doesn't exist or is no longer available.</p>
       <a class="btn-primary customBtn" href="/sessions">Browse all sessions</a>
     </div>
   }
@@ -14,7 +68,7 @@
   @case ('error') {
     <div class="screenState">
       <h2>Couldn't load this film</h2>
-      <p>Something went wrong. Please try again.</p>
+      <p class="secondaryColor">Something went wrong. Please try again.</p>
       <button type="button" class="btn-primary customBtn" (click)="loadMovie(slug())">Retry</button>
     </div>
   }
@@ -67,52 +121,65 @@
       <!-- ============ body ============ -->
       <div class="body">
         <section class="schedule">
-          <div class="days">
-            @for (d of days(); track d.iso) {
-              <button
-                type="button"
-                class="day"
-                [class.selected]="d.iso === selectedDate()"
-                [disabled]="d.disabled"
-                [attr.aria-pressed]="d.iso === selectedDate()"
-                (click)="selectDate(d.iso)"
-              >
-                <span>{{ d.weekday }}</span>
-                <strong>{{ d.day }}</strong>
-              </button>
-            }
+          <div class="daysCont">
+            <h3>Sessions</h3>
+            <div class="days">
+              @for (d of days(); track d.iso) {
+                <button
+                  type="button"
+                  class="day"
+                  [class.selected]="d.iso === selectedDate()"
+                  [class.empty]="d.empty"
+                  [attr.aria-pressed]="d.iso === selectedDate()"
+                  (click)="selectDate(d.iso)"
+                >
+                  <p class="labelS">{{ d.weekday }}</p>
+                  <h4>{{ d.day }}</h4>
+                </button>
+              }
+            </div>
           </div>
 
           @if (restriction(); as message) {
-            <p class="notice" role="status">{{ message }}</p>
+            <p class="inlineState BodyL" role="status">{{ message }}</p>
           }
 
           @if (sessionsLoading()) {
-            <div class="inlineState"><app-loader [size]="28" /></div>
-          } @else if (sessionsError()) {
+            <div class="venue">
+              <p class="venueNameSkeleton shimmer"></p>
+
+              <div class="halls">
+                @for (hall of [1, 2, 3]; track hall) {
+                  <div class="hallSkeleton shimmer"></div>
+                }
+              </div>
+            </div>
+          } @else if (sessionsError(); as error) {
             <div class="inlineState">
-              <p>Couldn't load sessions.</p>
-              <button
-                type="button"
-                class="btn-secondary customBtn"
-                (click)="loadSessions(slug(), selectedDate())"
-              >
-                Retry
-              </button>
+              <p class="labelS">{{ error.message }}</p>
+              @if (error.retryable) {
+                <button
+                  type="button"
+                  class="btn-primary customBtn labelM"
+                  (click)="loadSessions(slug(), selectedDate())"
+                >
+                  Retry
+                </button>
+              }
             </div>
           } @else if (!venues().length) {
             <p class="inlineState">{{ emptyMessage() }}</p>
           } @else {
             @for (v of venues(); track v.venue.id) {
               <div class="venue">
-                <h3 class="venueName">
-                  {{ v.venue.name }} <span>{{ v.venue.city }}</span>
-                </h3>
+                <p class="buttonText">
+                  {{ v.venue.name }}
+                </p>
 
                 <div class="halls">
                   @for (hall of v.halls; track hall.hallId) {
                     <div class="hall">
-                      <p class="hallName">Hall {{ hall.hallName }}</p>
+                      <p class="labelS">Hall {{ hall.hallName }}</p>
 
                       <div class="tickets">
                         @for (s of hall.sessions; track s.id) {
@@ -124,19 +191,36 @@
                             (click)="openSession(s)"
                           >
                             <span class="ticketMain">
-                              <strong class="time">{{ s.time }}</strong>
-                              <span class="tags">
-                                <span [title]="s.language.name">{{ s.language.code }}</span>
-                                <span class="format">{{ s.format.name }}</span>
-                              </span>
+                              <div class="eclipse"></div>
+                              <div class="eclipse bottom"></div>
+
+                              <h3>{{ s.time }}</h3>
+                              <div class="tags">
+                                <p class="secondaryColor BodyS" [title]="s.language.name">
+                                  {{ s.language.code }}
+                                </p>
+                                <div class="formatTagCont">
+                                  <p class="labelS secondaryColor">{{ s.format.name }}</p>
+                                </div>
+                              </div>
                             </span>
 
-                            <span class="ticketSide">
-                              <strong class="price">₾{{ s.price }}</strong>
-                              <span class="seats">
-                                {{ s.isSoldOut ? 'Sold out' : s.seatsLeft + ' left' }}
-                              </span>
-                            </span>
+                            <div class="ticketSide">
+                              <h4 class="errorText">₾{{ s.price }}</h4>
+                              <div class="seatsCont">
+                                @if (s.isSoldOut || s.seatsLeft < 6) {
+                                  <img src="redTicket.svg" alt="ticket icon" />
+                                  <p class="errorText BodyS">
+                                    {{ s.isSoldOut ? 'Sold out' : s.seatsLeft + ' left' }}
+                                  </p>
+                                } @else {
+                                  <img src="baseTicket.svg" alt="ticket icon" />
+                                  <p class="secondaryColor BodyS">
+                                    {{ s.seatsLeft + ' left' }}
+                                  </p>
+                                }
+                              </div>
+                            </div>
                           </button>
                         }
                       </div>
@@ -148,53 +232,61 @@
           }
         </section>
 
-        <aside class="info">
-          <dl>
-            <dt>Director</dt>
-            <dd>{{ m.director }}</dd>
-
-            <dt>Main cast</dt>
-            <dd>{{ m.cast }}</dd>
-
-            <dt>Genres</dt>
-            <dd>
+        <div class="info">
+          <h3>Details</h3>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Director</p>
+            <p class="labelM">{{ m.director }}</p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Main cast</p>
+            <p class="labelM">{{ m.cast }}</p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Genres</p>
+            <p class="labelM">
               @for (g of m.genres; track g.id; let last = $last) {
                 {{ g.name }}
                 @if (!last) {
                   ,
                 }
               }
-            </dd>
-
-            <dt>Duration</dt>
-            <dd>{{ m.runtimeMinutes }} min</dd>
-
-            <dt>Release date</dt>
-            <dd>{{ m.releaseDate | date: 'd MMMM y' }}</dd>
-
-            <dt>Formats</dt>
-            <dd>
+            </p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Duration</p>
+            <p class="labelM">{{ m.runtimeMinutes }}</p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Release date</p>
+            <p class="labelM">{{ m.releaseDate | date: 'd MMMM y' }}</p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">Formats</p>
+            <p class="labelM">
               @for (f of m.formats; track f.id; let last = $last) {
                 {{ f.name }}
                 @if (!last) {
                   ,
                 }
               }
-            </dd>
-
-            <dt>From</dt>
-            <dd>₾{{ m.fromPrice }}</dd>
-          </dl>
+            </p>
+          </div>
+          <div class="infoCont">
+            <p class="labelS secondaryColor uppercase">From</p>
+            <p class="labelM">₾{{ m.fromPrice }}</p>
+          </div>
 
           @if (m.ageRating.minAge >= 16) {
             <div class="ratingNote">
-              <p class="ratingTitle">Rating note</p>
-              <p>
-                <strong>{{ m.ageRating.code }}</strong> {{ m.ageRating.description }}
-              </p>
+              <p class="labelS uppercase">Rating note</p>
+              <div class="ratingDescCont">
+                <p class="labelS">{{ m.ageRating.code }}</p>
+                <p class="BodyS">{{ m.ageRating.description }}</p>
+              </div>
             </div>
           }
-        </aside>
+        </div>
       </div>
     }
   }

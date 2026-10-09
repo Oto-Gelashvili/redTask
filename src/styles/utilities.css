@@ -105,3 +105,10 @@
 .chevronRight {
   rotate: 180deg;
 }
+.uppercase {
+  text-transform: uppercase;
+}
+.buttonText {
+  font-size: 1.4rem;
+  font-weight: 800;
+}

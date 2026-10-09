@@ -10,9 +10,9 @@ import { toLocalISODate } from '../../shared/utils';
 import { Loader } from '../../shared/components/loader/loader';
 
 const DAYS_SHOWN = 7;
-
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 type MovieState = 'loading' | 'ready' | 'notFound' | 'error';
-type DayOption = { iso: string; weekday: string; day: number; disabled: boolean };
+type DayOption = { iso: string; weekday: string; day: number; empty: boolean };
 type HallGroup = { hallId: number; hallName: string; sessions: Session[] };
 
 function groupByHall(sessions: Session[]): HallGroup[] {
@@ -49,7 +49,7 @@ export class MovieDetails {
 
   private readonly groups = signal<VenueSessions[]>([]);
   protected readonly sessionsLoading = signal(false);
-  protected readonly sessionsError = signal(false);
+  protected readonly sessionsError = signal<{ message: string; retryable: boolean } | null>(null);
 
   private movieRequestId = 0;
   private sessionsRequestId = 0;
@@ -66,15 +66,17 @@ export class MovieDetails {
         iso,
         weekday: weekdayFmt.format(d),
         day: d.getDate(),
-        disabled: !available.has(iso),
+        empty: !available.has(iso),
       };
     });
   });
 
   protected readonly selectedDate = computed(() => {
+    const requested = this.dateParam();
+    if (requested && ISO_DATE.test(requested)) return requested;
+
     const days = this.days();
-    const requested = days.find((d) => d.iso === this.dateParam() && !d.disabled);
-    return (requested ?? days.find((d) => !d.disabled))?.iso ?? null;
+    return (days.find((d) => !d.empty) ?? days[0]).iso;
   });
 
   protected readonly venues = computed(() =>
@@ -94,9 +96,6 @@ export class MovieDetails {
   protected readonly emptyMessage = computed(() => {
     if (this.movie()?.isComingSoon) {
       return 'This film is coming soon. Sessions will appear here once they are scheduled.';
-    }
-    if (this.selectedDate() === null) {
-      return 'There are no upcoming sessions for this film in the next 7 days.';
     }
     return 'No sessions on this date. Try another day.';
   });
@@ -133,7 +132,7 @@ export class MovieDetails {
   protected async loadSessions(slug: string, date: string | null) {
     const id = ++this.sessionsRequestId;
     this.groups.set([]);
-    this.sessionsError.set(false);
+    this.sessionsError.set(null);
 
     if (!date) {
       this.sessionsLoading.set(false);
@@ -145,9 +144,14 @@ export class MovieDetails {
       const res = await this.moviesService.getSessions(slug, date);
       if (id !== this.sessionsRequestId) return;
       this.groups.set(res.data);
-    } catch {
+    } catch (err) {
       if (id !== this.sessionsRequestId) return;
-      this.sessionsError.set(true);
+      const apiError = err as ApiError;
+      const fromServer = apiError.status >= 400 && apiError.status < 500;
+      this.sessionsError.set({
+        message: fromServer && apiError.message ? apiError.message : "Couldn't load sessions.",
+        retryable: !fromServer,
+      });
     } finally {
       if (id === this.sessionsRequestId) this.sessionsLoading.set(false);
     }
