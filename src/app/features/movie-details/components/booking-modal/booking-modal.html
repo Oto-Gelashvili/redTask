@@ -13,7 +13,7 @@
 
         <div class="headRight">
           <div class="timer" [class.low]="(remaining() ?? 0) <= 60">
-            @if (holding()) {
+            @if (holding() || submitting()) {
               <app-loader></app-loader>
             } @else {
               <span class="labelS uppercase secondaryColor">Seats held</span>
@@ -134,7 +134,14 @@
             }
           </div>
           @if (step() === 'checkout') {
-            <form id="checkoutForm" class="form" [formGroup]="form" (ngSubmit)="pay()" novalidate>
+            <form
+              id="checkoutForm"
+              class="form"
+              [formGroup]="form"
+              (ngSubmit)="pay()"
+              animate.enter="fade-in"
+              novalidate
+            >
               <div class="formFieldCont">
                 <div class="inputCont">
                   <label for="fullName" class="labelS">Full name</label>
@@ -213,7 +220,7 @@
                 </div>
               </div>
 
-              <hr class="divider" />
+              <div class="lineDivider"></div>
 
               <div class="formFieldCont">
                 <div class="inputCont">
@@ -392,85 +399,109 @@
               </button>
             </div>
           } @else if (hold(); as h) {
-            <h3>Summary</h3>
+            <p class="buttonText">Summary</p>
             <div class="summary">
-              <h4 class="uppercase">{{ movie().title }}</h4>
-              <p class="BodyS secondaryColor">
-                Hall {{ session().hall.name }} · {{ session().date | date: 'EEE d MMM' }} ·
-                {{ session().time }}
-              </p>
-              <hr class="divider" />
+              <div class="summaryHeading">
+                <p class="uppercase buttonText">{{ movie().title }}</p>
+                <p class="BodyS secondaryColor">
+                  Hall {{ session().hall.name }} · {{ session().date | date: 'EEE d MMM' }} ·
+                  {{ session().time }}
+                </p>
+              </div>
+              <div class="lineDivider"></div>
               <div class="sumRow">
-                <span class="secondaryColor">Seats</span
-                ><strong class="labelM">{{ h.seats.map((s) => s.code).join(', ') }}</strong>
+                <span class="secondaryColor BodyS">Seats</span
+                ><strong class="labelS">{{ h.seats.map((s) => s.code).join(', ') }}</strong>
               </div>
               <div class="sumRow">
-                <span class="secondaryColor">Tickets</span
-                ><strong class="labelM">{{ ticketSummary(h.seats) }}</strong>
+                <span class="secondaryColor BodyS">Tickets</span
+                ><strong class="BodyS">{{ ticketSummary(h.seats) }}</strong>
               </div>
             </div>
 
             <div class="foot">
               <div class="subtotal">
-                <span class="labelM uppercase">Subtotal</span>
+                <span class="labelS uppercase">Subtotal</span>
                 <h2>₾{{ h.subtotal | number: '1.0-2' }}</h2>
               </div>
               <button
                 type="submit"
                 form="checkoutForm"
-                class="btn-primary customBtn labelM cta"
+                class="btn-primary customBtn buttonText cta"
                 [disabled]="form.invalid || submitting()"
               >
-                {{ submitting() ? 'Processing…' : 'Pay & Complete order' }}
+                {{ submitting() ? 'Processing…' : 'Pay: Complete order' }}
               </button>
             </div>
           }
         </aside>
       </div>
     } @else {
-      <!-- ================= confirmation ================= -->
       @if (order(); as o) {
-        <div class="done">
-          <div class="doneIcon" aria-hidden="true">✓</div>
-          <h2>Booking confirmed!</h2>
-          <p class="BodyL secondaryColor">
-            Your tickets are ready. We've sent the confirmation to your email.
-          </p>
-          <span class="orderRef labelM uppercase">Order #{{ o.reference }}</span>
-
-          <div class="receipt">
-            <div class="receiptTop">
-              <img [src]="o.session.movie.posterUrl" alt="" />
-              <div>
-                <h4 class="uppercase">{{ o.session.movie.title }}</h4>
+        <div class="done" animate.enter="fade-in">
+          <div class="doneNonActions">
+            <div class="nonReciept">
+              <div class="doneIcon" aria-hidden="true">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.66699 14.6663L14.667 22.6663L28.0003 9.33301"
+                    stroke="white"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="nonRecieptTextCont">
+                <h2>Booking confirmed!</h2>
                 <p class="BodyM secondaryColor">
-                  {{ o.session.venue.name }} · Hall {{ o.session.hall.name }} ·
-                  {{ o.session.date | date: 'EEE d MMM' }} · {{ o.session.time }}
+                  Your tickets are ready. We've sent the confirmation to your email.
                 </p>
               </div>
+              <span class="orderRef labelS uppercase">Order #{{ o.reference }}</span>
             </div>
-            <hr class="divider" />
-            <div class="sumRow">
-              <span class="secondaryColor">Seats</span
-              ><strong class="labelM">{{ o.tickets.map((t) => t.seatCode).join(', ') }}</strong>
-            </div>
-            <div class="sumRow">
-              <span class="secondaryColor">Tickets</span
-              ><strong class="labelM">{{ ticketSummary(o.tickets) }}</strong>
-            </div>
-            <hr class="divider" />
-            <div class="sumRow total">
-              <span class="secondaryColor uppercase">Total paid</span>
-              <h3>₾{{ o.totalPrice | number: '1.0-2' }}</h3>
+            <div class="receipt">
+              <div class="receiptTop">
+                <img [src]="o.session.movie.posterUrl" alt="" />
+                <div class="recieptTopTextCont">
+                  <p class="uppercase buttonText">{{ o.session.movie.title }}</p>
+                  <p class="BodyS secondaryColor">
+                    {{ o.session.venue.name }} · Hall {{ o.session.hall.name }} ·
+                    {{ o.session.date | date: 'EEE d MMM' }} · {{ o.session.time }}
+                  </p>
+                </div>
+              </div>
+              <div class="lineDivider"></div>
+              <div class="sumRow">
+                <span class="secondaryColor BodyS">Seats</span
+                ><strong class="labelS">{{ o.tickets.map((t) => t.seatCode).join(', ') }}</strong>
+              </div>
+              <div class="sumRow">
+                <span class="secondaryColor BodyS">Tickets</span
+                ><strong class="labelS">{{ ticketSummary(o.tickets) }}</strong>
+              </div>
+              <div class="lineDivider"></div>
+              <div class="sumRow total">
+                <span class="secondaryColor uppercase BodyS">Total paid</span>
+                <h4>₾{{ o.totalPrice | number: '1.0-2' }}</h4>
+              </div>
             </div>
           </div>
 
           <div class="doneActions">
-            <!-- ADJUST routes -->
-            <a routerLink="/my-tickets" class="btn-primary customBtn labelM" (click)="close()"
+            <a
+              routerLink="/profile/tickets"
+              class="btn-primary customBtn buttonText"
+              (click)="close()"
               >View my tickets</a
             >
-            <a routerLink="/" class="btn-secondary customBtn labelM" (click)="close()"
+            <a routerLink="/" class="btn-transparent customBtn buttonText" (click)="close()"
               >Back to home</a
             >
           </div>
