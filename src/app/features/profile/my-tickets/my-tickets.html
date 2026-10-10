@@ -1,1 +1,175 @@
-<p>my-tickets works!</p>
+<div class="tabs" role="tablist" #tabsEl (mouseleave)="moveToActive()">
+  <span
+    class="indicator"
+    aria-hidden="true"
+    [class.ready]="ready()"
+    [style.width.px]="indicator().width"
+    [style.transform]="'translateX(' + indicator().left + 'px)'"
+  ></span>
+
+  <button
+    #upcomingEl
+    type="button"
+    role="tab"
+    class="tab labelM"
+    [class.on]="tab() === 'upcoming'"
+    [attr.aria-selected]="tab() === 'upcoming'"
+    (click)="setTab('upcoming')"
+    (mouseenter)="moveTo(upcomingEl)"
+    (focus)="moveTo(upcomingEl)"
+    (blur)="moveToActive()"
+  >
+    <p class="labelM">Upcoming</p>
+    <span class="count labelS">{{ tickets.upcomingCount() }}</span>
+  </button>
+
+  <button
+    #pastEl
+    type="button"
+    role="tab"
+    class="tab labelM"
+    [class.on]="tab() === 'past'"
+    [attr.aria-selected]="tab() === 'past'"
+    (click)="setTab('past')"
+    (mouseenter)="moveTo(pastEl)"
+    (focus)="moveTo(pastEl)"
+    (blur)="moveToActive()"
+  >
+    <p class="labelM">Past</p>
+    <span class="count labelS">{{ tickets.pastCount() }}</span>
+  </button>
+</div>
+@if (!tickets.loaded()) {
+  @if (tickets.error()) {
+    <div class="state">
+      <p class="secondaryColor">Couldn't load your tickets.</p>
+      <button type="button" class="btn-primary customBtn labelM" (click)="tickets.load()">
+        Retry
+      </button>
+    </div>
+  } @else {
+    <div class="cards" aria-busy="true">
+      @for (n of [1, 2, 3]; track n) {
+        <div class="cardSkeleton shimmer"></div>
+      }
+    </div>
+  }
+} @else if (!list().length) {
+  <div class="state">
+    <p class="secondaryColor">
+      {{ tab() === 'upcoming' ? 'You have no upcoming tickets.' : 'No past tickets yet.' }}
+    </p>
+  </div>
+} @else {
+  <div class="cards">
+    @for (o of list(); track o.id) {
+      <article class="card">
+        <div class="cardInnerCont">
+          <img
+            class="poster"
+            [src]="o.session.movie.posterUrl"
+            [alt]="o.session.movie.title + ' poster'"
+          />
+          <div class="cardMain">
+            <div class="titleRow">
+              <h3 class="uppercase">{{ o.session.movie.title }}</h3>
+              <span class="age labelS">{{ o.session.movie.ageRating.code }}</span>
+              <span class="secondaryColor BodyM">{{ o.session.movie.runtimeMinutes }} min</span>
+              @if (o.status === 'refunded') {
+                <span class="refunded labelS">Refunded</span>
+              }
+            </div>
+            <div class="facts">
+              <div class="factsCont">
+                <p class="overlineText secondaryColor">Date</p>
+                <p class="labelM">
+                  {{ o.session.date | date: 'EEE d MMM' }} · {{ o.session.time }}
+                </p>
+              </div>
+              <div class="factsCont">
+                <p class="overlineText secondaryColor">Venue</p>
+                <p class="labelM">{{ o.session.venue.name }} · Hall {{ o.session.hall.name }}</p>
+              </div>
+              <div class="factsCont">
+                <p class="overlineText secondaryColor">Format</p>
+                <p class="labelM">{{ o.session.format.name }} · {{ o.session.language.name }}</p>
+              </div>
+            </div>
+
+            <div class="seats">
+              <span class="overlineText secondaryColor">Seats</span>
+              @for (t of o.tickets; track t.id) {
+                <span class="seatChip labelS">{{ t.seatCode }} · {{ t.ticketType.name }}</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="sideTopCont">
+            <p class="overlineText secondaryColor">Order</p>
+            <p class="labelM">#{{ o.reference }}</p>
+          </div>
+          <div class="sideBottomCont">
+            <div class="total">
+              <span class="secondaryColor labelM">{{
+                o.status === 'refunded' ? 'Refunded' : 'Total paid'
+              }}</span>
+              <h2>₾{{ o.totalPrice | number: '1.0-2' }}</h2>
+            </div>
+            @if (tab() === 'upcoming') {
+              @if (confirmingId() === o.id) {
+                <p class="BodyM hint warningText">
+                  Refund ₾{{ o.totalPrice | number: '1.0-2' }}? This can't be undone.
+                </p>
+                <div class="confirmBtns">
+                  <button
+                    type="button"
+                    class="btn-transparent customBtn buttonText"
+                    [disabled]="refundingId() === o.id"
+                    (click)="cancelRefund()"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-primary customBtn buttonText"
+                    [disabled]="refundingId() === o.id"
+                    (click)="confirmRefund(o)"
+                  >
+                    @if (refundingId() === o.id) {
+                      <app-loader [size]="16" />
+                    } @else {
+                      Refund
+                    }
+                  </button>
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  class="btn-transparent customBtn buttonText"
+                  [disabled]="!o.isRefundable"
+                  [title]="o.isRefundable ? '' : 'Refunds close 2 hours before the session starts.'"
+                  (click)="askRefund(o)"
+                >
+                  Refund
+                </button>
+              }
+            } @else {
+              <button
+                type="button"
+                class="btn-transparent customBtn buttonText"
+                [disabled]="!o.isRefundable"
+              >
+                Refund
+              </button>
+            }
+            <p class="hint BodyS secondaryColor">
+              Refundable until {{ refundUntil(o) | date: 'HH:mm, EEE d MMM' }}
+            </p>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+}

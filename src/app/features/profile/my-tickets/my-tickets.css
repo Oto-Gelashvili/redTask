@@ -1,0 +1,192 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tabs {
+  position: relative;
+  display: flex;
+  padding: 0.5rem;
+  border-radius: 1.2rem;
+  background: var(--bg-card);
+  margin-top: 3.6rem;
+  width: fit-content;
+}
+
+.indicator {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 0;
+  border-radius: 1rem;
+  background: var(--bg-raised);
+  pointer-events: none;
+}
+.indicator.ready {
+  transition:
+    transform 0.4s ease-in-out,
+    width 0.4s ease-in-out;
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  gap: 0.8rem;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 1rem;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.4s;
+}
+.tab:hover,
+.tab.on {
+  color: var(--text-primary);
+}
+.count {
+  color: var(--text-disabled);
+  transition: color 0.4s;
+}
+.tab:hover .count,
+.tab.on .count {
+  color: var(--text-primary);
+}
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.cardSkeleton {
+  height: 18.3rem;
+  border-radius: 2.6rem;
+}
+
+.card {
+  display: flex;
+  gap: 1.8rem;
+  border-radius: 2.6rem;
+  background: var(--bg-card);
+}
+.cardInnerCont {
+  display: flex;
+  gap: 1.8rem;
+  padding-inline: 3rem;
+  align-items: center;
+  flex: 1;
+}
+.poster {
+  flex: 0 0 auto;
+  width: 10rem;
+  height: 13.3rem;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+.cardMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.titleRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.age {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--tint-red);
+  color: var(--error);
+}
+.refunded {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--tint-warning);
+  color: var(--warning);
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+}
+.factsCont {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.overlineText {
+  font-size: 1.2rem;
+}
+.seats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.seatChip {
+  padding: 0.4rem 1rem;
+  border-radius: 0.6rem;
+  background: var(--tint-white);
+}
+
+.side {
+  flex: 0 0 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 2rem 2.4rem;
+  position: relative;
+}
+.side::before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: repeating-linear-gradient(to bottom, var(--bg-raised) 0 6px, transparent 6px 12px);
+}
+.sideBottomCont {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.sideTopCont {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.customBtn {
+  padding-block: 1rem;
+}
+.side button {
+  width: 100%;
+}
+.confirmBtns {
+  display: flex;
+  gap: 0.8rem;
+}
+.confirmBtns button {
+  flex: 1;
+}
+.hint {
+  text-align: center;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 6rem 0;
+}

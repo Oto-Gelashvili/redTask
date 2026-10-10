@@ -13,7 +13,7 @@ export class Profile {
   protected readonly ticketsService = inject(TicketsService);
 
   constructor() {
-    this.ticketsService.loadUpcoming();
+    this.ticketsService.load();
   }
   protected readonly indicator = signal({ left: 0, width: 0 });
   protected readonly ready = signal(false);
