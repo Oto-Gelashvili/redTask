@@ -42,6 +42,7 @@ export class ApiService {
         status: res.status,
         message: json.message ?? 'Something went wrong.',
         errors: json.errors,
+        contested: json.contested,
       };
       throw error;
     }

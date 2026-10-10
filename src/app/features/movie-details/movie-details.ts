@@ -7,7 +7,8 @@ import { ApiError } from '../../models/api-error';
 import { MovieDetail, VenueSessions } from '../../models/movie';
 import { Session } from '../../models/session';
 import { toLocalISODate } from '../../shared/utils';
-import { Loader } from '../../shared/components/loader/loader';
+import { ModalService } from '../../core/services/modal.service';
+import { BookingModal } from './components/booking-modal/booking-modal';
 
 const DAYS_SHOWN = 7;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -29,12 +30,15 @@ function groupByHall(sessions: Session[]): HallGroup[] {
 }
 
 @Component({
-  imports: [DatePipe, Loader],
+  imports: [DatePipe, BookingModal],
   selector: 'app-movie-details',
   styleUrl: './movie-details.css',
   templateUrl: './movie-details.html',
 })
 export class MovieDetails {
+  private readonly modal = inject(ModalService);
+  protected readonly activeSession = signal<Session | null>(null);
+
   private readonly moviesService = inject(MoviesService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -42,6 +46,7 @@ export class MovieDetails {
 
   // bound from the URL by withComponentInputBinding()
   readonly slug = input.required<string>();
+  readonly sessionParam = input<string | undefined>(undefined, { alias: 'session' });
   readonly dateParam = input<string | undefined>(undefined, { alias: 'date' });
 
   protected readonly movie = signal<MovieDetail | null>(null);
@@ -53,6 +58,10 @@ export class MovieDetails {
 
   private movieRequestId = 0;
   private sessionsRequestId = 0;
+
+  private readonly allSessions = computed(() =>
+    this.venues().flatMap((v) => v.halls.flatMap((h) => h.sessions)),
+  );
 
   protected readonly days = computed<DayOption[]>(() => {
     const available = new Set(this.movie()?.availableDates ?? []);
@@ -111,8 +120,25 @@ export class MovieDetails {
       const date = this.selectedDate();
       untracked(() => this.loadSessions(slug, date));
     });
-  }
+    effect(() => {
+      const id = Number(this.sessionParam());
+      if (!id || this.movieState() !== 'ready' || this.sessionsLoading()) return;
 
+      const session = this.allSessions().find((s) => s.id === id);
+      if (!session) return;
+
+      untracked(() => this.openFromLink(session));
+    });
+  }
+  private openFromLink(session: Session) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { session: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+    void this.openSession(session);
+  }
   protected async loadMovie(slug: string) {
     const id = ++this.movieRequestId;
     this.movie.set(null);
@@ -160,7 +186,7 @@ export class MovieDetails {
   protected selectDate(iso: string) {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { date: iso },
+      queryParams: { date: iso, session: null },
       queryParamsHandling: 'merge',
     });
   }
@@ -169,8 +195,14 @@ export class MovieDetails {
     return session.isSoldOut || !!this.restriction();
   }
 
-  protected openSession(session: Session) {
+  protected async openSession(session: Session) {
     if (this.isDisabled(session)) return;
-    this.router.navigate(['/sessions', session.id, 'seats']);
+
+    if (!this.auth.isAuthenticated()) {
+      this.modal.openLogIn();
+      const loggedIn = await this.auth.waitForLogin();
+      if (!loggedIn || this.isDisabled(session)) return;
+    }
+    this.activeSession.set(session);
   }
 }

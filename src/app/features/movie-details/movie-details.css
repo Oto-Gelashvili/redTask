@@ -339,3 +339,6 @@ h1 {
   height: 8rem;
   border-radius: 1.6rem;
 }
+.staticShimmer {
+  background: linear-gradient(90deg, var(--tint-white) 25%, var(--bg-raised) 55%);
+}

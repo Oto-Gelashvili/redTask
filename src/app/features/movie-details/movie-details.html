@@ -2,7 +2,7 @@
   @case ('loading') {
     <div aria-busy="true" aria-label="Loading film">
       <section class="hero movieDetailsPage">
-        <div class="backdrop shimmer"></div>
+        <div class="backdrop staticShimmer"></div>
 
         <div class="heroInner">
           <div class="poster shimmer"></div>
@@ -289,5 +289,10 @@
         </div>
       </div>
     }
+  }
+}
+@if (activeSession(); as s) {
+  @if (movie(); as m) {
+    <app-booking-modal [session]="s" [movie]="m" (closed)="activeSession.set(null)" />
   }
 }

@@ -1,0 +1,480 @@
+<div class="backdrop" animate.enter="fade-in-long" (click)="close()">
+  <div class="dialog" animate.enter="fade-in-long" (click)="$event.stopPropagation()">
+    @if (step() !== 'done') {
+      <header class="head">
+        <div>
+          <h3 class="uppercase">{{ movie().title }}</h3>
+          <p class="BodyS secondaryColor">
+            {{ session().venue.name }} · Hall {{ session().hall.name }} ·
+            {{ session().date | date: 'EEEE d MMMM' }} · {{ session().time }} ·
+            {{ session().format.name }} · {{ session().language.name }}
+          </p>
+        </div>
+
+        <div class="headRight">
+          <div class="timer" [class.low]="(remaining() ?? 0) <= 60">
+            @if (holding()) {
+              <app-loader></app-loader>
+            } @else {
+              <span class="labelS uppercase secondaryColor">Seats held</span>
+              <p class="buttonText">{{ timerText() }}</p>
+            }
+          </div>
+        </div>
+      </header>
+
+      <div class="layout" animate.enter="fade-in">
+        <section class="main">
+          <div class="steps">
+            <button
+              type="button  labelS uppercase"
+              class="step"
+              [class.active]="step() === 'seats'"
+              [disabled]="step() === 'seats'"
+              (click)="backToSeats()"
+            >
+              Seats
+            </button>
+            <button
+              type="button"
+              class="step labelS uppercase"
+              [class.active]="step() === 'checkout'"
+              [disabled]="step() === 'checkout' || !canProceed()"
+              (click)="next()"
+            >
+              Checkout
+            </button>
+          </div>
+
+          <!-- @if (notice(); as n) {
+            <div
+              class="notice"
+              [class.error]="n.kind === 'error'"
+              [class.warning]="n.kind === 'warning'"
+              role="alert"
+            >
+              <span>{{ n.text }}</span>
+              @if (n.profileLink) {
+                <a routerLink="/profile" class="noticeLink" (click)="close()">Go to profile</a>
+              }
+            </div>
+          } -->
+          <div class="seatsCont">
+            @if (step() === 'seats') {
+              <div class="screen labelS uppercase">Screen</div>
+              @switch (mapState()) {
+                @case ('loading') {
+                  <div class="mapSkeleton" aria-busy="true">
+                    @for (r of [1, 2, 3, 4]; track r) {
+                      <div class="skRow">
+                        @for (c of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track c) {
+                          <div class="skSeat shimmer"></div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+                @case ('error') {
+                  <div class="mapState">
+                    <p class="secondaryColor">Couldn't load the hall map.</p>
+                    <button type="button" class="btn-primary customBtn labelM" (click)="loadMap()">
+                      Retry
+                    </button>
+                  </div>
+                }
+                @case ('ready') {
+                  <div class="map">
+                    @for (section of layout(); track section.name) {
+                      <div class="section">
+                        <div class="sectionsCont">
+                          <p class="labelS uppercase secondaryColor">
+                            {{ section.name }} · Rows {{ section.range }}
+                          </p>
+                          <div class="sectionTable">
+                            @for (row of section.rows; track row.label) {
+                              <div class="row" role="group" [attr.aria-label]="'Row ' + row.label">
+                                <span class="rowLabel labelS">{{ row.label }}</span>
+                                @for (cell of row.cells; track cell.seat.id) {
+                                  @if (cell.status === 'gap') {
+                                    <span class="seat gap" aria-hidden="true"></span>
+                                  } @else {
+                                    <button
+                                      type="button"
+                                      class="seat buttonText"
+                                      [attr.data-status]="cell.status"
+                                      [disabled]="cell.status === 'sold' || cell.status === 'held'"
+                                      [attr.aria-pressed]="cell.status === 'selected'"
+                                      [attr.aria-label]="seatAria(cell)"
+                                      (click)="toggleSeat(cell.seat, section.name)"
+                                    >
+                                      {{ cell.seat.label }}
+                                    </button>
+                                  }
+                                  @if (cell.seat.aisleAfter) {
+                                    <span class="aisle" aria-hidden="true"></span>
+                                  }
+                                }
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                  <ul class="legend BodyS secondaryColor">
+                    <li><span class="swatch" data-status="available"></span>Available</li>
+                    <li><span class="swatch" data-status="selected"></span>Selected</li>
+                    <li><span class="swatch" data-status="sold"></span>Sold</li>
+                    <li><span class="swatch" data-status="held"></span>Held by another user</li>
+                  </ul>
+                }
+              }
+            }
+          </div>
+          <!-- ================= STEP 2 ================= -->
+          @if (step() === 'checkout') {
+            <form id="checkoutForm" class="form" [formGroup]="form" (ngSubmit)="pay()" novalidate>
+              <div class="field">
+                <label for="fullName" class="labelM">Full name</label>
+                <div
+                  class="control"
+                  [class.invalid]="form.controls.fullName.invalid && form.controls.fullName.touched"
+                >
+                  <input
+                    id="fullName"
+                    formControlName="fullName"
+                    autocomplete="name"
+                    placeholder="e.g. Meri Sanikidze"
+                  />
+                  @if (form.controls.fullName.valid && form.controls.fullName.value) {
+                    <span class="ok" aria-hidden="true">✓</span>
+                  }
+                </div>
+                @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+                  <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                    {{ form.controls.fullName.errors?.['server'] ?? 'Enter at least 3 characters' }}
+                  </p>
+                }
+              </div>
+
+              <div class="twoCol">
+                <div class="field">
+                  <label for="email" class="labelM">Email</label>
+                  <div
+                    class="control"
+                    [class.invalid]="form.controls.email.invalid && form.controls.email.touched"
+                  >
+                    <input
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      autocomplete="email"
+                      placeholder="e.g. name@mail.com"
+                    />
+                    @if (form.controls.email.valid && form.controls.email.value) {
+                      <span class="ok" aria-hidden="true">✓</span>
+                    }
+                  </div>
+                  @if (form.controls.email.invalid && form.controls.email.touched) {
+                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                      {{ form.controls.email.errors?.['server'] ?? 'Enter a valid email address' }}
+                    </p>
+                  }
+                </div>
+
+                <div class="field">
+                  <label for="mobileNumber" class="labelM">Mobile number</label>
+                  <div
+                    class="control"
+                    [class.invalid]="
+                      form.controls.mobileNumber.invalid && form.controls.mobileNumber.touched
+                    "
+                  >
+                    <input
+                      id="mobileNumber"
+                      type="tel"
+                      formControlName="mobileNumber"
+                      autocomplete="tel"
+                      placeholder="e.g. 555 123 456"
+                    />
+                    @if (form.controls.mobileNumber.valid && form.controls.mobileNumber.value) {
+                      <span class="ok" aria-hidden="true">✓</span>
+                    }
+                  </div>
+                  @if (form.controls.mobileNumber.invalid && form.controls.mobileNumber.touched) {
+                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                      {{
+                        form.controls.mobileNumber.errors?.['server'] ??
+                          'Enter a valid Georgian number, e.g. 555 123 456'
+                      }}
+                    </p>
+                  }
+                </div>
+              </div>
+
+              <hr class="divider" />
+
+              <div class="field">
+                <label for="cardNumber" class="labelM">Card number</label>
+                <div
+                  class="control"
+                  [class.invalid]="
+                    form.controls.cardNumber.invalid && form.controls.cardNumber.touched
+                  "
+                >
+                  <input
+                    id="cardNumber"
+                    formControlName="cardNumber"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    placeholder="e.g. 1234 4567 8901 2345"
+                    (input)="onCardInput($event)"
+                  />
+                  @if (form.controls.cardNumber.valid && form.controls.cardNumber.value) {
+                    <span class="ok" aria-hidden="true">✓</span>
+                  }
+                </div>
+                @if (form.controls.cardNumber.invalid && form.controls.cardNumber.touched) {
+                  <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                    {{
+                      form.controls.cardNumber.errors?.['server'] ?? 'Card number must be 16 digits'
+                    }}
+                  </p>
+                }
+              </div>
+
+              <div class="twoCol">
+                <div class="field">
+                  <label for="expiry" class="labelM">Expiry</label>
+                  <div
+                    class="control"
+                    [class.invalid]="form.controls.expiry.invalid && form.controls.expiry.touched"
+                  >
+                    <input
+                      id="expiry"
+                      formControlName="expiry"
+                      inputmode="numeric"
+                      autocomplete="cc-exp"
+                      placeholder="e.g. 12/34"
+                      (input)="onExpiryInput($event)"
+                    />
+                    @if (form.controls.expiry.valid && form.controls.expiry.value) {
+                      <span class="ok" aria-hidden="true">✓</span>
+                    }
+                  </div>
+                  @if (form.controls.expiry.invalid && form.controls.expiry.touched) {
+                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                      {{
+                        form.controls.expiry.errors?.['server'] ??
+                          'Use MM/YY, and the date must be in the future'
+                      }}
+                    </p>
+                  }
+                </div>
+
+                <div class="field">
+                  <label for="cvv" class="labelM">CVV</label>
+                  <div
+                    class="control"
+                    [class.invalid]="form.controls.cvv.invalid && form.controls.cvv.touched"
+                  >
+                    <input
+                      id="cvv"
+                      formControlName="cvv"
+                      inputmode="numeric"
+                      autocomplete="cc-csc"
+                      placeholder="e.g. 123"
+                      (input)="onCvvInput($event)"
+                    />
+                    @if (form.controls.cvv.valid && form.controls.cvv.value) {
+                      <span class="ok" aria-hidden="true">✓</span>
+                    }
+                  </div>
+                  @if (form.controls.cvv.invalid && form.controls.cvv.touched) {
+                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                      {{ form.controls.cvv.errors?.['server'] ?? 'CVV must be 3 digits' }}
+                    </p>
+                  }
+                </div>
+              </div>
+            </form>
+          }
+        </section>
+
+        <!-- ================= side panel ================= -->
+        <aside class="side">
+          @if (step() === 'seats') {
+            <p class="buttonText">Your seats · Max {{ maxSeats }}</p>
+
+            @if (!lines().length) {
+              <p class="BodyS secondaryColor">
+                Pick up to {{ maxSeats }} seats from the map. Each seat can carry its own ticket
+                type.
+              </p>
+            } @else {
+              <ul class="lines">
+                @for (l of lines(); track l.id) {
+                  <li class="line">
+                    <div class="lineTop">
+                      <div>
+                        <div class="lineTopCont">
+                          <p class="BodyS secondaryColor">Seat</p>
+                          <p class="labelS">{{ l.code }}</p>
+                        </div>
+                      </div>
+                      <div class="lineTopCont">
+                        <strong class="labelS">₾{{ l.price | number: '1.0-2' }}</strong>
+                        <button
+                          type="button"
+                          class="removeBtn"
+                          [attr.aria-label]="'Remove seat ' + l.code"
+                          (click)="removeSeat(l.id)"
+                        >
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8.65264 7.97798L11.8926 4.73798C11.9655 4.65296 12.0035 4.54359 11.9992 4.43173C11.9949 4.31988 11.9485 4.21377 11.8693 4.13462C11.7902 4.05547 11.6841 4.0091 11.5722 4.00478C11.4604 4.00046 11.351 4.0385 11.266 4.11131L8.02598 7.35131L4.78598 4.10687C4.70095 4.03406 4.59159 3.99601 4.47973 4.00033C4.36787 4.00465 4.26177 4.05102 4.18261 4.13017C4.10346 4.20933 4.05709 4.31543 4.05277 4.42729C4.04845 4.53915 4.0865 4.64851 4.15931 4.73354L7.39931 7.97798L4.15486 11.218C4.10834 11.2578 4.07055 11.3069 4.04388 11.362C4.0172 11.4171 4.00221 11.4772 3.99984 11.5384C3.99748 11.5996 4.00779 11.6606 4.03014 11.7177C4.05248 11.7747 4.08637 11.8265 4.12969 11.8698C4.173 11.9131 4.2248 11.947 4.28183 11.9694C4.33887 11.9917 4.3999 12.002 4.46111 11.9997C4.52232 11.9973 4.58238 11.9823 4.63752 11.9556C4.69266 11.929 4.74169 11.8912 4.78153 11.8446L8.02598 8.60465L11.266 11.8446C11.351 11.9175 11.4604 11.9555 11.5722 11.9512C11.6841 11.9469 11.7902 11.9005 11.8693 11.8213C11.9485 11.7422 11.9949 11.6361 11.9992 11.5242C12.0035 11.4124 11.9655 11.303 11.8926 11.218L8.65264 7.97798Z"
+                              fill="#A9A9A9"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lineDivider"></div>
+                    <div
+                      class="types"
+                      role="radiogroup"
+                      [attr.aria-label]="'Ticket type for seat ' + l.code"
+                    >
+                      @for (t of visibleTypes(); track t.slug) {
+                        <button
+                          type="button"
+                          role="radio"
+                          class="typeBtn BodyS"
+                          [class.on]="t.slug === l.ticketType"
+                          [attr.aria-checked]="t.slug === l.ticketType"
+                          (click)="setType(l.id, t.slug)"
+                        >
+                          <p>{{ t.name }} {{ t.ratio * 100 }}%</p>
+                        </button>
+                      }
+                    </div>
+                  </li>
+                }
+              </ul>
+            }
+
+            @for (v of violations(); track v.code) {
+              <p class="violation BodyS">{{ v.code }}: {{ v.reason }}</p>
+            }
+            @if (ageBlock(); as msg) {
+              <p class="violation BodyS">{{ msg }}</p>
+            }
+
+            <div class="foot">
+              <div class="subtotal">
+                <span class="labelS uppercase">Subtotal</span>
+                <h2>₾{{ subtotal() | number: '1.0-2' }}</h2>
+              </div>
+              <button
+                type="button"
+                class="btn-primary customBtn buttonText cta"
+                [disabled]="!canProceed()"
+                (click)="next()"
+              >
+                {{ holding() ? 'Reserving…' : 'Next: Checkout' }}
+              </button>
+            </div>
+          } @else if (hold(); as h) {
+            <h3>Summary</h3>
+            <div class="summary">
+              <h4 class="uppercase">{{ movie().title }}</h4>
+              <p class="BodyS secondaryColor">
+                Hall {{ session().hall.name }} · {{ session().date | date: 'EEE d MMM' }} ·
+                {{ session().time }}
+              </p>
+              <hr class="divider" />
+              <div class="sumRow">
+                <span class="secondaryColor">Seats</span
+                ><strong class="labelM">{{ h.seats.map((s) => s.code).join(', ') }}</strong>
+              </div>
+              <div class="sumRow">
+                <span class="secondaryColor">Tickets</span
+                ><strong class="labelM">{{ ticketSummary(h.seats) }}</strong>
+              </div>
+            </div>
+
+            <div class="foot">
+              <div class="subtotal">
+                <span class="labelM uppercase">Subtotal</span>
+                <h2>₾{{ h.subtotal | number: '1.0-2' }}</h2>
+              </div>
+              <button
+                type="submit"
+                form="checkoutForm"
+                class="btn-primary customBtn labelM cta"
+                [disabled]="form.invalid || submitting()"
+              >
+                {{ submitting() ? 'Processing…' : 'Pay & Complete order' }}
+              </button>
+            </div>
+          }
+        </aside>
+      </div>
+    } @else {
+      <!-- ================= confirmation ================= -->
+      @if (order(); as o) {
+        <div class="done">
+          <div class="doneIcon" aria-hidden="true">✓</div>
+          <h2>Booking confirmed!</h2>
+          <p class="BodyL secondaryColor">
+            Your tickets are ready. We've sent the confirmation to your email.
+          </p>
+          <span class="orderRef labelM uppercase">Order #{{ o.reference }}</span>
+
+          <div class="receipt">
+            <div class="receiptTop">
+              <img [src]="o.session.movie.posterUrl" alt="" />
+              <div>
+                <h4 class="uppercase">{{ o.session.movie.title }}</h4>
+                <p class="BodyM secondaryColor">
+                  {{ o.session.venue.name }} · Hall {{ o.session.hall.name }} ·
+                  {{ o.session.date | date: 'EEE d MMM' }} · {{ o.session.time }}
+                </p>
+              </div>
+            </div>
+            <hr class="divider" />
+            <div class="sumRow">
+              <span class="secondaryColor">Seats</span
+              ><strong class="labelM">{{ o.tickets.map((t) => t.seatCode).join(', ') }}</strong>
+            </div>
+            <div class="sumRow">
+              <span class="secondaryColor">Tickets</span
+              ><strong class="labelM">{{ ticketSummary(o.tickets) }}</strong>
+            </div>
+            <hr class="divider" />
+            <div class="sumRow total">
+              <span class="secondaryColor uppercase">Total paid</span>
+              <h3>₾{{ o.totalPrice | number: '1.0-2' }}</h3>
+            </div>
+          </div>
+
+          <div class="doneActions">
+            <!-- ADJUST routes -->
+            <a routerLink="/my-tickets" class="btn-primary customBtn labelM" (click)="close()"
+              >View my tickets</a
+            >
+            <a routerLink="/" class="btn-secondary customBtn labelM" (click)="close()"
+              >Back to home</a
+            >
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -3,7 +3,7 @@
   [class.soldOut]="session().isSoldOut"
   /* animate.enter="open-animation" */
   [routerLink]="['/movies', movieSlug()]"
-  [queryParams]="{ date: session().date }"
+  [queryParams]="{ date: session().date, session: session().id }"
   animate.enter="fade-in"
   animate.leave="fade-out"
   tabindex="0"
