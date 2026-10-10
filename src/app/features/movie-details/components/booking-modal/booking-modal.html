@@ -25,6 +25,21 @@
 
       <div class="layout" animate.enter="fade-in">
         <section class="main">
+          @if (notice(); as n) {
+            <div
+              class="notice"
+              [class.error]="n.kind === 'error'"
+              [class.warning]="n.kind === 'warning'"
+              animate.enter="fade-in-long"
+              role="alert"
+            >
+              <span>{{ n.text }}</span>
+              @if (n.profileLink) {
+                <a routerLink="/profile" class="noticeLink" (click)="close()">Go to profile</a>
+              }
+            </div>
+          }
+
           <div class="steps">
             <button
               type="button  labelS uppercase"
@@ -46,19 +61,6 @@
             </button>
           </div>
 
-          <!-- @if (notice(); as n) {
-            <div
-              class="notice"
-              [class.error]="n.kind === 'error'"
-              [class.warning]="n.kind === 'warning'"
-              role="alert"
-            >
-              <span>{{ n.text }}</span>
-              @if (n.profileLink) {
-                <a routerLink="/profile" class="noticeLink" (click)="close()">Go to profile</a>
-              }
-            </div>
-          } -->
           <div class="seatsCont">
             @if (step() === 'seats') {
               <div class="screen labelS uppercase">Screen</div>
@@ -131,177 +133,176 @@
               }
             }
           </div>
-          <!-- ================= STEP 2 ================= -->
           @if (step() === 'checkout') {
             <form id="checkoutForm" class="form" [formGroup]="form" (ngSubmit)="pay()" novalidate>
-              <div class="field">
-                <label for="fullName" class="labelM">Full name</label>
-                <div
-                  class="control"
-                  [class.invalid]="form.controls.fullName.invalid && form.controls.fullName.touched"
-                >
-                  <input
-                    id="fullName"
-                    formControlName="fullName"
-                    autocomplete="name"
-                    placeholder="e.g. Meri Sanikidze"
-                  />
-                  @if (form.controls.fullName.valid && form.controls.fullName.value) {
-                    <span class="ok" aria-hidden="true">✓</span>
-                  }
-                </div>
-                @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
-                  <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
-                    {{ form.controls.fullName.errors?.['server'] ?? 'Enter at least 3 characters' }}
-                  </p>
-                }
-              </div>
-
-              <div class="twoCol">
-                <div class="field">
-                  <label for="email" class="labelM">Email</label>
-                  <div
-                    class="control"
-                    [class.invalid]="form.controls.email.invalid && form.controls.email.touched"
-                  >
+              <div class="formFieldCont">
+                <div class="inputCont">
+                  <label for="fullName" class="labelS">Full name</label>
+                  <div class="inputWithIconCont">
                     <input
-                      id="email"
-                      type="email"
-                      formControlName="email"
-                      autocomplete="email"
-                      placeholder="e.g. name@mail.com"
+                      id="fullName"
+                      formControlName="fullName"
+                      autocomplete="name"
+                      placeholder="e.g. Meri Sanikidze"
                     />
-                    @if (form.controls.email.valid && form.controls.email.value) {
-                      <span class="ok" aria-hidden="true">✓</span>
+                    @if (form.get('fullName')?.invalid && form.get('fullName')?.touched) {
+                      <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                    }
+                    @if (form.get('fullName')?.valid && form.get('fullName')?.touched) {
+                      <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
                     }
                   </div>
-                  @if (form.controls.email.invalid && form.controls.email.touched) {
-                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
-                      {{ form.controls.email.errors?.['server'] ?? 'Enter a valid email address' }}
+                  @if (form.get('fullName')?.invalid && form.get('fullName')?.touched) {
+                    <p class="error" animate.enter="showError" animate.leave="hideError">
+                      {{ form.get('fullName')?.errors?.['server'] ?? 'Min 3 characters' }}
                     </p>
                   }
                 </div>
 
-                <div class="field">
-                  <label for="mobileNumber" class="labelM">Mobile number</label>
-                  <div
-                    class="control"
-                    [class.invalid]="
-                      form.controls.mobileNumber.invalid && form.controls.mobileNumber.touched
-                    "
-                  >
-                    <input
-                      id="mobileNumber"
-                      type="tel"
-                      formControlName="mobileNumber"
-                      autocomplete="tel"
-                      placeholder="e.g. 555 123 456"
-                    />
-                    @if (form.controls.mobileNumber.valid && form.controls.mobileNumber.value) {
-                      <span class="ok" aria-hidden="true">✓</span>
+                <div class="twoCol">
+                  <div class="inputCont">
+                    <label for="email" class="labelS">Email</label>
+                    <div class="inputWithIconCont">
+                      <input
+                        id="email"
+                        type="email"
+                        formControlName="email"
+                        autocomplete="email"
+                        placeholder="e.g. name@mail.com"
+                      />
+                      @if (form.get('email')?.invalid && form.get('email')?.touched) {
+                        <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                      }
+                      @if (form.get('email')?.valid && form.get('email')?.touched) {
+                        <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+                      }
+                    </div>
+                    @if (form.get('email')?.invalid && form.get('email')?.touched) {
+                      <p class="error" animate.enter="showError" animate.leave="hideError">
+                        {{ form.get('email')?.errors?.['server'] ?? 'Enter a valid email address' }}
+                      </p>
                     }
                   </div>
-                  @if (form.controls.mobileNumber.invalid && form.controls.mobileNumber.touched) {
-                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
-                      {{
-                        form.controls.mobileNumber.errors?.['server'] ??
-                          'Enter a valid Georgian number, e.g. 555 123 456'
-                      }}
-                    </p>
-                  }
+
+                  <div class="inputCont">
+                    <label for="mobileNumber" class="labelS">Mobile number</label>
+                    <div class="inputWithIconCont">
+                      <input
+                        id="mobileNumber"
+                        type="tel"
+                        formControlName="mobileNumber"
+                        autocomplete="tel"
+                        placeholder="e.g. 555 123 456"
+                      />
+                      @if (form.get('mobileNumber')?.invalid && form.get('mobileNumber')?.touched) {
+                        <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                      }
+                      @if (form.get('mobileNumber')?.valid && form.get('mobileNumber')?.touched) {
+                        <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+                      }
+                    </div>
+                    @if (form.get('mobileNumber')?.invalid && form.get('mobileNumber')?.touched) {
+                      <p class="error" animate.enter="showError" animate.leave="hideError">
+                        {{
+                          form.get('mobileNumber')?.errors?.['server'] ??
+                            'Enter a valid Georgian number, e.g. 555 123 456'
+                        }}
+                      </p>
+                    }
+                  </div>
                 </div>
               </div>
 
               <hr class="divider" />
 
-              <div class="field">
-                <label for="cardNumber" class="labelM">Card number</label>
-                <div
-                  class="control"
-                  [class.invalid]="
-                    form.controls.cardNumber.invalid && form.controls.cardNumber.touched
-                  "
-                >
-                  <input
-                    id="cardNumber"
-                    formControlName="cardNumber"
-                    inputmode="numeric"
-                    autocomplete="cc-number"
-                    placeholder="e.g. 1234 4567 8901 2345"
-                    (input)="onCardInput($event)"
-                  />
-                  @if (form.controls.cardNumber.valid && form.controls.cardNumber.value) {
-                    <span class="ok" aria-hidden="true">✓</span>
-                  }
-                </div>
-                @if (form.controls.cardNumber.invalid && form.controls.cardNumber.touched) {
-                  <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
-                    {{
-                      form.controls.cardNumber.errors?.['server'] ?? 'Card number must be 16 digits'
-                    }}
-                  </p>
-                }
-              </div>
-
-              <div class="twoCol">
-                <div class="field">
-                  <label for="expiry" class="labelM">Expiry</label>
-                  <div
-                    class="control"
-                    [class.invalid]="form.controls.expiry.invalid && form.controls.expiry.touched"
-                  >
+              <div class="formFieldCont">
+                <div class="inputCont">
+                  <label for="cardNumber" class="labelS">Card number</label>
+                  <div class="inputWithIconCont">
                     <input
-                      id="expiry"
-                      formControlName="expiry"
+                      id="cardNumber"
+                      formControlName="cardNumber"
                       inputmode="numeric"
-                      autocomplete="cc-exp"
-                      placeholder="e.g. 12/34"
-                      (input)="onExpiryInput($event)"
+                      autocomplete="cc-number"
+                      placeholder="e.g. 1234 4567 8901 2345"
+                      (input)="onCardInput($event)"
                     />
-                    @if (form.controls.expiry.valid && form.controls.expiry.value) {
-                      <span class="ok" aria-hidden="true">✓</span>
+                    @if (form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched) {
+                      <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                    }
+                    @if (form.get('cardNumber')?.valid && form.get('cardNumber')?.touched) {
+                      <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
                     }
                   </div>
-                  @if (form.controls.expiry.invalid && form.controls.expiry.touched) {
-                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
+                  @if (form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched) {
+                    <p class="error" animate.enter="showError" animate.leave="hideError">
                       {{
-                        form.controls.expiry.errors?.['server'] ??
-                          'Use MM/YY, and the date must be in the future'
+                        form.get('cardNumber')?.errors?.['server'] ??
+                          'Card number must be 16 digits'
                       }}
                     </p>
                   }
                 </div>
 
-                <div class="field">
-                  <label for="cvv" class="labelM">CVV</label>
-                  <div
-                    class="control"
-                    [class.invalid]="form.controls.cvv.invalid && form.controls.cvv.touched"
-                  >
-                    <input
-                      id="cvv"
-                      formControlName="cvv"
-                      inputmode="numeric"
-                      autocomplete="cc-csc"
-                      placeholder="e.g. 123"
-                      (input)="onCvvInput($event)"
-                    />
-                    @if (form.controls.cvv.valid && form.controls.cvv.value) {
-                      <span class="ok" aria-hidden="true">✓</span>
+                <div class="twoCol">
+                  <div class="inputCont">
+                    <label for="expiry" class="labelS">Expiry</label>
+                    <div class="inputWithIconCont">
+                      <input
+                        id="expiry"
+                        formControlName="expiry"
+                        inputmode="numeric"
+                        autocomplete="cc-exp"
+                        placeholder="e.g. 12/34"
+                        (input)="onExpiryInput($event)"
+                      />
+                      @if (form.get('expiry')?.invalid && form.get('expiry')?.touched) {
+                        <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                      }
+                      @if (form.get('expiry')?.valid && form.get('expiry')?.touched) {
+                        <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+                      }
+                    </div>
+                    @if (form.get('expiry')?.invalid && form.get('expiry')?.touched) {
+                      <p class="error" animate.enter="showError" animate.leave="hideError">
+                        {{
+                          form.get('expiry')?.errors?.['server'] ??
+                            'Use MM/YY, and the date must be in the future'
+                        }}
+                      </p>
                     }
                   </div>
-                  @if (form.controls.cvv.invalid && form.controls.cvv.touched) {
-                    <p class="fieldError BodyS" animate.enter="showError" animate.leave="hideError">
-                      {{ form.controls.cvv.errors?.['server'] ?? 'CVV must be 3 digits' }}
-                    </p>
-                  }
+
+                  <div class="inputCont">
+                    <label for="cvv" class="labelS">CVV</label>
+                    <div class="inputWithIconCont">
+                      <input
+                        id="cvv"
+                        formControlName="cvv"
+                        inputmode="numeric"
+                        autocomplete="cc-csc"
+                        placeholder="e.g. 123"
+                        (input)="onCvvInput($event)"
+                      />
+                      @if (form.get('cvv')?.invalid && form.get('cvv')?.touched) {
+                        <img class="inputsIcon" src="errorIcon.svg" alt="error Icon" />
+                      }
+                      @if (form.get('cvv')?.valid && form.get('cvv')?.touched) {
+                        <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
+                      }
+                    </div>
+                    @if (form.get('cvv')?.invalid && form.get('cvv')?.touched) {
+                      <p class="error" animate.enter="showError" animate.leave="hideError">
+                        {{ form.get('cvv')?.errors?.['server'] ?? 'CVV must be 3 digits' }}
+                      </p>
+                    }
+                  </div>
                 </div>
               </div>
             </form>
           }
         </section>
 
-        <!-- ================= side panel ================= -->
         <aside class="side">
           @if (step() === 'seats') {
             <p class="buttonText">Your seats · Max {{ maxSeats }}</p>

@@ -58,9 +58,8 @@
 .inputsIcon {
   position: absolute;
   right: 1.6rem;
-  top: 1.2rem;
-  /* top: 50%;
-  transform: translateY(-50%); */
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 0;

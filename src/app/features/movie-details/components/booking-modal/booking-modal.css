@@ -47,6 +47,9 @@
   padding: 0.8rem 1.4rem;
   border-radius: 1.2rem;
   background: var(--bg-card);
+  width: 102px;
+  height: 47px;
+  justify-content: center;
 }
 .timer.low p {
   color: var(--error);
@@ -97,10 +100,10 @@
   cursor: not-allowed;
 }
 
-/* notice */
 .notice {
+  margin-bottom: 1.95rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 1.6rem;
   padding: 1.2rem 1.6rem;
@@ -253,7 +256,6 @@
   background: repeating-linear-gradient(135deg, var(--bg-raised) 0 4px, var(--bg-card) 4px 8px);
 }
 
-/* skeleton / map states */
 .mapSkeleton {
   display: flex;
   flex-direction: column;
@@ -385,8 +387,14 @@
   background: var(--bg-raised);
 }
 
-/* form */
 .form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.4rem;
+  margin-bottom: 4.2rem;
+  gap: 2rem;
+}
+.formFieldCont {
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
@@ -394,50 +402,14 @@
 .twoCol {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.4rem;
+  gap: 1.2rem;
 }
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  min-width: 0;
+.inputCont label {
+  margin-bottom: 1.2rem;
 }
-.control {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  height: 4.6rem;
-  padding: 0 1.6rem;
-  border: 1px solid transparent;
-  border-radius: 1.6rem;
-  background: var(--bg-card);
+.inputCont input {
+  height: 4.4rem;
 }
-.control:focus-within {
-  border-color: var(--text-disabled);
-}
-.control.invalid {
-  border-color: var(--error);
-}
-.control input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--text-primary);
-  font-size: 1.5rem;
-}
-.control input::placeholder {
-  color: var(--text-secondary, #a0a3ad);
-}
-.ok {
-  color: var(--success, #3ddc84);
-  font-weight: 700;
-}
-.fieldError {
-  color: var(--error);
-}
-
 /* confirmation */
 .done {
   display: flex;
