@@ -1,59 +1,86 @@
-# RedTask
+# KINO XII
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.1.
+A cinema web app where users browse films, check sessions, buy tickets and subscribe to upcoming releases.
 
-## Development server
+**Live demo:** [kino-pied.vercel.app](https://kino-pied.vercel.app/)
 
-To start a local development server, run:
+---
+
+## Table of contents
+
+- [Overview](#overview)
+- [Tech stack](#tech-stack)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+- [Features](#features)
+- [Architecture](#architecture)
+- [API](#api)
+- [Authentication](#authentication)
+- [Loading, empty and error states](#loading-empty-and-error-states)
+- [Accessibility](#accessibility)
+- [Deployment](#deployment)
+- [Known limitations](#known-limitations)
+- [Future improvements](#future-improvements)
+
+---
+
+## Overview
+
+KINO XII is a cinema booking front-end. Visitors can browse what is playing and what is coming soon, open a film's details, pick a session and seats, and sign in to buy tickets or get notified about upcoming titles
+
+## Tech stack
+
+| Area        | Technology                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| Framework   | Angular `22.2` (standalone components, signals, new control flow `@if` / `@for` / `@switch`)      |
+| Language    | TypeScript                                                                                        |
+| Styling     | Plain CSS, component-scoped, design tokens as CSS variables (`--bg`, `--bg-card`, `--error`, ...) |
+| Routing     | Angular Router                                                                                    |
+| HTTP        | `fetch` wrapped in a custom `ApiService`                                                          |
+| State       | Angular signals (no external state library)                                                       |
+| Persistence | `localStorage` (auth token, recently viewed)                                                      |
+| Hosting     | Vercel                                                                                            |
+| API         | https://api.kinoxii.redberryinternship.ge/docs                                                    |
+
+---
+
+## Getting started
+
+### Prerequisites
+
+- Node.js `v24.18.0`
+- npm `11.16.0`
+- Angular CLI: `npm install -g @angular/cli`
+
+### Installation
 
 ```bash
-ng serve
+git clone [https://github.com/Oto-Gelashvili/redTask]
+cd [redTask]
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Configuration
 
-## Code scaffolding
+The API base URL lives in `src/app/core/config.ts`:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+```typescript
+export const BASE_URL = '[https://api.kinoxii.redberryinternship.ge/api]';
+```
+
+### Run locally
 
 ```bash
-ng generate component component-name
+npm start        # or: ng serve
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Open `http://localhost:4200`.
 
-```bash
-ng generate --help
-```
+### Other scripts
 
-## Building
+| Command         | What it does                  |
+| --------------- | ----------------------------- |
+| `npm start`     | Dev server with live reload   |
+| `npm run build` | Production build into `dist/` |
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
