@@ -1,8 +1,8 @@
 :host {
-  position: sticky;
+  /* position: sticky; */
   width: 32rem;
   overflow-y: auto;
-  max-height: calc(100vh - 4.8rem);
+  /* max-height: calc(100vh - 4.8rem); */
   top: 2.4rem;
   align-self: flex-start;
   scrollbar-width: none;
