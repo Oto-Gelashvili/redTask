@@ -1,6 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from './api.service';
-import { FeaturedMovie, MovieResponse, MovieSessionsResponse } from '../../models/movie';
+import {
+  FeaturedMovie,
+  MovieResponse,
+  MovieSessionsResponse,
+  NowPlayingMovie,
+} from '../../models/movie';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
@@ -18,5 +23,9 @@ export class MoviesService {
   }
   getFeatured() {
     return this.api.request<{ data: FeaturedMovie[] }>('/movies/featured');
+  }
+  getNowPlaying(limit?: number) {
+    const query = limit ? `?${new URLSearchParams({ limit: String(limit) })}` : '';
+    return this.api.request<{ data: NowPlayingMovie[] }>(`/movies/now-playing${query}`);
   }
 }
