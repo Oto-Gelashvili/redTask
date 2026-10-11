@@ -55,7 +55,8 @@ main {
   display: flex;
   flex: 1;
 }
-main:has(.movieDetailsPage) {
+main:has(.movieDetailsPage),
+main:has(.hero) {
   padding: 0;
 }
 

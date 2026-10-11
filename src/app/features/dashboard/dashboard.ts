@@ -1,12 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
+import { Component } from '@angular/core';
+import { Hero } from './hero/hero';
 
 @Component({
-  imports: [],
+  imports: [Hero],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
-export class Dashboard {
-  protected readonly AuthService = inject(AuthService);
-}
+export class Dashboard {}

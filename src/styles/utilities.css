@@ -91,6 +91,7 @@
 .warningTint {
   background-color: var(--tint-warning);
 }
+
 .warningText {
   color: var(--warning);
 }

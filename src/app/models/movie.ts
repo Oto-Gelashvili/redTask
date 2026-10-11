@@ -20,3 +20,6 @@ export interface VenueSessions {
 export interface MovieSessionsResponse {
   data: VenueSessions[];
 }
+export interface FeaturedMovie extends SessionMovie {
+  synopsis: string;
+}

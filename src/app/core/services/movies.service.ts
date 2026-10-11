@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from './api.service';
-import { MovieResponse, MovieSessionsResponse } from '../../models/movie';
+import { FeaturedMovie, MovieResponse, MovieSessionsResponse } from '../../models/movie';
 
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
@@ -15,5 +15,8 @@ export class MoviesService {
     return this.api.request<MovieSessionsResponse>(
       `/movies/${encodeURIComponent(slug)}/sessions?${params}`,
     );
+  }
+  getFeatured() {
+    return this.api.request<{ data: FeaturedMovie[] }>('/movies/featured');
   }
 }
