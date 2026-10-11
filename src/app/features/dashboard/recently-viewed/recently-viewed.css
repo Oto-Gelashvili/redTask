@@ -11,6 +11,14 @@
 .list {
   display: flex;
   gap: 2rem;
+  overflow: hidden;
+}
+.list:hover {
+  cursor: grab;
+}
+.list.dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 .list li {
   flex: 1;

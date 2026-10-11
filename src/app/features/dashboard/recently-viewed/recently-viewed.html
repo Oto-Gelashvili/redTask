@@ -2,11 +2,11 @@
   <section class="recent" aria-labelledby="recent-title">
     <h2 id="recent-title">Recently viewed</h2>
 
-    <ul class="list">
+    <ul class="list" appDragScroll>
       @for (m of items(); track m.id) {
         <li>
-          <a class="card" [routerLink]="['/movies', m.slug]">
-            <img class="poster" [src]="m.posterUrl" alt="" loading="lazy" />
+          <a class="card" [routerLink]="['/movies', m.slug]" draggable="false">
+            <img class="poster" [src]="m.posterUrl" alt="" loading="lazy" draggable="false" />
             <div class="info">
               <p class="buttonText uppercase">{{ m.title }}</p>
               <p class="BodyS secondaryColor">{{ m.genre }} · {{ m.runtimeMinutes }} min</p>
