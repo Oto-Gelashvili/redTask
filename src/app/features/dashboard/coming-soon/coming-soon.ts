@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ModalService } from '../../../core/services/modal.service';
@@ -28,23 +28,38 @@ export class ComingSoon {
   protected readonly notified = signal<ReadonlySet<number>>(new Set());
   protected readonly pending = signal<ReadonlySet<number>>(new Set());
   protected readonly skeletons = [1, 2, 3, 4];
+  private firstRun = true;
 
   constructor() {
-    void this.load();
+    effect(() => {
+      const authed = this.auth.isAuthenticated();
+      untracked(() => {
+        if (this.firstRun) {
+          this.firstRun = false;
+          void this.load();
+          return;
+        }
+        if (!authed) {
+          this.notified.set(new Set());
+          return;
+        }
+        void this.load(true);
+      });
+    });
   }
 
-  protected async load() {
-    this.state.set('loading');
+  protected async load(silent = false) {
+    if (!silent) this.state.set('loading');
     try {
       const res = await this.moviesService.getComingSoon(8);
       this.movies.set(res.data);
-      this.notified.set(new Set(res.data.filter((m) => m.isNotified).map((m) => m.id)));
-      this.state.set(res.data.length ? 'ready' : 'empty');
+      const fromServer = res.data.filter((m) => m.isNotified).map((m) => m.id);
+      this.notified.set(new Set(silent ? [...this.notified(), ...fromServer] : fromServer));
+      if (!silent) this.state.set(res.data.length ? 'ready' : 'empty');
     } catch {
-      this.state.set('error');
+      if (!silent) this.state.set('error');
     }
   }
-
   protected async notify(m: ComingSoonMovie) {
     if (this.notified().has(m.id) || this.pending().has(m.id)) return;
     this.setPending(m.id, true);
