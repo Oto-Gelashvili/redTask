@@ -20,9 +20,7 @@
   cursor: grabbing;
   user-select: none;
 }
-.list li {
-  flex: 1;
-}
+
 .card {
   min-width: 32.9rem;
   display: flex;

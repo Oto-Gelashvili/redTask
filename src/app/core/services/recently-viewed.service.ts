@@ -1,37 +1,47 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { NotificationService } from './notification.service';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { AuthService } from './auth.service';
 import { RecentMovie } from '../../models/movie';
-
-const KEY = 'recently-viewed';
-const MAX = 5;
-
+const MAX = 8;
 @Injectable({ providedIn: 'root' })
 export class RecentlyViewedService {
-  private readonly _items = signal<RecentMovie[]>(this.read());
-  private readonly noty = inject(NotificationService);
+  private readonly auth = inject(AuthService);
+
+  private readonly key = computed(() => {
+    const user = this.auth.user();
+    if (user) return `recently-viewed:${user.id}`;
+    return this.auth.isAuthenticated() ? null : 'recently-viewed:guest';
+  });
+
+  private readonly _items = signal<RecentMovie[]>([]);
   readonly items = this._items.asReadonly();
 
-  add(movie: RecentMovie) {
-    const next = [movie, ...this._items().filter((m) => m.id !== movie.id)].slice(0, MAX);
-    this._items.set(next);
-    this.write(next);
+  constructor() {
+    effect(() => {
+      const key = this.key();
+      this._items.set(key ? this.read(key) : []);
+    });
   }
 
-  private read(): RecentMovie[] {
+  add(movie: RecentMovie) {
+    const key = this.key();
+    if (!key) return;
+    const next = [movie, ...this._items().filter((m) => m.id !== movie.id)].slice(0, MAX);
+    this._items.set(next);
+    this.write(key, next);
+  }
+
+  private read(key: string): RecentMovie[] {
     try {
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(key);
       return raw ? JSON.parse(raw) : [];
     } catch {
-      this.noty.showError('Coudnt get recent movies');
       return [];
     }
   }
 
-  private write(items: RecentMovie[]) {
+  private write(key: string, items: RecentMovie[]) {
     try {
-      localStorage.setItem(KEY, JSON.stringify(items));
-    } catch {
-      this.noty.showError('Coudnt store recent movies');
-    }
+      localStorage.setItem(key, JSON.stringify(items));
+    } catch {}
   }
 }
