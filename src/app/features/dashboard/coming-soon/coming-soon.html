@@ -1,0 +1,97 @@
+@if (state() !== 'empty') {
+  <section class="soon" aria-labelledby="soon-title">
+    <div class="head">
+      <h2 id="soon-title">COMING SOON...</h2>
+      <a class="labelM errorText" routerLink="/sessions">See all</a>
+    </div>
+
+    @switch (state()) {
+      @case ('loading') {
+        <ul class="list" aria-busy="true" aria-label="Loading upcoming films">
+          @for (s of skeletons; track s) {
+            <li class="card">
+              <div class="sk skImg shimmer"></div>
+              <div class="info">
+                <div class="sk skStatus shimmer"></div>
+                <div class="sk skTitle shimmer"></div>
+                <div class="sk skMeta shimmer"></div>
+                <div class="sk skChip shimmer"></div>
+                <div class="sk skBtn shimmer"></div>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+
+      @case ('error') {
+        <div class="state">
+          <p class="BodyL">Couldn't load upcoming films.</p>
+          <button type="button" class="btn-primary customBtn labelM" (click)="load()">Retry</button>
+        </div>
+      }
+
+      @case ('ready') {
+        <ul class="list" appDragScroll>
+          @for (m of movies(); track m.id) {
+            <li class="card">
+              <img class="img" [src]="m.backdropUrl" alt="" loading="lazy" draggable="false" />
+
+              <div class="info">
+                <div class="infoCont">
+                  <span class="errorText labelS"
+                    >In cinemas {{ m.releaseDate | date: 'd MMMM' }}</span
+                  >
+                  <p class="labelS">{{ m.title }}</p>
+                  <p class="BodyS secondaryColor">
+                    {{ m.genres[0]?.name }} · {{ m.runtimeMinutes }} min
+                  </p>
+                  <span class="chip status labelS">{{ m.ageRating.code }}</span>
+                </div>
+                <button
+                  type="button"
+                  class="btn-notify customBtn labelS"
+                  [disabled]="pending().has(m.id) || notified().has(m.id)"
+                  [attr.aria-pressed]="notified().has(m.id)"
+                  (click)="notify(m)"
+                >
+                  @if (!notified().has(m.id)) {
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.99954 12.2505C5.99954 12.7809 6.21025 13.2896 6.58533 13.6647C6.9604 14.0398 7.46911 14.2505 7.99954 14.2505C8.52997 14.2505 9.03868 14.0398 9.41375 13.6647C9.78883 13.2896 9.99954 12.7809 9.99954 12.2505M11.4995 1.75049C12.4651 2.36656 13.2482 3.22974 13.7677 4.25049M2.23141 4.25049C2.7509 3.22974 3.53401 2.36656 4.49954 1.75049M3.49954 7.25049C3.49954 6.05701 3.97365 4.91242 4.81756 4.06851C5.66147 3.22459 6.80607 2.75049 7.99954 2.75049C9.19301 2.75049 10.3376 3.22459 11.1815 4.06851C12.0254 4.91242 12.4995 6.05701 12.4995 7.25049C12.4995 9.48924 13.0183 10.788 13.4308 11.5005C13.4746 11.5764 13.4977 11.6624 13.4978 11.75C13.4979 11.8377 13.4749 11.9238 13.4312 11.9997C13.3876 12.0757 13.3247 12.1388 13.2489 12.1828C13.1732 12.2269 13.0872 12.2502 12.9995 12.2505H2.99954C2.91203 12.25 2.82619 12.2265 2.75059 12.1824C2.675 12.1383 2.61231 12.0751 2.56878 11.9992C2.52525 11.9233 2.50242 11.8373 2.50255 11.7497C2.50268 11.6622 2.52578 11.5763 2.56954 11.5005C2.98141 10.788 3.49954 9.48861 3.49954 7.25049Z"
+                        stroke="white"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <p class="labelS">Notify Me</p>
+                  } @else {
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.56395 10.9722L2.90031 8.30853C2.83066 8.23803 2.74771 8.18205 2.65626 8.14385C2.56481 8.10564 2.46669 8.08597 2.36759 8.08597C2.26848 8.08597 2.17036 8.10564 2.07891 8.14385C1.98747 8.18205 1.90451 8.23803 1.83486 8.30853C1.76436 8.37818 1.70838 8.46113 1.67018 8.55258C1.63198 8.64403 1.6123 8.74215 1.6123 8.84125C1.6123 8.94036 1.63198 9.03848 1.67018 9.12993C1.70838 9.22137 1.76436 9.30433 1.83486 9.37398L5.02361 12.5627C5.32041 12.8595 5.79987 12.8595 6.09667 12.5627L14.1637 4.50334C14.2342 4.43369 14.2901 4.35074 14.3284 4.25929C14.3666 4.16784 14.3862 4.06972 14.3862 3.97062C14.3862 3.87151 14.3666 3.77339 14.3284 3.68194C14.2901 3.5905 14.2342 3.50754 14.1637 3.43789C14.094 3.36739 14.0111 3.31141 13.9196 3.27321C13.8282 3.235 13.73 3.21533 13.6309 3.21533C13.5318 3.21533 13.4337 3.235 13.3423 3.27321C13.2508 3.31141 13.1679 3.36739 13.0982 3.43789L5.56395 10.9722Z"
+                        fill="white"
+                      />
+                    </svg>
+                    <p class="labelS">Reminder set</p>
+                  }
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </section>
+}

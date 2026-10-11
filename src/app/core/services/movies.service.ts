@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from './api.service';
 import {
+  ComingSoonMovie,
   FeaturedMovie,
   MovieResponse,
   MovieSessionsResponse,
@@ -27,5 +28,16 @@ export class MoviesService {
   getNowPlaying(limit?: number) {
     const query = limit ? `?${new URLSearchParams({ limit: String(limit) })}` : '';
     return this.api.request<{ data: NowPlayingMovie[] }>(`/movies/now-playing${query}`);
+  }
+  getComingSoon(limit?: number) {
+    const query = limit ? `?${new URLSearchParams({ limit: String(limit) })}` : '';
+    return this.api.request<{ data: ComingSoonMovie[] }>(`/movies/coming-soon${query}`);
+  }
+
+  notify(slug: string) {
+    return this.api.request<{ data: { movieId: number; subscribed: boolean } }>(
+      `/movies/${encodeURIComponent(slug)}/notify`,
+      { method: 'POST' },
+    );
   }
 }

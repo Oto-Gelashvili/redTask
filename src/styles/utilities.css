@@ -69,9 +69,13 @@
   border: 1px solid var(--text-secondary);
   background-color: transparent;
 }
-.btn-notify:hover,
+.btn-notify:hover:not(:disabled),
 .btn-notify:focus-visible {
   background-color: var(--tint-white);
+}
+.btn-notify:disabled {
+  background-color: var(--tint-white);
+  border: none;
 }
 
 .avatarIcon {

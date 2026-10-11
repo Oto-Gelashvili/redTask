@@ -43,3 +43,15 @@ export interface NowPlayingMovie {
   genres: Genre[];
   synopsis: string;
 }
+export interface ComingSoonMovie {
+  id: number;
+  slug: string;
+  title: string;
+  runtimeMinutes: number;
+  posterUrl: string;
+  backdropUrl: string;
+  releaseDate: string;
+  isNotified: boolean;
+  ageRating: AgeRating;
+  genres: Genre[];
+}
