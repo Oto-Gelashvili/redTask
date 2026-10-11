@@ -1,0 +1,20 @@
+@if (items().length) {
+  <section class="recent" aria-labelledby="recent-title">
+    <h2 id="recent-title">Recently viewed</h2>
+
+    <ul class="list">
+      @for (m of items(); track m.id) {
+        <li>
+          <a class="card" [routerLink]="['/movies', m.slug]">
+            <img class="poster" [src]="m.posterUrl" alt="" loading="lazy" />
+            <div class="info">
+              <p class="buttonText uppercase">{{ m.title }}</p>
+              <p class="BodyS secondaryColor">{{ m.genre }} · {{ m.runtimeMinutes }} min</p>
+              <span class="chip status labelS">{{ m.ageRating }}</span>
+            </div>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+}

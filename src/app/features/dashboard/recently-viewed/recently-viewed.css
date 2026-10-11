@@ -1,0 +1,54 @@
+:host {
+  flex: 1;
+}
+.recent {
+  padding: 3.4rem 7rem 4rem 7rem;
+  border-bottom: 1px solid var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.list {
+  display: flex;
+  gap: 2rem;
+}
+.list li {
+  flex: 1;
+}
+.card {
+  min-width: 32.9rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem;
+  border-radius: 1.6rem;
+  background: var(--bg-card);
+  transition: 0.4s;
+}
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-2px);
+}
+.poster {
+  flex-shrink: 0;
+  width: 8.7rem;
+  height: 6.7rem;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+.info {
+  min-width: 21rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.chip {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+.status {
+  background: var(--tint-red);
+  color: var(--error);
+}

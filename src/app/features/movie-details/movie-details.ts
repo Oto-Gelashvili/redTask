@@ -9,6 +9,7 @@ import { Session } from '../../models/session';
 import { toLocalISODate } from '../../shared/utils';
 import { ModalService } from '../../core/services/modal.service';
 import { BookingModal } from './components/booking-modal/booking-modal';
+import { RecentlyViewedService } from '../../core/services/recently-viewed.service';
 
 const DAYS_SHOWN = 7;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -43,6 +44,7 @@ export class MovieDetails {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly recent = inject(RecentlyViewedService);
 
   // bound from the URL by withComponentInputBinding()
   readonly slug = input.required<string>();
@@ -128,6 +130,21 @@ export class MovieDetails {
       if (!session) return;
 
       untracked(() => this.openFromLink(session));
+    });
+    effect(() => {
+      const m = this.movie();
+      if (!m) return;
+      untracked(() =>
+        this.recent.add({
+          id: m.id,
+          slug: m.slug,
+          title: m.title,
+          posterUrl: m.posterUrl,
+          genre: m.genres[0].name,
+          runtimeMinutes: m.runtimeMinutes,
+          ageRating: m.ageRating.code,
+        }),
+      );
     });
   }
   private openFromLink(session: Session) {

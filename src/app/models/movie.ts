@@ -1,4 +1,4 @@
-import { Venue } from './common';
+import { AgeRating, Genre, Venue } from './common';
 import { Session, SessionMovie } from './session';
 
 export interface MovieDetail extends SessionMovie {
@@ -21,5 +21,25 @@ export interface MovieSessionsResponse {
   data: VenueSessions[];
 }
 export interface FeaturedMovie extends SessionMovie {
+  synopsis: string;
+}
+export interface RecentMovie {
+  id: number | string;
+  slug: string;
+  title: string;
+  posterUrl: string;
+  genre: string;
+  runtimeMinutes: number;
+  ageRating: string;
+}
+export interface NowPlayingMovie {
+  id: number;
+  slug: string;
+  title: string;
+  runtimeMinutes: number;
+  posterUrl: string;
+  fromPrice: number;
+  ageRating: AgeRating;
+  genres: Genre[];
   synopsis: string;
 }
