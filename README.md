@@ -11,16 +11,6 @@ A cinema web app where users browse films, check sessions, buy tickets and subsc
 - [Overview](#overview)
 - [Tech stack](#tech-stack)
 - [Getting started](#getting-started)
-- [Project structure](#project-structure)
-- [Features](#features)
-- [Architecture](#architecture)
-- [API](#api)
-- [Authentication](#authentication)
-- [Loading, empty and error states](#loading-empty-and-error-states)
-- [Accessibility](#accessibility)
-- [Deployment](#deployment)
-- [Known limitations](#known-limitations)
-- [Future improvements](#future-improvements)
 
 ---
 
