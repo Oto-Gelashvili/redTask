@@ -53,7 +53,7 @@ h1 {
 }
 .synopsis {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -220,4 +220,45 @@ h1 {
   flex: 1;
   height: 3px;
   border-radius: 50rem;
+}
+@media screen and (max-width: 1200px) {
+  .hero {
+    min-height: 60rem;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .slide {
+    padding-inline: var(--padding-inline);
+  }
+  .controls {
+    left: var(--padding-inline);
+    right: var(--padding-inline);
+  }
+  h1 {
+    font-size: 3.2rem;
+  }
+  .arrow {
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+  .track {
+    height: 4px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .slide {
+    padding-bottom: 14rem;
+  }
+  .arrows {
+    display: none;
+  }
+}
+@media screen and (max-width: 475px) {
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .slide {
+    padding-bottom: 12rem;
+  }
 }

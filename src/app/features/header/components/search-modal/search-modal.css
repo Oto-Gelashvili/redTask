@@ -1,0 +1,8 @@
+.modal {
+  display: flex;
+  align-items: flex-start;
+  width: min(64rem, calc(100% - var(--padding-inline) * 2));
+  flex-direction: column;
+  margin-inline: auto;
+  margin-top: 12rem;
+}

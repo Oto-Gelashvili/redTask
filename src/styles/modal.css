@@ -79,3 +79,16 @@
 .modalCont .logInCont span:focus {
   color: var(--warning);
 }
+@media screen and (max-width: 475px) {
+  .modalCont {
+    width: calc(100% - var(--padding-inline) * 2);
+  }
+}
+@media screen and (max-width: 375px) {
+  .modalCont .logInCont {
+    flex-direction: column;
+  }
+  .modalCont {
+    width: 100%;
+  }
+}

@@ -17,8 +17,9 @@
   gap: 2rem;
   margin-top: 2.4rem;
   list-style: none;
-  overflow: hidden;
   transition: 0.4s;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 .list:hover {
   cursor: grab;
@@ -114,4 +115,53 @@
   height: 4rem;
   margin-top: auto;
   border-radius: 999px;
+}
+.infoCont p {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media screen and (max-width: 1024px) {
+  .soon {
+    padding-inline: var(--padding-inline);
+  }
+}
+@media screen and (max-width: 768px) {
+  h2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 575px) {
+  .list li {
+    min-width: 100%;
+  }
+  .card {
+    min-width: 100%;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  .info {
+    flex: 1;
+  }
+  .img {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 475px) {
+  h2 {
+    font-size: 1.8rem;
+  }
+  .card {
+    flex-direction: column;
+    height: unset;
+  }
+  .img {
+    width: 100%;
+    height: 19rem;
+  }
+  .customBtn {
+    margin-top: 1.5rem;
+  }
 }

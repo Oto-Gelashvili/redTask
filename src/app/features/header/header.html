@@ -5,22 +5,29 @@
       <h3 class="span">XII</h3>
     </a>
 
-    <a routerLink="/sessions">
+    <a routerLink="/sessions" class="sessionLink">
       <p class="labelS overlineText">Sessions</p>
     </a>
   </nav>
 
   <div class="right">
-    <label>
+    <label class="searchLabelCont">
       <app-search-bar></app-search-bar>
     </label>
+    <div class="rightBtns">
+      @if (!authService.isAuthenticated()) {
+        <div class="authBtns">
+          <button class="btn-primary customBtn" (click)="modalService.openSignUp()">Sign up</button>
+          <button class="btn-secondary customBtn" (click)="modalService.openLogIn()">Log in</button>
+        </div>
+      } @else {
+        <app-profile-menu />
+      }
+    </div>
     @if (!authService.isAuthenticated()) {
-      <div class="authBtns">
-        <button class="btn-primary customBtn" (click)="modalService.openSignUp()">Sign up</button>
-        <button class="btn-secondary customBtn" (click)="modalService.openLogIn()">Log in</button>
+      <div class="profileMenuWrapper">
+        <app-profile-menu />
       </div>
-    } @else {
-      <app-profile-menu />
     }
   </div>
 </header>

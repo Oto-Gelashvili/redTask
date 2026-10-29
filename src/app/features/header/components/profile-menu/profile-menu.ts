@@ -1,6 +1,8 @@
 import { Component, computed, ElementRef, inject, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
+import { ModalService } from '../../../../core/services/modal.service';
+import { SearchBar } from '../search-bar/search-bar';
 
 @Component({
   imports: [RouterLink],
@@ -14,6 +16,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ProfileMenu {
   private readonly authService = inject(AuthService);
+  private readonly modalService = inject(ModalService);
   private readonly host = inject(ElementRef<HTMLElement>);
 
   protected readonly user = this.authService.user;

@@ -30,3 +30,30 @@
 .modalCont .imgUploader {
   margin-bottom: 0.8rem;
 }
+.passErrorCont {
+  display: none;
+}
+
+@media screen and (max-width: 575px) {
+  .modalCont.signUpModal {
+    width: calc(100% - var(--padding-inline) * 2);
+  }
+}
+@media screen and (max-width: 475px) {
+  .modalCont .passwordContWrapper {
+    width: 100%;
+    grid-template-columns: 1fr;
+    row-gap: 2.4rem;
+  }
+  .gridArea {
+    display: none;
+  }
+  .passErrorCont {
+    display: flex;
+  }
+}
+@media screen and (max-width: 375px) {
+  .modalCont.signUpModal {
+    width: 100%;
+  }
+}

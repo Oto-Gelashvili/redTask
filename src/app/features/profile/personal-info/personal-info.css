@@ -21,11 +21,24 @@
   gap: 2rem;
 }
 .profileForm button {
-  width: 143px;
+  width: 150px;
 }
 .profileForm .fakeEmail p {
   margin-top: 0.8rem;
 }
 .adjustedPaddingRight {
   padding-right: 1.2rem;
+}
+@media screen and (max-width: 1024px) {
+  .profileForm {
+    width: min(100%, 50rem);
+  }
+}
+@media screen and (max-width: 475px) {
+  .profileForm button {
+    width: 100%;
+  }
+  .profileForm {
+    gap: 2.4rem;
+  }
 }

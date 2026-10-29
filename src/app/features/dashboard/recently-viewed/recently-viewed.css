@@ -11,7 +11,8 @@
 .list {
   display: flex;
   gap: 2rem;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 .list:hover {
   cursor: grab;
@@ -22,7 +23,7 @@
 }
 
 .card {
-  min-width: 32.9rem;
+  width: 32.9rem;
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -49,7 +50,12 @@
   align-items: flex-start;
   gap: 0.4rem;
 }
-
+.info p {
+  max-width: 21rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .chip {
   padding: 0.4rem 0.8rem;
   border-radius: 999px;
@@ -57,4 +63,25 @@
 .status {
   background: var(--tint-red);
   color: var(--error);
+}
+@media screen and (max-width: 1024px) {
+  .recent {
+    padding-inline: var(--padding-inline);
+  }
+}
+@media screen and (max-width: 768px) {
+  h2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 475px) {
+  .list li {
+    min-width: 100%;
+  }
+  .card {
+    width: 100%;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
 }

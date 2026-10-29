@@ -60,3 +60,9 @@ nav a:active {
   padding: 2px 6px;
   border-radius: 50rem;
 }
+@media screen and (max-width: 375px) {
+  nav {
+    gap: 1.6rem;
+    text-align: center;
+  }
+}

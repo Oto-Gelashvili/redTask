@@ -17,7 +17,8 @@
   gap: 1.7rem;
   margin-top: 2.4rem;
   list-style: none;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
   transition: 0.4s;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2) inset;
 }
@@ -111,4 +112,40 @@
   width: 13rem;
   height: 4.2rem;
   border-radius: 999px;
+}
+.card h4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media screen and (max-width: 1024px) {
+  .now {
+    padding-inline: var(--padding-inline);
+  }
+  .poster {
+    height: 20rem;
+  }
+  .card {
+    min-height: unset;
+  }
+}
+@media screen and (max-width: 768px) {
+  h2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 475px) {
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .list li {
+    min-width: 100%;
+  }
+  .card {
+    width: 100%;
+  }
 }

@@ -91,6 +91,13 @@
               <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
             }
           </div>
+          <div class="passErrorCont">
+            @if (signUpform.get('password')?.invalid && signUpform.get('password')?.touched) {
+              <p class="error" animate.enter="showError" animate.leave="hideError">
+                {{ signUpform.get('password')?.errors?.['server'] ?? 'Invalid Password' }}
+              </p>
+            }
+          </div>
         </div>
         <div class="inputCont">
           <label class="labelS" for="confirmPassword">Confirm password</label>
@@ -116,12 +123,27 @@
               <img class="inputsIcon" src="checkmarkIcon.svg" alt="checkmark Icon" />
             }
           </div>
+          <div class="passErrorCont">
+            @if (
+              signUpform.get('password_confirmation')?.invalid &&
+              signUpform.get('password_confirmation')?.touched
+            ) {
+              <p class="error" animate.enter="showError" animate.leave="hideError">
+                {{
+                  signUpform.get('password_confirmation')?.errors?.['server'] ??
+                    'Password dont match'
+                }}
+              </p>
+            }
+          </div>
         </div>
-        @if (passwordError(); as msg) {
-          <p class="error gridArea" animate.enter="showErrorArea" animate.leave="hideError">
-            {{ msg }}
-          </p>
-        }
+        <div class="gridArea">
+          @if (passwordError(); as msg) {
+            <p class="error" animate.enter="showErrorArea" animate.leave="hideError">
+              {{ msg }}
+            </p>
+          }
+        </div>
       </div>
     </div>
 

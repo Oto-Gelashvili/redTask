@@ -4,7 +4,7 @@ header {
   justify-content: space-between;
   width: 100%;
   height: var(--fixed-header-height);
-  padding: 3rem 6rem 4rem 6rem;
+  padding: 3rem var(--padding-inline) 4rem var(--padding-inline);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -42,4 +42,21 @@ header .authBtns {
   display: flex;
   align-items: center;
   gap: 1.2rem;
+}
+.profileMenuWrapper {
+  display: none;
+}
+@media screen and (max-width: 1024px) {
+  .sessionLink,
+  header .authBtns {
+    display: none;
+  }
+  .profileMenuWrapper {
+    display: flex;
+  }
+}
+@media screen and (max-width: 900px) {
+  .searchLabelCont {
+    display: none;
+  }
 }

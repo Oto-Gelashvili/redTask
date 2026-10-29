@@ -1,0 +1,9 @@
+<div
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search"
+  (click)="$event.stopPropagation()"
+>
+  <app-search-bar class="search" [modal]="true" (closed)="close()" />
+</div>

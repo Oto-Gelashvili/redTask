@@ -6,7 +6,16 @@ export class ModalService {
 
   isSignUpOpen = signal(false);
   isLogInOpen = signal(false);
+  isSearchOpen = signal(false);
 
+  openSearch() {
+    this.isSignUpOpen.set(false);
+    this.isLogInOpen.set(false);
+    this.isSearchOpen.set(true);
+  }
+  closeSearch() {
+    this.isSearchOpen.set(false);
+  }
   openSignUp() {
     this.isLogInOpen.set(false);
     this.isSignUpOpen.set(true);
@@ -20,6 +29,7 @@ export class ModalService {
   closeAll() {
     this.isSignUpOpen.set(false);
     this.isLogInOpen.set(false);
+    this.isSearchOpen.set(false);
     this.auth.cancelLoginWait();
   }
 }

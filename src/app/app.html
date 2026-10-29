@@ -28,4 +28,14 @@
     </div>
   </div>
 }
+@if (modalService.isSearchOpen()) {
+  <div
+    class="backdrop"
+    animate.enter="fade-in"
+    animate.leave="fade-out"
+    (click)="modalService.closeAll()"
+  >
+    <app-search-modal animate.enter="fade-in" animate.leave="fade-out" />
+  </div>
+}
 <app-notification-modal></app-notification-modal>

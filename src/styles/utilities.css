@@ -32,7 +32,7 @@
   font-size: 1.4rem;
   font-weight: 800;
   outline: none;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   border-radius: 50rem;
   padding: 1.3rem 2.2rem;
@@ -44,6 +44,12 @@
 }
 .btn-primary {
   background-color: var(--error);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  border-color: var(--error);
+  background-color: transparent;
+  color: var(--error);
 }
 .btn-primary:disabled {
   background-color: var(--text-disabled);

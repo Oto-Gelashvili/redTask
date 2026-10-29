@@ -6,10 +6,11 @@ import { LogIn } from './features/auth/log-in/log-in';
 import { NotificationModal } from './shared/components/notification-modal/notification-modal';
 import { SignUp } from './features/auth/sign-up/sign-up';
 import { Footer } from './features/footer/footer';
+import { SearchModal } from './features/header/components/search-modal/search-modal';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, LogIn, NotificationModal, SignUp, Footer],
+  imports: [RouterOutlet, Header, LogIn, NotificationModal, SignUp, Footer, SearchModal],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

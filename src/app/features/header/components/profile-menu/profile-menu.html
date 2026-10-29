@@ -1,13 +1,14 @@
 <div class="profileWrapper">
-  @if (user(); as u) {
-    <button
-      type="button"
-      class="profileCont"
-      [attr.aria-expanded]="isOpen()"
-      aria-haspopup="menu"
-      (click)="toggle()"
-    >
-      <div class="contentWrapper">
+  <button
+    type="button"
+    class="profileCont"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="menu"
+    (click)="toggle()"
+    [class.open]="isOpen()"
+  >
+    <div class="contentWrapper">
+      @if (user(); as u) {
         @if (u?.avatar) {
           <div class="relative">
             <img [src]="u?.avatar" alt="user avatar" class="avatarIcon specIconSize" />
@@ -19,35 +20,42 @@
             <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
           </div>
         }
-        <p class="labelM">{{ u?.username?.slice(0, 12) }}</p>
-      </div>
-      <img src="dropdown.svg" alt="" class="dropdownIcon" [class.open]="isOpen()" />
-    </button>
+        <p class="labelM username">{{ u?.username?.slice(0, 12) }}</p>
+      } @else {
+        <div class="defaultAvatar avatarIcon">
+          <img src="user.svg" alt="user icon" />
+          <div class="avatarCircle yellow"></div>
+        </div>
+        <p class="labelM">Guest</p>
+      }
+    </div>
+    <img src="dropdown.svg" alt="" class="dropdownIcon" [class.open]="isOpen()" />
+    <div class="burger">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
+  </button>
 
-    @if (isOpen()) {
-      <div
-        class="profileDropdown"
-        role="menu"
-        animate.enter="slideIn-animation"
-        animate.leave="slideOut-animation"
-      >
-        <div class="uninteractive">
+  @if (isOpen()) {
+    <div
+      class="profileDropdown"
+      role="menu"
+      animate.enter="slideIn-animation"
+      animate.leave="slideOut-animation"
+    >
+      <div class="uninteractive">
+        @if (user(); as u) {
           <div class="infoCont">
-            @if (u?.avatar) {
+            @if (user()?.avatar) {
               <div class="relative">
-                <img [src]="user()?.avatar" alt="user avatar" class="avatarIcon specIconSize" />
-                <div
-                  class="avatarCircle"
-                  [class]="user()?.profileComplete ? 'green' : 'yellow'"
-                ></div>
+                <img [src]="u?.avatar" alt="user avatar" class="avatarIcon specIconSize" />
+                <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
               </div>
             } @else {
               <div class="defaultAvatar avatarIcon specIconSize">
                 <p class="labelS">{{ initials() }}</p>
-                <div
-                  class="avatarCircle"
-                  [class]="user()?.profileComplete ? 'green' : 'yellow'"
-                ></div>
+                <div class="avatarCircle" [class]="u?.profileComplete ? 'green' : 'yellow'"></div>
               </div>
             }
             <div class="infoTextCont">
@@ -66,9 +74,27 @@
               <p class="BodyS secondaryColor">Please complete your profile to enable booking</p>
             </div>
           }
-        </div>
-        <div class="interactive">
-          <div class="menu">
+        } @else {
+          <div class="infoCont">
+            <div class="defaultAvatar avatarIcon specIconSize">
+              <img src="user.svg" alt="user icon" />
+              <div class="avatarCircle yellow"></div>
+            </div>
+            <div class="infoTextCont">
+              <p class="labelM">Guest</p>
+              <p class="BodyS secondaryColor">Example@gmail.com</p>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="interactive">
+        <div class="menu">
+          <a routerLink="/sessions" class="sessionLink" (click)="isOpen.set(false)">
+            <img src="movie.svg" alt="user icon" />
+            <p class="labelM">Sessions</p>
+          </a>
+
+          @if (authService.isAuthenticated()) {
             <a routerLink="/profile" (click)="isOpen.set(false)">
               <img src="user.svg" alt="user icon" />
               <p class="labelM">My Profile</p>
@@ -77,20 +103,44 @@
               <img src="ticket.svg" alt="ticket icon" />
               <p class="labelM">My Tickets</p>
             </a>
-          </div>
-          <div class="divider"></div>
+          }
+          <button
+            type="button"
+            class="searchBtn"
+            (click)="isOpen.set(false); modalService.openSearch()"
+          >
+            <img src="search.svg" alt="search icon" />
+            <p class="labelM">Search</p>
+          </button>
+        </div>
+        <div class="divider"></div>
+        @if (authService.isAuthenticated()) {
           <button (click)="logOut()">
             <img src="logout.svg" alt="logout icon" />
             <p class="labelM errorText">Log out</p>
           </button>
-        </div>
-      </div>
-    }
-  } @else {
-    <div class="profileCont" aria-hidden="true">
-      <div class="contentWrapper">
-        <div class="shimmer avatarIcon"></div>
-        <div class="shimmer skeletonName"></div>
+        } @else {
+          <button (click)="modalService.openLogIn()">
+            <img src="login.svg" alt="login icon" />
+            <p class="labelM">Log in</p>
+          </button>
+          <div class="divider"></div>
+
+          <button (click)="modalService.openSignUp()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18px"
+              viewBox="48 -912 864 864"
+              width="18px"
+              fill="var(--success)"
+            >
+              <path
+                d="M708-432v-84h-84v-72h84v-84h72v84h84v72h-84v84h-72Zm-426-90q-42-42-42-102t42-102q42-42 102-42t102 42q42 42 42 102t-42 102q-42 42-102 42t-102-42ZM96-192v-92q0-25.78 12.5-47.39T143-366q55-32 116-49t125-17q64 0 125 17t116 49q22 13 34.5 34.61T672-284v92H96Zm72-72h432v-20q0-6.47-3.03-11.76-3.02-5.3-7.97-8.24-47-27-99-41.5T384-360q-54 0-106 14.5T179-304q-4.95 2.94-7.98 8.24Q168-290.47 168-284v20Zm267-309.21q21-21.21 21-51T434.79-675q-21.21-21-51-21T333-674.79q-21 21.21-21 51T333.21-573q21.21 21 51 21T435-573.21ZM384-625Zm0 361Z"
+              />
+            </svg>
+            <p class="labelM successText">Sign up</p>
+          </button>
+        }
       </div>
     </div>
   }

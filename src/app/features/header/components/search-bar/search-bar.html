@@ -1,50 +1,63 @@
-<label class="field" [class.filled]="focused() || query()">
-  <img src="search.svg" alt="" width="14" height="14" />
-  <input
-    #searchInput
-    name="searchInput"
-    type="search"
-    autocomplete="off"
-    placeholder="Search films and live events"
-    role="combobox"
-    aria-autocomplete="list"
-    aria-controls="search-listbox"
-    [attr.aria-expanded]="panel() === 'results'"
-    [attr.aria-activedescendant]="activeIndex() >= 0 ? 'search-option-' + activeIndex() : null"
-    [value]="query()"
-    (input)="onInput(searchInput.value)"
-    (focus)="focused.set(true)"
-    (blur)="focused.set(false)"
-    (keydown)="onKeydown($event)"
-  />
+<div class="searchLabelCont">
+  <label class="field" [class.filled]="focused() || query()">
+    <img src="search.svg" alt="" width="14" height="14" />
+    <input
+      #searchInput
+      name="searchInput"
+      type="search"
+      autocomplete="off"
+      placeholder="Search films and live events"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="search-listbox"
+      [attr.aria-expanded]="panel() === 'results'"
+      [attr.aria-activedescendant]="activeIndex() >= 0 ? 'search-option-' + activeIndex() : null"
+      [value]="query()"
+      (input)="onInput(searchInput.value)"
+      (focus)="focused.set(true)"
+      (blur)="focused.set(false)"
+      (keydown)="onKeydown($event)"
+    />
 
-  @if (query()) {
-    <button
-      type="button"
-      class="clearBtn"
-      aria-label="Clear search"
-      (mousedown)="$event.preventDefault()"
-      (click)="clear()"
-    >
-      @if (status() === 'loading') {
-        <app-loader [size]="14" />
-      } @else {
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <path
-            d="M1.5 1.5l9 9M10.5 1.5l-9 9"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
-        </svg>
-      }
-    </button>
-  }
-</label>
+    @if (query()) {
+      <button
+        type="button"
+        class="clearBtn"
+        aria-label="Clear search"
+        (mousedown)="$event.preventDefault()"
+        (click)="clear()"
+      >
+        @if (status() === 'loading') {
+          <app-loader [size]="14" />
+        } @else {
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path
+              d="M1.5 1.5l9 9M10.5 1.5l-9 9"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+        }
+      </button>
+    }
+  </label>
+  <button type="button" class="closeBtn" aria-label="Close search" (click)="close()">
+    <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path
+        d="M1.5 1.5l9 9M10.5 1.5l-9 9"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+      />
+    </svg>
+    <p class="labelM secondaryColor">Close</p>
+  </button>
+</div>
 
-@if (panel() !== 'closed') {
+@if (shownPanel() !== 'closed') {
   <div class="panel" (mousedown)="$event.preventDefault()">
-    @switch (panel()) {
+    @switch (shownPanel()) {
       @case ('prompt') {
         <div class="state">
           <span class="stateIcon">
@@ -95,26 +108,27 @@
               >
                 <img class="poster" [src]="item.movie.posterUrl" alt="" loading="lazy" />
 
-                <div class="info">
-                  <p class="title labelM secondaryColor">
-                    @for (part of item.parts; track $index) {
-                      <span [class.match]="part.match">{{ part.text }}</span>
-                    }
-                  </p>
-                  <p class="BodyS secondaryColor">
-                    <span class="kind">{{ item.movie.kind }}</span> ·
-                    {{ item.movie.ageRating.code }}
-                    @if (item.movie.runtimeMinutes) {
-                      · {{ item.movie.runtimeMinutes }} min
-                    }
-                  </p>
+                <div class="infoCont">
+                  <div class="info">
+                    <p class="title labelM secondaryColor">
+                      @for (part of item.parts; track $index) {
+                        <span [class.match]="part.match">{{ part.text }}</span>
+                      }
+                    </p>
+                    <p class="BodyS secondaryColor">
+                      <span class="kind">{{ item.movie.kind }}</span> ·
+                      {{ item.movie.ageRating.code }}
+                      @if (item.movie.runtimeMinutes) {
+                        · {{ item.movie.runtimeMinutes }} min
+                      }
+                    </p>
+                  </div>
+                  @if (item.movie.isComingSoon) {
+                    <span class="price warningText labelM">Coming Soon</span>
+                  } @else {
+                    <span class="price labelM">from ₾{{ item.movie.fromPrice }}</span>
+                  }
                 </div>
-
-                @if (item.movie.isComingSoon) {
-                  <span class="price warningText labelM">Coming Soon</span>
-                } @else {
-                  <span class="price labelM">from ₾{{ item.movie.fromPrice }}</span>
-                }
               </a>
             </li>
           }

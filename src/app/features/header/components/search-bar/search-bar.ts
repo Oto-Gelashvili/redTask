@@ -2,8 +2,11 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  afterNextRender,
   computed,
   inject,
+  input,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -32,11 +35,15 @@ function splitMatch(title: string, term: string): Part[] {
   selector: 'app-search-bar',
   styleUrl: './search-bar.css',
   templateUrl: './search-bar.html',
+  host: { '[class.isModal]': 'modal()' },
 })
 export class SearchBar {
   private readonly searchService = inject(SearchService);
   private readonly router = inject(Router);
   private readonly input = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
+
+  modal = input(false);
+  closed = output<void>();
 
   protected readonly query = signal('');
   protected readonly focused = signal(false);
@@ -61,11 +68,18 @@ export class SearchBar {
     if (this.status() === 'done') return 'empty';
     return 'closed';
   });
-
+  protected readonly shownPanel = computed(() => {
+    const state = this.panel();
+    return this.modal() && state === 'closed' ? 'prompt' : state;
+  });
   private debounceId: ReturnType<typeof setTimeout> | undefined;
   private controller: AbortController | undefined;
 
   constructor() {
+    afterNextRender(() => {
+      if (this.modal()) this.input()?.nativeElement.focus();
+    });
+
     inject(DestroyRef).onDestroy(() => {
       clearTimeout(this.debounceId);
       this.controller?.abort();
@@ -115,6 +129,7 @@ export class SearchBar {
 
   protected close() {
     this.input().nativeElement.blur();
+    this.closed.emit();
   }
 
   protected movieLink(movie: SessionMovie) {
