@@ -252,6 +252,22 @@ h1 {
   .arrows {
     display: none;
   }
+  .skDesc {
+    width: 80%;
+  }
+  .skChip {
+    width: 30%;
+  }
+  .skChip.small {
+    width: 8rem;
+  }
+  .skTitle {
+    width: 60%;
+  }
+
+  .skBtn {
+    width: 12rem;
+  }
 }
 @media screen and (max-width: 475px) {
   .actions {
@@ -260,5 +276,21 @@ h1 {
   }
   .slide {
     padding-bottom: 12rem;
+  }
+  .skDesc {
+    width: 100%;
+  }
+  .skChip {
+    width: 40%;
+  }
+  .skChip.small {
+    width: 8rem;
+  }
+  .skTitle {
+    width: 80%;
+  }
+
+  .skBtn {
+    width: 100%;
   }
 }
